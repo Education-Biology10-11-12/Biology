@@ -87,7 +87,7 @@
         <label style="display:block; margin-top: 8px; font-size: 14px; color: var(--text-muted);">هەڵبژاردنی وێنەی دەموچاو:</label>
         <input type="file" id="input-photo" accept="image/*">
         <button class="btn-save" onclick="updateProfile()" id="btn-update">سەیڤکردنی زانیارییەکان</button>
-        <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0;"></p>
+        <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
     </div>
 
     <!-- بەشی وردەکاری نمرەکان -->
@@ -133,7 +133,6 @@
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQapQkRVqTUqP2eQ4I9Ecop-iETSHr5TP2wAhTNTCiGCvZTUcI_QP_TwxVM-SImaMB/exec";
     
-    // گۆڕاوەکان بۆ خەزنکردنی کاتی
     let currentUsername = "";
     let currentGrade = "";
 
@@ -161,35 +160,29 @@
                 document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی";
                 document.getElementById("student-name").innerText = data.studentName;
                 
-                // پڕکردنەوەی زانیارییە کەسییەکان ئەگەر پێشتر داغڵی کردبێت
                 document.getElementById("input-phone").value = data.phone || "";
                 document.getElementById("input-address").value = data.address || "";
                 if(data.photo) document.getElementById("display-photo").src = data.photo;
                 
-                // پڕکردنەوەی نمرەکانی وەرزی یەکەم
                 document.getElementById("s1-10a").innerText = data.s1_10a;
                 document.getElementById("s1-20").innerText = data.s1_20;
                 document.getElementById("s1-10b").innerText = data.s1_10b;
                 document.getElementById("s1-60").innerText = data.s1_60;
                 document.getElementById("s1-total").innerText = data.season1;
                 
-                // پڕکردنەوەی نمرەکانی وەرزی دووەم
                 document.getElementById("s2-10a").innerText = data.s2_10a;
                 document.getElementById("s2-20").innerText = data.s2_20;
                 document.getElementById("s2-10b").innerText = data.s2_10b;
                 document.getElementById("s2-60").innerText = data.s2_60;
                 document.getElementById("s2-total").innerText = data.season2;
                 
-                // تێکڕای گشتی
                 document.getElementById("final-total").innerText = data.finalGrade;
                 
-                // ئاگادارکردنەوە
                 if(data.notification && data.notification !== "") {
                     document.getElementById("notification-area").classList.remove("hidden");
                     document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
                 }
                 
-                // بابەتەکان
                 const materialsDiv = document.getElementById("materials-list");
                 materialsDiv.innerHTML = "";
                 if(data.materials && data.materials.length > 0) {
@@ -238,7 +231,6 @@
             const file = fileInput.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
-                // بچووککردنەوەی وێنەکە بۆ ئەوەی خێرا بنێردرێت
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = function() {
@@ -263,6 +255,7 @@
     function sendPostRequest(payload, btn, msg) {
         fetch(SCRIPT_URL, {
             method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         })
         .then(res => res.json())
@@ -275,7 +268,8 @@
                 if(payload.photo) document.getElementById("display-photo").src = payload.photo;
             } else {
                 msg.style.color = "var(--danger)";
-                msg.innerText = "هەڵەیەک ڕوویدا لە کاتی ناردندا.";
+                // لێرەدا هۆکاری هەڵە ڕاستەقینەکەی گۆگڵ دەردەکەوێت
+                msg.innerText = "Error: " + (data.message || "Unknown Error");
             }
         }).catch(err => {
             btn.innerText = "سەیڤکردنی زانیارییەکان";
