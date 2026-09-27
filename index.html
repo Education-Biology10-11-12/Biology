@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستمی زیندەزانی - ئامادەیی</title>
-    <!-- هێنانی فۆنتی مۆدێرن -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,175 +15,37 @@
             --card-bg: #ffffff;
             --danger: #ef4444;
             --success: #10b981;
+            --warning: #f59e0b;
         }
-        body { 
-            font-family: 'Tajawal', Tahoma, sans-serif; 
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            min-height: 100vh;
-            margin: 0; 
-            padding: 20px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-main);
-        }
-        .container { 
-            width: 100%;
-            max-width: 450px; 
-            background: var(--card-bg); 
-            padding: 35px 25px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-        #dashboard-section {
-            max-width: 650px;
-        }
-        .header-logo {
-            text-align: center;
-            font-size: 45px;
-            margin-bottom: 5px;
-        }
-        h2 { 
-            color: var(--text-main); 
-            text-align: center; 
-            margin-top: 0;
-            font-weight: 700;
-        }
-        p.subtitle {
-            text-align: center; 
-            color: var(--text-muted);
-            margin-bottom: 25px;
-            font-size: 15px;
-        }
-        input, select, button { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border-radius: 12px; 
-            border: 1px solid #cbd5e1; 
-            box-sizing: border-box; 
-            font-size: 15px; 
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-        }
-        button { 
-            background: linear-gradient(to right, var(--primary), #3b82f6); 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 16px; 
-            margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
-        }
-        button:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.35);
-        }
-        button.btn-logout {
-            background: linear-gradient(to right, var(--danger), #f43f5e);
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
-        }
-        button.btn-logout:hover {
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
-        }
+        body { font-family: 'Tajawal', Tahoma, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); min-height: 100vh; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; color: var(--text-main); }
+        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); box-sizing: border-box; margin-top: 20px; }
+        .header-logo { text-align: center; font-size: 45px; margin-bottom: 5px; }
+        h2 { text-align: center; margin-top: 0; font-weight: 700; }
+        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: inherit; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+        button { background: linear-gradient(to right, var(--primary), #3b82f6); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(14, 165, 233, 0.35); }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #f43f5e); }
+        button.btn-save { background: linear-gradient(to right, var(--success), #059669); }
         .hidden { display: none !important; }
-        .card { 
-            background: #f8fafc; 
-            border: 1px solid #e2e8f0; 
-            padding: 20px; 
-            border-radius: 15px; 
-            margin-bottom: 20px; 
-        }
-        .card h3 {
-            margin-top: 0;
-            color: var(--text-main);
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .notification { 
-            background: #fee2e2; 
-            color: #b91c1c; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin-bottom: 20px; 
-            font-weight: bold;
-            border-right: 5px solid var(--danger);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        table { 
-            width: 100%; 
-            border-collapse: separate; 
-            border-spacing: 0;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-        th, td { 
-            padding: 14px 10px; 
-            text-align: center; 
-            border-bottom: 1px solid #e2e8f0;
-        }
-        th { 
-            background-color: #f1f5f9; 
-            color: var(--text-main); 
-            font-weight: 700;
-        }
-        td:not(:last-child), th:not(:last-child) {
-            border-left: 1px solid #e2e8f0;
-        }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; }
+        .table-responsive { overflow-x: auto; margin-bottom: 15px; }
+        table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background-color: #f1f5f9; color: var(--text-main); }
+        td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
-        .material-item { 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px; 
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
-        }
-        .material-item:hover {
-            transform: scale(1.01);
-            border-color: #cbd5e1;
-        }
-        .material-item b {
-            font-size: 15px;
-            color: var(--text-main);
-        }
-        .material-link { 
-            padding: 8px 20px; 
-            background: var(--success); 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .material-link:hover { background: #059669; }
-        .status-text { text-align: center; font-size: 14px; font-weight: bold; margin-top: 15px; }
-        .error-text { color: var(--danger); }
-        .loading-text { color: var(--primary); }
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #f1f5f9; border-radius: 15px; }
+        .profile-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
+        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
+        .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
     </style>
 </head>
 <body>
 
-<!-- بەشی چوونەژوورەوە -->
 <div class="container" id="login-section">
     <div class="header-logo">🧬</div>
     <h2>سیستمی خوێندکاران</h2>
@@ -200,82 +61,136 @@
     <input type="password" id="password" placeholder="پاسوۆرد">
     
     <button onclick="login()">چوونەژوورەوە</button>
-    
-    <p id="error-msg" class="status-text error-text hidden">زانیارییەکان هەڵەن، تکایە دڵنیابەرەوە!</p>
-    <p id="loading-msg" class="status-text loading-text hidden">چاوەڕێ بکە، داتاکان دەهێنرێن...</p>
+    <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
-<!-- داشبۆردی خوێندکار -->
 <div class="container hidden" id="dashboard-section">
-    <h2>بەخێربێیت، <span id="student-name" style="color: var(--primary);"></span> 👋</h2>
-    <p class="subtitle" id="student-grade-display"></p>
     
+    <div class="profile-header">
+        <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+        <div>
+            <h2 style="margin: 0; text-align: right; color: var(--primary);"><span id="student-name"></span> 👋</h2>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px;" id="student-grade-display"></p>
+        </div>
+    </div>
+
     <div id="notification-area" class="hidden">
         <div class="notification" id="notification-text"></div>
     </div>
 
+    <!-- بەشی نوێکردنەوەی زانیارییەکان -->
     <div class="card">
-        <h3>📊 خشتەی نمرەکان</h3>
-        <table>
-            <tr>
-                <th>وەرزی یەکەم</th>
-                <th>وەرزی دووەم</th>
-                <th>تێکڕای گشتی</th>
-            </tr>
-            <tr>
-                <td id="grade-s1" style="font-weight:bold;">-</td>
-                <td id="grade-s2" style="font-weight:bold;">-</td>
-                <td id="grade-total" style="font-weight:bold; color: var(--success); font-size: 18px;">-</td>
-            </tr>
-        </table>
+        <h3>⚙️ زانیارییەکانی پرۆفایل</h3>
+        <p style="font-size: 13px; color: var(--warning); margin-top: 0;">دەتوانیت لێرەوە وێنە، ژمارەی تەلەفۆن و ناونیشانەکەت بۆ مامۆستا بنێریت.</p>
+        <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+        <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
+        <label style="display:block; margin-top: 8px; font-size: 14px; color: var(--text-muted);">هەڵبژاردنی وێنەی دەموچاو:</label>
+        <input type="file" id="input-photo" accept="image/*">
+        <button class="btn-save" onclick="updateProfile()" id="btn-update">سەیڤکردنی زانیارییەکان</button>
+        <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0;"></p>
+    </div>
+
+    <!-- بەشی وردەکاری نمرەکان -->
+    <div class="card">
+        <h3>📊 وردەکاری نمرەکان</h3>
+        
+        <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
+        <div class="table-responsive">
+            <table>
+                <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                <tr>
+                    <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                    <td id="s1-total" style="font-weight:bold; color:var(--primary);">-</td>
+                </tr>
+            </table>
+        </div>
+
+        <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
+        <div class="table-responsive">
+            <table>
+                <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                <tr>
+                    <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                    <td id="s2-total" style="font-weight:bold; color:var(--primary);">-</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="background: #e0f2fe; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
+            <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+            <span id="final-total" style="font-size: 22px; font-weight: bold; color: var(--success);">-</span>
+        </div>
     </div>
 
     <div class="card">
         <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
-        <div id="materials-list">
-            <!-- وانەکان لێرەدا دادەنرێن -->
-        </div>
+        <div id="materials-list"></div>
     </div>
     
     <button class="btn-logout" onclick="logout()">دەرچوون لە سیستم</button>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw87U0_j-owBHJdAWYIh_R3PYS1n6T3x2bE2WYwbRc1V5zWYtxZEuHvvunKsanO_XJW/exec";
+    // تێبینی: لێرەدا لینکی Web App ەکەت دابنێ کە پێشتر هەتبوو
+    const SCRIPT_URL = "لێرەدا_لینکی_گۆگڵ_سکرێپتەکەت_دابنێ";
+    
+    // گۆڕاوەکان بۆ خەزنکردنی کاتی
+    let currentUsername = "";
+    let currentGrade = "";
 
     function login() {
-        const grade = document.getElementById("grade-level").value;
-        const user = document.getElementById("username").value.trim();
+        currentGrade = document.getElementById("grade-level").value;
+        currentUsername = document.getElementById("username").value.trim();
         const pass = document.getElementById("password").value.trim();
+        const statusMsg = document.getElementById("status-msg");
         
-        if(!user || !pass) {
+        if(!currentUsername || !pass) {
             alert("تکایە یوزەرنەیم و پاسوۆرد پڕبکەرەوە");
             return;
         }
 
-        document.getElementById("error-msg").classList.add("hidden");
-        document.getElementById("loading-msg").classList.remove("hidden");
+        statusMsg.style.color = "var(--primary)";
+        statusMsg.innerText = "چاوەڕێ بکە، داتاکان دەهێنرێن...";
 
-        fetch(SCRIPT_URL + "?action=login&grade=" + grade + "&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass))
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
         .then(data => {
-            document.getElementById("loading-msg").classList.add("hidden");
-            
             if(data.status === "success") {
                 document.getElementById("login-section").classList.add("hidden");
                 document.getElementById("dashboard-section").classList.remove("hidden");
                 
-                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + grade + "ی زانستی";
+                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی";
                 document.getElementById("student-name").innerText = data.studentName;
-                document.getElementById("grade-s1").innerText = data.season1 || "-";
-                document.getElementById("grade-s2").innerText = data.season2 || "-";
-                document.getElementById("grade-total").innerText = data.finalGrade || "-";
                 
+                // پڕکردنەوەی زانیارییە کەسییەکان ئەگەر پێشتر داغڵی کردبێت
+                document.getElementById("input-phone").value = data.phone || "";
+                document.getElementById("input-address").value = data.address || "";
+                if(data.photo) document.getElementById("display-photo").src = data.photo;
+                
+                // پڕکردنەوەی نمرەکانی وەرزی یەکەم
+                document.getElementById("s1-10a").innerText = data.s1_10a;
+                document.getElementById("s1-20").innerText = data.s1_20;
+                document.getElementById("s1-10b").innerText = data.s1_10b;
+                document.getElementById("s1-60").innerText = data.s1_60;
+                document.getElementById("s1-total").innerText = data.season1;
+                
+                // پڕکردنەوەی نمرەکانی وەرزی دووەم
+                document.getElementById("s2-10a").innerText = data.s2_10a;
+                document.getElementById("s2-20").innerText = data.s2_20;
+                document.getElementById("s2-10b").innerText = data.s2_10b;
+                document.getElementById("s2-60").innerText = data.s2_60;
+                document.getElementById("s2-total").innerText = data.season2;
+                
+                // تێکڕای گشتی
+                document.getElementById("final-total").innerText = data.finalGrade;
+                
+                // ئاگادارکردنەوە
                 if(data.notification && data.notification !== "") {
                     document.getElementById("notification-area").classList.remove("hidden");
                     document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
                 }
                 
+                // بابەتەکان
                 const materialsDiv = document.getElementById("materials-list");
                 materialsDiv.innerHTML = "";
                 if(data.materials && data.materials.length > 0) {
@@ -290,22 +205,89 @@
                     materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
                 }
             } else {
-                document.getElementById("error-msg").classList.remove("hidden");
+                statusMsg.style.color = "var(--danger)";
+                statusMsg.innerText = "زانیارییەکان هەڵەن، تکایە دڵنیابەرەوە!";
             }
         })
         .catch(err => {
-            document.getElementById("loading-msg").classList.add("hidden");
-            alert("کێشەیەک هەیە لە پەیوەندی هێڵی ئینتەرنێت. تکایە دووبارە هەوڵبدەرەوە.");
-            console.error(err);
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "کێشەیەک هەیە لە پەیوەندی هێڵی ئینتەرنێت.";
+        });
+    }
+
+    function updateProfile() {
+        const phone = document.getElementById("input-phone").value.trim();
+        const address = document.getElementById("input-address").value.trim();
+        const fileInput = document.getElementById("input-photo");
+        const btn = document.getElementById("btn-update");
+        const msg = document.getElementById("update-msg");
+        
+        btn.innerText = "چاوەڕێبە...";
+        btn.disabled = true;
+        msg.innerText = "";
+        
+        let payload = {
+            action: "updateProfile",
+            grade: currentGrade,
+            username: currentUsername,
+            phone: phone,
+            address: address,
+            photo: ""
+        };
+
+        if (fileInput.files && fileInput.files[0]) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // بچووککردنەوەی وێنەکە بۆ ئەوەی خێرا بنێردرێت
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 500;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    payload.photo = canvas.toDataURL("image/jpeg", 0.7);
+                    sendPostRequest(payload, btn, msg);
+                }
+            };
+            reader.readAsDataURL(file);
+        } else {
+            sendPostRequest(payload, btn, msg);
+        }
+    }
+
+    function sendPostRequest(payload, btn, msg) {
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            btn.innerText = "سەیڤکردنی زانیارییەکان";
+            btn.disabled = false;
+            if(data.status === "success") {
+                msg.style.color = "var(--success)";
+                msg.innerText = "زانیارییەکان بە سەرکەوتوویی نوێکرانەوە!";
+                if(payload.photo) document.getElementById("display-photo").src = payload.photo;
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "هەڵەیەک ڕوویدا لە کاتی ناردندا.";
+            }
+        }).catch(err => {
+            btn.innerText = "سەیڤکردنی زانیارییەکان";
+            btn.disabled = false;
+            msg.style.color = "var(--danger)";
+            msg.innerText = "کێشەی هێڵی ئینتەرنێت هەیە.";
         });
     }
 
     function logout() {
-        document.getElementById("dashboard-section").classList.add("hidden");
-        document.getElementById("login-section").classList.remove("hidden");
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("notification-area").classList.add("hidden");
+        window.location.reload();
     }
 </script>
 
