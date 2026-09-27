@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستمی زیندەزانی - ئامادەیی</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <!-- افزودن فایل‌های Cropper.js برای برش عکس -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
         :root {
             --primary: #0ea5e9;
@@ -17,9 +20,10 @@
             --success: #10b981;
             --warning: #f59e0b;
         }
-        body { font-family: 'Tajawal', Tahoma, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); min-height: 100vh; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; color: var(--text-main); }
+        body { font-family: 'Tajawal', Tahoma, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); min-height: 100vh; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; color: var(--text-main); }
         .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); box-sizing: border-box; margin-top: 20px; }
-        .header-logo { text-align: center; font-size: 45px; margin-bottom: 5px; }
+        .header-logo { text-align: center; margin-bottom: 15px; }
+        .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); object-fit: cover; }
         h2 { text-align: center; margin-top: 0; font-weight: 700; }
         p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: inherit; }
@@ -42,12 +46,23 @@
         .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
         .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #475569; font-size: 13px; line-height: 1.8; max-width: 600px; background: rgba(255,255,255,0.6); border-radius: 15px; }
+        
+        /* استایل‌های مربوط به پنجره برش عکس */
+        #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 15px; }
+        .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; }
+        .img-container img { max-width: 100%; }
+        .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
+        .crop-btns button { margin: 0; }
     </style>
 </head>
 <body>
 
 <div class="container" id="login-section">
-    <div class="header-logo">🧬</div>
+    <div class="header-logo">
+        <img src="هەڵکەوت22@1.5x.jpg" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
+    </div>
     <h2>سیستمی خوێندکاران</h2>
     <p class="subtitle">بابەتی زیندەزانی - ئامادەیی هەڵکەوتی کوڕان</p>
     
@@ -80,11 +95,11 @@
 
     <!-- بەشی نوێکردنەوەی زانیارییەکان -->
     <div class="card">
-        <h3>⚙️ زانیارییەکانی پرۆفایل</h3>
+        <h3>⚙️ زانیاری خوێندکار</h3>
         <p style="font-size: 13px; color: var(--warning); margin-top: 0;">دەتوانیت لێرەوە وێنە، ژمارەی تەلەفۆن و ناونیشانەکەت بۆ مامۆستا بنێریت.</p>
         <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
         <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
-        <label style="display:block; margin-top: 8px; font-size: 14px; color: var(--text-muted);">هەڵبژاردنی وێنەی دەموچاو:</label>
+        <label style="display:block; margin-top: 8px; font-size: 14px; color: var(--text-muted);">هەڵبژاردنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
         <input type="file" id="input-photo" accept="image/*">
         <button class="btn-save" onclick="updateProfile()" id="btn-update">سەیڤکردنی زانیارییەکان</button>
         <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
@@ -130,11 +145,36 @@
     <button class="btn-logout" onclick="logout()">دەرچوون لە سیستم</button>
 </div>
 
+<!-- فووتەری سیستمەکە -->
+<div class="system-footer hidden" id="footer-section">
+    <strong>دیزاین و ئامادەکردنی داتابەیس (مامۆستا گۆران محمد احمد)</strong><br>
+    مامۆستای زیندەزانی (10،11،12) ئامادەیی و خاوەنی بڕوانامەی نێودەوڵەتی سیسکۆ لەبواری نێتۆرک<br>
+    بۆ زانیاری زیاتر پەیوەندی بکەن بە: <br>
+    <span style="direction: ltr; display: inline-block;">(07748134314 - 07501224994)</span>
+</div>
+
+<!-- مۆدێلی بڕینی وێنە -->
+<div id="crop-modal" class="hidden">
+    <div class="crop-container-box">
+        <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
+        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە بۆ ئەوەی گونجاو بێت بۆ مامەڵات</p>
+        <div class="img-container">
+            <img id="image-to-crop" src="">
+        </div>
+        <div class="crop-btns">
+            <button onclick="cancelCrop()" style="background: var(--danger); width: 48%;">پاشگەزبوونەوە</button>
+            <button onclick="applyCrop()" style="background: var(--success); width: 48%;">بڕین و پەسەندکردن</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQapQkRVqTUqP2eQ4I9Ecop-iETSHr5TP2wAhTNTCiGCvZTUcI_QP_TwxVM-SImaMB/exec";
     
     let currentUsername = "";
     let currentGrade = "";
+    let cropper = null;
+    let finalCroppedImage = "";
 
     function login() {
         currentGrade = document.getElementById("grade-level").value;
@@ -156,8 +196,12 @@
             if(data.status === "success") {
                 document.getElementById("login-section").classList.add("hidden");
                 document.getElementById("dashboard-section").classList.remove("hidden");
+                document.getElementById("footer-section").classList.remove("hidden");
                 
-                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی";
+                // نمایش نام گروه به همراه کلاس
+                let groupText = data.groupName ? " (گروپی " + data.groupName + ")" : "";
+                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupText;
+                
                 document.getElementById("student-name").innerText = data.studentName;
                 
                 document.getElementById("input-phone").value = data.phone || "";
@@ -207,10 +251,47 @@
         });
     }
 
+    // باز کردن پنجره برش (Crop) هنگام انتخاب فایل
+    document.getElementById("input-photo").addEventListener("change", function(e) {
+        const files = e.target.files;
+        if(files && files.length > 0) {
+            const url = URL.createObjectURL(files[0]);
+            const image = document.getElementById("image-to-crop");
+            image.src = url;
+            document.getElementById("crop-modal").classList.remove("hidden");
+            
+            if(cropper) { cropper.destroy(); }
+            // اعمال نسبت ۳:۴
+            cropper = new Cropper(image, {
+                aspectRatio: 3 / 4,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+            });
+        }
+    });
+
+    function cancelCrop() {
+        document.getElementById("crop-modal").classList.add("hidden");
+        document.getElementById("input-photo").value = "";
+        finalCroppedImage = "";
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
+    function applyCrop() {
+        if(!cropper) return;
+        // استخراج تصویر برش خورده به اندازه ۳۰۰ در ۴۰۰ پیکسل
+        const canvas = cropper.getCroppedCanvas({ width: 300, height: 400 });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.8);
+        
+        document.getElementById("display-photo").src = finalCroppedImage;
+        document.getElementById("crop-modal").classList.add("hidden");
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
     function updateProfile() {
         const phone = document.getElementById("input-phone").value.trim();
         const address = document.getElementById("input-address").value.trim();
-        const fileInput = document.getElementById("input-photo");
         const btn = document.getElementById("btn-update");
         const msg = document.getElementById("update-msg");
         
@@ -224,32 +305,10 @@
             username: currentUsername,
             phone: phone,
             address: address,
-            photo: ""
+            photo: finalCroppedImage // ارسال تصویر برش خورده
         };
 
-        if (fileInput.files && fileInput.files[0]) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement("canvas");
-                    const MAX_WIDTH = 500;
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    payload.photo = canvas.toDataURL("image/jpeg", 0.7);
-                    sendPostRequest(payload, btn, msg);
-                }
-            };
-            reader.readAsDataURL(file);
-        } else {
-            sendPostRequest(payload, btn, msg);
-        }
+        sendPostRequest(payload, btn, msg);
     }
 
     function sendPostRequest(payload, btn, msg) {
@@ -265,10 +324,9 @@
             if(data.status === "success") {
                 msg.style.color = "var(--success)";
                 msg.innerText = "زانیارییەکان بە سەرکەوتوویی نوێکرانەوە!";
-                if(payload.photo) document.getElementById("display-photo").src = payload.photo;
+                finalCroppedImage = ""; // پاک کردن متغیر پس از ارسال موفق
             } else {
                 msg.style.color = "var(--danger)";
-                // لێرەدا هۆکاری هەڵە ڕاستەقینەکەی گۆگڵ دەردەکەوێت
                 msg.innerText = "Error: " + (data.message || "Unknown Error");
             }
         }).catch(err => {
