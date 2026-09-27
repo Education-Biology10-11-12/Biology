@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستمی زیندەزانی - ئامادەیی</title>
+    <title>داتابەیسی خوێندکاران - زیندەزانی</title>
     <!-- هێنانی کتێبخانەی کرۆپکردنی وێنە -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -17,9 +17,10 @@
         }
 
         :root {
-            --primary: #0ea5e9;
-            --primary-hover: #0284c7;
-            --bg-color: #f0f9ff;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --header-bg: #0284c7; /* ڕەنگی نزیک لە لۆگۆ */
+            --bg-gradient: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
             --text-main: #1e293b;
             --text-muted: #64748b;
             --card-bg: #ffffff;
@@ -31,7 +32,7 @@
         /* بەکارهێنانی فۆنتەکە و سەنتەرکردنی شاشەکە */
         body { 
             font-family: 'GoranFont', Tahoma, sans-serif; 
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); 
+            background: var(--bg-gradient); 
             min-height: 100vh; 
             margin: 0; 
             padding: 20px 15px; 
@@ -48,42 +49,68 @@
             background: var(--card-bg); 
             padding: 30px 20px; 
             border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             box-sizing: border-box; 
             margin: auto; 
         }
 
         .header-logo { text-align: center; margin-bottom: 15px; }
-        .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); object-fit: cover; }
+        .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
         
-        /* ڕێکخستنی دەقە سەرەکییەکان */
-        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; }
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
         .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
         .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
         .subtitle-box .teacher-sub { color: var(--text-muted); font-size: 13px; }
 
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; }
-        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
-        button { background: linear-gradient(to right, var(--primary), #3b82f6); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25); }
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(14, 165, 233, 0.35); }
-        button.btn-logout { background: linear-gradient(to right, var(--danger), #f43f5e); }
-        button.btn-save { background: linear-gradient(to right, var(--success), #059669); }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
+        
+        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35); }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
+        button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
+        
         .hidden { display: none !important; }
+        
         .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; }
+        
+        /* ڕەنگی جیاواز بۆ سەری بابەتەکان */
+        .card h3 { 
+            margin-top: 0; 
+            border-bottom: 2px solid #e2e8f0; 
+            padding-bottom: 10px; 
+            margin-bottom: 15px; 
+            color: #0f766e; 
+            font-size: 17px;
+        }
+
         .table-responsive { overflow-x: auto; margin-bottom: 15px; }
         table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
-        th { background-color: #f1f5f9; color: var(--text-main); }
+        th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
-        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #f1f5f9; border-radius: 15px; }
+        
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #e0f2fe; border-radius: 15px; }
         .profile-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
+        
         .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
         .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
-        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #475569; font-size: 13px; line-height: 1.8; max-width: 600px; background: rgba(255,255,255,0.6); border-radius: 15px; }
+        
+        .system-footer { 
+            margin-top: 30px; 
+            margin-bottom: 20px; 
+            text-align: center; 
+            padding: 20px; 
+            color: #ffffff; 
+            font-size: 13px; 
+            line-height: 1.8; 
+            max-width: 600px; 
+            background: rgba(0, 0, 0, 0.25); 
+            border-radius: 15px; 
+        }
         
         /* استایلەکانی بڕینی وێنە */
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -147,16 +174,17 @@
         <label class="field-label">ناونیشانی نیشتەجێبوون:</label>
         <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
         
-        <label class="field-label">هەڵبژاردنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
-        <input type="file" id="input-photo" accept="image/*">
+        <label class="field-label">هەڵبژاردن یان گرتنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
+        <!-- زیادکردنی capture بۆ ئەوەی ڕاستەوخۆ کامێرا بکاتەوە لە موبایلدا -->
+        <input type="file" id="input-photo" accept="image/*" capture="user">
         
-        <button class="btn-save" onclick="updateProfile()" id="btn-update">سەیڤکردنی زانیارییەکان</button>
+        <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
         <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
     </div>
 
     <!-- بەشی وردەکاری نمرەکان -->
     <div class="card">
-        <h3>📊 وردەکاری نمرەکان</h3>
+        <h3>📊 نمرەکانی خوێندکار</h3>
         
         <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
         <div class="table-responsive">
@@ -191,15 +219,17 @@
         <div id="materials-list"></div>
     </div>
     
-    <button class="btn-logout" onclick="logout()">دەرچوون لە سیستم</button>
+    <button class="btn-logout" onclick="logout()">دەرچوون</button>
 </div>
 
-<!-- فووتەری سیستمەکە -->
+<!-- فووتەری سیستمەکە بە شێوەی ستوونی و ڕێکوپێک -->
 <div class="system-footer hidden" id="footer-section">
-    <strong>دیزاین و ئامادەکردنی داتابەیس (مامۆستا گۆران محمد احمد)</strong><br>
-    مامۆستای زیندەزانی (10،11،12) ئامادەیی و خاوەنی بڕوانامەی نێودەوڵەتی سیسکۆ لەبواری نێتۆرک<br>
-    بۆ زانیاری زیاتر پەیوەندی بکەن بە: <br>
-    <span style="direction: ltr; display: inline-block;">(07748134314 - 07501224994)</span>
+    <strong>دیزاین و ئامادەکردنی داتابەیس</strong><br>
+    مامۆستا گۆران محمد احمد<br>
+    مامۆستای زیندەزانی (10،11،12) ئامادەیی<br>
+    خاوەنی بڕوانامەی نێودەوڵەتی سیسکۆ لەبواری نێتۆرک<br><br>
+    بۆ زانیاری زیاتر پەیوەندی بکەن بە:<br>
+    <span style="direction: ltr; display: inline-block;">07748134314 - 07501224994</span>
 </div>
 
 <!-- مۆدێلی بڕینی وێنە -->
@@ -364,18 +394,18 @@
         })
         .then(res => res.json())
         .then(data => {
-            btn.innerText = "سەیڤکردنی زانیارییەکان";
+            btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
             if(data.status === "success") {
                 msg.style.color = "var(--success)";
-                msg.innerText = "زانیارییەکان بە سەرکەوتوویی نوێکرانەوە!";
+                msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
                 finalCroppedImage = ""; 
             } else {
                 msg.style.color = "var(--danger)";
                 msg.innerText = "Error: " + (data.message || "Unknown Error");
             }
         }).catch(err => {
-            btn.innerText = "سەیڤکردنی زانیارییەکان";
+            btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
             msg.style.color = "var(--danger)";
             msg.innerText = "کێشەی هێڵی ئینتەرنێت هەیە.";
