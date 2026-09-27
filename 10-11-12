@@ -84,7 +84,7 @@
 
 <script>
     // تێبینی: لێرەدا لینکی Web App ەکەی گۆگڵ سکرێپت دابنێ لە ناو جووتە کۆتەیشنەکاندا
-    const SCRIPT_URL = "لێرەدا_لینکی_گۆگڵ_سکرێپتەکەت_دابنێ";
+    const SCRIPT_URL = "AKfycbw87U0_j-owBHJdAWYIh_R3PYS1n6T3x2bE2WYwbRc1V5zWYtxZEuHvvunKsanO_XJW";
 
     function login() {
         const grade = document.getElementById("grade-level").value;
