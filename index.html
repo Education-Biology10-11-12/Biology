@@ -27,14 +27,38 @@
             --success: #10b981;
             --warning: #f59e0b;
         }
-        /* بەکارهێنانی فۆنتەکە بۆ تەواوی وێبسایتەکە */
-        body { font-family: 'GoranFont', Tahoma, sans-serif; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); min-height: 100vh; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; color: var(--text-main); }
-        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); box-sizing: border-box; margin-top: 20px; }
+
+        /* بەکارهێنانی فۆنتەکە و سەنتەرکردنی شاشەکە */
+        body { 
+            font-family: 'GoranFont', Tahoma, sans-serif; 
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--text-main); 
+            box-sizing: border-box;
+        }
+
+        /* بۆکسەکە دەکەوێتە ناوەڕاست */
+        .container { 
+            width: 100%; 
+            max-width: 600px; 
+            background: var(--card-bg); 
+            padding: 30px 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            box-sizing: border-box; 
+            margin: auto; /* ئەمە وای لێدەکات بە تەواوی سەنتەر بێت */
+        }
+
         .header-logo { text-align: center; margin-bottom: 15px; }
         .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); object-fit: cover; }
         h2 { text-align: center; margin-top: 0; font-weight: 700; }
         p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
-        /* بەکارهێنانی فۆنتەکە بۆ بۆکسەکان و دوگمەکان */
+        
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
         button { background: linear-gradient(to right, var(--primary), #3b82f6); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25); }
@@ -71,7 +95,8 @@
 
 <div class="container" id="login-section">
     <div class="header-logo">
-        <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
+        <!-- ناوی لۆگۆکە ڕێک وەک ئەوەی گیتهەبە -->
+        <img src="1.5@هەڵکەوت22x.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
     </div>
     <h2>سیستمی خوێندکاران</h2>
     <p class="subtitle">بابەتی زیندەزانی - ئامادەیی هەڵکەوتی کوڕان</p>
