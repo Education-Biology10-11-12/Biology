@@ -4,59 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستمی زیندەزانی - ئامادەیی</title>
+    <!-- هێنانی فۆنتی مۆدێرن -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 15px; }
-        button { background-color: #3498db; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; }
-        button:hover { background-color: #2980b9; }
-        .hidden { display: none; }
-        .card { background: #fdfdfd; border: 1px solid #e1e8ed; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .notification { background: #e74c3c; color: white; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #bdc3c7; padding: 10px; text-align: center; }
-        th { background-color: #2c3e50; color: white; }
-        .material-link { display: inline-block; padding: 8px 15px; background: #2ecc71; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px; font-size: 14px; }
-        .material-link:hover { background: #27ae60; }
-        .material-item { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
-        .material-item:last-child { border-bottom: none; }
+        :root {
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --bg-color: #f0f9ff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        body { 
+            font-family: 'Tajawal', Tahoma, sans-serif; 
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            min-height: 100vh;
+            margin: 0; 
+            padding: 20px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+        }
+        .container { 
+            width: 100%;
+            max-width: 450px; 
+            background: var(--card-bg); 
+            padding: 35px 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        #dashboard-section {
+            max-width: 650px;
+        }
+        .header-logo {
+            text-align: center;
+            font-size: 45px;
+            margin-bottom: 5px;
+        }
+        h2 { 
+            color: var(--text-main); 
+            text-align: center; 
+            margin-top: 0;
+            font-weight: 700;
+        }
+        p.subtitle {
+            text-align: center; 
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+        input, select, button { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 10px 0; 
+            border-radius: 12px; 
+            border: 1px solid #cbd5e1; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+        button { 
+            background: linear-gradient(to right, var(--primary), #3b82f6); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px; 
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.35);
+        }
+        button.btn-logout {
+            background: linear-gradient(to right, var(--danger), #f43f5e);
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+        }
+        button.btn-logout:hover {
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+        }
+        .hidden { display: none !important; }
+        .card { 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+        }
+        .card h3 {
+            margin-top: 0;
+            color: var(--text-main);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notification { 
+            background: #fee2e2; 
+            color: #b91c1c; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            font-weight: bold;
+            border-right: 5px solid var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        th, td { 
+            padding: 14px 10px; 
+            text-align: center; 
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th { 
+            background-color: #f1f5f9; 
+            color: var(--text-main); 
+            font-weight: 700;
+        }
+        td:not(:last-child), th:not(:last-child) {
+            border-left: 1px solid #e2e8f0;
+        }
+        tr:last-child td { border-bottom: none; }
+        .material-item { 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px; 
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        .material-item:hover {
+            transform: scale(1.01);
+            border-color: #cbd5e1;
+        }
+        .material-item b {
+            font-size: 15px;
+            color: var(--text-main);
+        }
+        .material-link { 
+            padding: 8px 20px; 
+            background: var(--success); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .material-link:hover { background: #059669; }
+        .status-text { text-align: center; font-size: 14px; font-weight: bold; margin-top: 15px; }
+        .error-text { color: var(--danger); }
+        .loading-text { color: var(--primary); }
     </style>
 </head>
 <body>
 
 <!-- بەشی چوونەژوورەوە -->
 <div class="container" id="login-section">
-    <h2>سیستمی خوێندکاران - زیندەزانی</h2>
-    <p style="text-align:center; color:#7f8c8d;">تکایە پۆلەکەت هەڵبژێرە و یوزەرنەیم و پاسوۆردەکەت بنووسە</p>
+    <div class="header-logo">🧬</div>
+    <h2>سیستمی خوێندکاران</h2>
+    <p class="subtitle">بابەتی زیندەزانی - ئامادەیی هەڵکەوتی کوڕان</p>
     
-    <!-- هەڵبژاردنی پۆل -->
     <select id="grade-level">
         <option value="10">پۆلی ١٠ی زانستی</option>
         <option value="11">پۆلی ١١ی زانستی</option>
         <option value="12">پۆلی ١٢ی زانستی</option>
     </select>
 
-    <input type="text" id="username" placeholder="یوزەرنەیم (بۆ نموونە: BIO102)">
+    <input type="text" id="username" placeholder="یوزەرنەیم (بۆ نموونە: BIO100)">
     <input type="password" id="password" placeholder="پاسوۆرد">
+    
     <button onclick="login()">چوونەژوورەوە</button>
-    <p id="error-msg" style="color:#e74c3c; text-align:center; font-weight:bold;" class="hidden">زانیارییەکان هەڵەن، تکایە دڵنیابەرەوە!</p>
-    <p id="loading-msg" style="color:#3498db; text-align:center;" class="hidden">چاوەڕێ بکە، داتاکان دەهێنرێن...</p>
+    
+    <p id="error-msg" class="status-text error-text hidden">زانیارییەکان هەڵەن، تکایە دڵنیابەرەوە!</p>
+    <p id="loading-msg" class="status-text loading-text hidden">چاوەڕێ بکە، داتاکان دەهێنرێن...</p>
 </div>
 
 <!-- داشبۆردی خوێندکار -->
 <div class="container hidden" id="dashboard-section">
-    <h2>بەخێربێیت، <span id="student-name" style="color:#2980b9;"></span></h2>
-    <p style="text-align:center; color:#7f8c8d;" id="student-grade-display"></p>
+    <h2>بەخێربێیت، <span id="student-name" style="color: var(--primary);"></span> 👋</h2>
+    <p class="subtitle" id="student-grade-display"></p>
     
-    <!-- بەشی ئاگادارکردنەوە -->
     <div id="notification-area" class="hidden">
         <div class="notification" id="notification-text"></div>
     </div>
 
-    <!-- بەشی نمرەکان -->
     <div class="card">
-        <h3 style="margin-top:0; color:#2c3e50;">📊 نمرەکان</h3>
+        <h3>📊 خشتەی نمرەکان</h3>
         <table>
             <tr>
                 <th>وەرزی یەکەم</th>
@@ -66,25 +225,23 @@
             <tr>
                 <td id="grade-s1" style="font-weight:bold;">-</td>
                 <td id="grade-s2" style="font-weight:bold;">-</td>
-                <td id="grade-total" style="font-weight:bold; color:#27ae60;">-</td>
+                <td id="grade-total" style="font-weight:bold; color: var(--success); font-size: 18px;">-</td>
             </tr>
         </table>
     </div>
 
-    <!-- بەشی وانەکان و PDF -->
     <div class="card">
-        <h3 style="margin-top:0; color:#2c3e50;">📚 بابەتەکان و ڤیدیۆکان</h3>
+        <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
         <div id="materials-list">
-            <!-- وانەکان لە ڕێگەی سکریپتەوە لێرەدا دادەنرێن -->
+            <!-- وانەکان لێرەدا دادەنرێن -->
         </div>
     </div>
     
-    <button style="background-color: #e74c3c; margin-top: 20px;" onclick="logout()">دەرچوون لە سیستم</button>
+    <button class="btn-logout" onclick="logout()">دەرچوون لە سیستم</button>
 </div>
 
 <script>
-    // تێبینی: لێرەدا لینکی Web App ەکەی گۆگڵ سکرێپت دابنێ لە ناو جووتە کۆتەیشنەکاندا
-    const SCRIPT_URL = "AKfycbw87U0_j-owBHJdAWYIh_R3PYS1n6T3x2bE2WYwbRc1V5zWYtxZEuHvvunKsanO_XJW";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw87U0_j-owBHJdAWYIh_R3PYS1n6T3x2bE2WYwbRc1V5zWYtxZEuHvvunKsanO_XJW/exec";
 
     function login() {
         const grade = document.getElementById("grade-level").value;
@@ -99,48 +256,40 @@
         document.getElementById("error-msg").classList.add("hidden");
         document.getElementById("loading-msg").classList.remove("hidden");
 
-        // پەیوەندیکردن بە گۆگڵ شیت بۆ دڵنیابوونەوە لە یوزەر، پاسوۆرد، وە پۆل
         fetch(SCRIPT_URL + "?action=login&grade=" + grade + "&username=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
         .then(data => {
             document.getElementById("loading-msg").classList.add("hidden");
             
             if(data.status === "success") {
-                // شاردنەوەی فۆڕمی لۆگین و پیشاندانی داشبۆرد
                 document.getElementById("login-section").classList.add("hidden");
                 document.getElementById("dashboard-section").classList.remove("hidden");
                 
-                // پیشاندانی پۆلەکە
                 document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + grade + "ی زانستی";
-
-                // جێگیرکردنی ناو و نمرەکان
                 document.getElementById("student-name").innerText = data.studentName;
                 document.getElementById("grade-s1").innerText = data.season1 || "-";
                 document.getElementById("grade-s2").innerText = data.season2 || "-";
                 document.getElementById("grade-total").innerText = data.finalGrade || "-";
                 
-                // جێگیرکردنی ئاگادارکردنەوە (ئەگەر هەبێت)
                 if(data.notification && data.notification !== "") {
                     document.getElementById("notification-area").classList.remove("hidden");
-                    document.getElementById("notification-text").innerText = "🔔 تێبینی: " + data.notification;
+                    document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
                 }
                 
-                // جێگیرکردنی بابەتەکان
                 const materialsDiv = document.getElementById("materials-list");
                 materialsDiv.innerHTML = "";
                 if(data.materials && data.materials.length > 0) {
                     data.materials.forEach(mat => {
                         materialsDiv.innerHTML += `
                         <div class="material-item">
-                            <b>${mat.title}</b> <br> 
-                            <a href="${mat.link}" target="_blank" class="material-link">کردنەوەی بابەت / ڤیدیۆ</a>
+                            <b>${mat.title}</b>
+                            <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
                         </div>`;
                     });
                 } else {
-                    materialsDiv.innerHTML = "<p style='color:#7f8c8d;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
+                    materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
                 }
             } else {
-                // ئەگەر پاسوۆردەکە هەڵە بوو
                 document.getElementById("error-msg").classList.remove("hidden");
             }
         })
