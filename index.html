@@ -64,13 +64,14 @@
         .img-container img { max-width: 100%; }
         .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
         .crop-btns button { margin: 0; }
+        .field-label { display:block; margin-top: 12px; margin-bottom: 5px; font-size: 14px; color: var(--text-main); font-weight:bold; text-align: right; }
     </style>
 </head>
 <body>
 
 <div class="container" id="login-section">
     <div class="header-logo">
-        <img src="هەڵکەوت22@1.5x.jpg" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
+        <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
     </div>
     <h2>سیستمی خوێندکاران</h2>
     <p class="subtitle">بابەتی زیندەزانی - ئامادەیی هەڵکەوتی کوڕان</p>
@@ -106,10 +107,16 @@
     <div class="card">
         <h3>⚙️ زانیاری خوێندکار</h3>
         <p style="font-size: 13px; color: var(--warning); margin-top: 0;">دەتوانیت لێرەوە وێنە، ژمارەی تەلەفۆن و ناونیشانەکەت بۆ مامۆستا بنێریت.</p>
-        <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+        
+        <label class="field-label">ژمارەی مۆبایل:</label>
+        <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل داغڵ بکە">
+        
+        <label class="field-label">ناونیشانی نیشتەجێبوون:</label>
         <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
-        <label style="display:block; margin-top: 8px; font-size: 14px; color: var(--text-muted);">هەڵبژاردنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
+        
+        <label class="field-label">هەڵبژاردنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
         <input type="file" id="input-photo" accept="image/*">
+        
         <button class="btn-save" onclick="updateProfile()" id="btn-update">سەیڤکردنی زانیارییەکان</button>
         <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
     </div>
