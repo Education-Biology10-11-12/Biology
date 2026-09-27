@@ -42,7 +42,6 @@
             box-sizing: border-box;
         }
 
-        /* بۆکسەکە دەکەوێتە ناوەڕاست هەم لە درێژی هەم لە پانی */
         .container { 
             width: 100%; 
             max-width: 600px; 
@@ -51,14 +50,19 @@
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
             box-sizing: border-box; 
-            margin: auto; /* ئەمە بۆکسەکە دەهێنێتە سەنتەری شاشەکە */
+            margin: auto; 
         }
 
         .header-logo { text-align: center; margin-bottom: 15px; }
         .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); object-fit: cover; }
-        h2 { text-align: center; margin-top: 0; font-weight: 700; }
-        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 15px; }
         
+        /* ڕێکخستنی دەقە سەرەکییەکان */
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; }
+        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+        .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
+        .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
+        .subtitle-box .teacher-sub { color: var(--text-muted); font-size: 13px; }
+
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
         button { background: linear-gradient(to right, var(--primary), #3b82f6); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25); }
@@ -95,11 +99,15 @@
 
 <div class="container" id="login-section">
     <div class="header-logo">
-        <!-- ناوی لۆگۆکە ڕێک وەک ئەوەی داتناوە -->
         <img src="هەڵکەوت22@1.5x.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
     </div>
-    <h2>سیستمی خوێندکاران</h2>
-    <p class="subtitle">بابەتی زیندەزانی - ئامادەیی هەڵکەوتی کوڕان</p>
+    
+    <h2>داتابەیسی خوێندکاران</h2>
+    <div class="subtitle-box">
+        <div class="grade-sub">زیندەزانی (10،11،12)ی زانستی</div>
+        <div class="school-sub">ئامادەیی هەڵکەوتی کوڕان</div>
+        <div class="teacher-sub">مامۆستای زیندەزانی: گۆران محمد احمد</div>
+    </div>
     
     <select id="grade-level">
         <option value="10">پۆلی ١٠ی زانستی</option>
