@@ -19,7 +19,6 @@
         :root {
             --primary: #0284c7;
             --primary-hover: #0369a1;
-            --header-bg: #0284c7; /* ڕەنگی نزیک لە لۆگۆ */
             --bg-gradient: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -29,7 +28,6 @@
             --warning: #f59e0b;
         }
 
-        /* بەکارهێنانی فۆنتەکە و سەنتەرکردنی شاشەکە */
         body { 
             font-family: 'GoranFont', Tahoma, sans-serif; 
             background: var(--bg-gradient); 
@@ -74,16 +72,7 @@
         .hidden { display: none !important; }
         
         .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        
-        /* ڕەنگی جیاواز بۆ سەری بابەتەکان */
-        .card h3 { 
-            margin-top: 0; 
-            border-bottom: 2px solid #e2e8f0; 
-            padding-bottom: 10px; 
-            margin-bottom: 15px; 
-            color: #0f766e; 
-            font-size: 17px;
-        }
+        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
 
         .table-responsive { overflow-x: auto; margin-bottom: 15px; }
         table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
@@ -99,20 +88,8 @@
         .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { 
-            margin-top: 30px; 
-            margin-bottom: 20px; 
-            text-align: center; 
-            padding: 20px; 
-            color: #ffffff; 
-            font-size: 13px; 
-            line-height: 1.8; 
-            max-width: 600px; 
-            background: rgba(0, 0, 0, 0.25); 
-            border-radius: 15px; 
-        }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 600px; background: rgba(0, 0, 0, 0.25); border-radius: 15px; }
         
-        /* استایلەکانی بڕینی وێنە */
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 15px; }
         .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; }
@@ -163,7 +140,6 @@
         <div class="notification" id="notification-text"></div>
     </div>
 
-    <!-- بەشی نوێکردنەوەی زانیارییەکان -->
     <div class="card">
         <h3>⚙️ زانیاری خوێندکار</h3>
         <p style="font-size: 13px; color: var(--warning); margin-top: 0;">دەتوانیت لێرەوە وێنە، ژمارەی تەلەفۆن و ناونیشانەکەت بۆ مامۆستا بنێریت.</p>
@@ -175,14 +151,12 @@
         <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
         
         <label class="field-label">هەڵبژاردن یان گرتنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
-        <!-- زیادکردنی capture بۆ ئەوەی ڕاستەوخۆ کامێرا بکاتەوە لە موبایلدا -->
         <input type="file" id="input-photo" accept="image/*" capture="user">
         
         <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
         <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
     </div>
 
-    <!-- بەشی وردەکاری نمرەکان -->
     <div class="card">
         <h3>📊 نمرەکانی خوێندکار</h3>
         
@@ -222,7 +196,6 @@
     <button class="btn-logout" onclick="logout()">دەرچوون</button>
 </div>
 
-<!-- فووتەری سیستمەکە بە شێوەی ستوونی و ڕێکوپێک -->
 <div class="system-footer hidden" id="footer-section">
     <strong>دیزاین و ئامادەکردنی داتابەیس</strong><br>
     مامۆستا گۆران محمد احمد<br>
@@ -232,7 +205,6 @@
     <span style="direction: ltr; display: inline-block;">07748134314 - 07501224994</span>
 </div>
 
-<!-- مۆدێلی بڕینی وێنە -->
 <div id="crop-modal" class="hidden">
     <div class="crop-container-box">
         <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
@@ -277,8 +249,9 @@
                 document.getElementById("dashboard-section").classList.remove("hidden");
                 document.getElementById("footer-section").classList.remove("hidden");
                 
-                let groupText = data.groupName ? " (گروپی " + data.groupName + ")" : "";
-                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupText;
+                // ڕێکخستنی تێکستی پۆل و گروپ لە تەنیشت یەکتر
+                let groupDisplay = data.groupName ? " - " + data.groupName : "";
+                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
                 
                 document.getElementById("student-name").innerText = data.studentName;
                 
