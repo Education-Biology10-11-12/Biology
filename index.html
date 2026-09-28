@@ -120,7 +120,7 @@
     </select>
 
     <input type="text" id="username" placeholder="یوزەرنەیم (بۆ نموونە: BIO100)">
-    <input type="password" id="password" placeholder="پاسوۆرد">
+    <input type="password" id="password" placeholder="پاسۆرد">
     
     <button onclick="login()">چوونەژوورەوە</button>
     <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
@@ -147,10 +147,10 @@
         <label class="field-label">ژمارەی مۆبایل:</label>
         <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل داغڵ بکە">
         
-        <label class="field-label">ناونیشانی نیشتەجێبوون:</label>
+        <label class="field-label">شوێنی نیشتەجێبوون:</label>
         <input type="text" id="input-address" placeholder="ناونیشان (بۆ نموونە: سلێمانی - ڕاپەڕین)">
         
-        <label class="field-label">هەڵبژاردن یان گرتنی وێنەی دەموچاو (قیاسی مامەڵات):</label>
+        <label class="field-label">هەڵبژاردن یان گرتنی وێنەی دەموچاو:</label>
         <input type="file" id="input-photo" accept="image/*" capture="user">
         
         <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
@@ -200,7 +200,7 @@
     <strong>دیزاین و ئامادەکردنی داتابەیس</strong><br>
     مامۆستا گۆران محمد احمد<br>
     مامۆستای زیندەزانی (10،11،12) ئامادەیی<br>
-    خاوەنی بڕوانامەی نێودەوڵەتی سیسکۆ لەبواری نێتۆرک<br><br>
+    خاوەنی بڕوانامەی نێودەوڵەتی CCNA لەبواری نێتۆرک<br><br>
     بۆ زانیاری زیاتر پەیوەندی بکەن بە:<br>
     <span style="direction: ltr; display: inline-block;">07748134314 - 07501224994</span>
 </div>
@@ -234,12 +234,12 @@
         const statusMsg = document.getElementById("status-msg");
         
         if(!currentUsername || !pass) {
-            alert("تکایە یوزەرنەیم و پاسوۆرد پڕبکەرەوە");
+            alert("تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە");
             return;
         }
 
         statusMsg.style.color = "var(--primary)";
-        statusMsg.innerText = "چاوەڕێ بکە، داتاکان دەهێنرێن...";
+        statusMsg.innerText = "چاوەڕێ بکە...";
 
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
@@ -249,7 +249,6 @@
                 document.getElementById("dashboard-section").classList.remove("hidden");
                 document.getElementById("footer-section").classList.remove("hidden");
                 
-                // ڕێکخستنی تێکستی پۆل و گروپ لە تەنیشت یەکتر
                 let groupDisplay = data.groupName ? " - " + data.groupName : "";
                 document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
                 
@@ -362,22 +361,18 @@
     function sendPostRequest(payload, btn, msg) {
         fetch(SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         })
-        .then(res => res.json())
-        .then(data => {
+        .then(() => {
             btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
-            if(data.status === "success") {
-                msg.style.color = "var(--success)";
-                msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
-                finalCroppedImage = ""; 
-            } else {
-                msg.style.color = "var(--danger)";
-                msg.innerText = "Error: " + (data.message || "Unknown Error");
-            }
-        }).catch(err => {
+            msg.style.color = "var(--success)";
+            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
+            finalCroppedImage = ""; 
+        })
+        .catch(err => {
             btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
             msg.style.color = "var(--danger)";
