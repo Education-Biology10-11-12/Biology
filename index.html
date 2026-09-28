@@ -134,7 +134,7 @@
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0;">
     </div>
 
-    <label class="field-label">هەڵبژاردنی وێنە (لەگالێری یان گرتن بە کامێرا):</label>
+    <label class="field-label">هەڵبژاردنی وێنە (لەگەلەری یان وێنە گرتن بە کامێرا):</label>
     <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
@@ -279,7 +279,7 @@
         const statusMsg = document.getElementById("status-msg");
         
         if(!currentUsername || !pass) {
-            alert("تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە");
+            alert("تکایە یوزەرنەیم و پاسۆرد بنوسە");
             return;
         }
 
@@ -508,7 +508,7 @@
             btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
             msg.style.color = "var(--success)";
-            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
+            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران";
             
             const savedData = JSON.parse(sessionStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
