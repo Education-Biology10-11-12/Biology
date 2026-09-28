@@ -226,7 +226,6 @@
     let cropper = null;
     let finalCroppedImage = "";
 
-    // پشکنین بۆ ئەوەی ئەگەر خوێندکار پێشتر لۆگین بووبێت، لە کاتی ڕیفرێشدا لە ئەکاونتەکەی دەرنەچێت
     window.onload = function() {
         const savedData = sessionStorage.getItem("student_session");
         if(savedData) {
@@ -255,7 +254,6 @@
         .then(res => res.json())
         .then(data => {
             if(data.status === "success") {
-                // پاشەکەوتکردنی زانیارییەکان لە SessionStorage تا لە کاتی ڕیفرێشدا نەسڕێنەوە
                 data.grade = currentGrade;
                 data.username = currentUsername;
                 sessionStorage.setItem("student_session", JSON.stringify(data));
@@ -395,7 +393,6 @@
             msg.style.color = "var(--success)";
             msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
             
-            // نوێکردنەوەی SessionStorage بە تەلەفۆن و ناونیشان و وێنەی نوێ
             const savedData = JSON.parse(sessionStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
             savedData.address = payload.address;
@@ -415,7 +412,7 @@
     }
 
     function logout() {
-        sessionStorage.removeItem("student_session"); // پاککردنەوەی سشن لە کاتی دەچوونە دەرەوەی ڕاستەقینەدا
+        sessionStorage.removeItem("student_session");
         window.location.reload();
     }
 </script>
