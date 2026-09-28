@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داتابەیسی خوێندکاران - زیندەزانی</title>
-    <!-- هێنانی کتێبخانەی کرۆپکردنی وێنە -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
@@ -99,7 +98,6 @@
 </head>
 <body>
 
-<!-- بەشی لۆگین -->
 <div class="container" id="login-section">
     <div class="header-logo">
         <img src="هەڵکەوت22@1.5x.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
@@ -125,16 +123,15 @@
     <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
-<!-- بەشی فۆرمی تۆمارکردنی سەرەتایی (بۆ یەکەمجار) لەگەڵ وێنە -->
 <div class="container hidden" id="register-section">
     <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
-    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (ئەمە تەنها بۆ یەکەمجارە):</p>
+    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
     
     <div style="text-align: center; margin-bottom: 15px;">
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0;">
     </div>
 
-    <label class="field-label">هەڵبژاردنی وێنە (لەگەلەری یان وێنە گرتن بە کامێرا):</label>
+    <label class="field-label">هەڵبژاردنی وێنە (لەگالێری یان گرتن بە کامێرا):</label>
     <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
@@ -156,11 +153,10 @@
     <label class="field-label">شوێنی نیشتەجێبوون:</label>
     <input type="text" id="reg-address" placeholder="سلێمانی - ...">
 
-    <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و چووەژوورەوە</button>
+    <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
     <p id="reg-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
-<!-- بەشی داشبۆردی سەرەکی خوێندکار -->
 <div class="container hidden" id="dashboard-section">
     
     <div class="profile-header">
@@ -260,7 +256,7 @@
     let currentGrade = "";
     let cropper = null;
     let finalCroppedImage = "";
-    let isRegisterPhoto = false; // بۆ جیاکردنەوەی وێنەی ڕێگستر و داشبۆرد
+    let isRegisterPhoto = false;
 
     window.onload = function() {
         const savedData = sessionStorage.getItem("student_session");
@@ -279,7 +275,7 @@
         const statusMsg = document.getElementById("status-msg");
         
         if(!currentUsername || !pass) {
-            alert("تکایە یوزەرنەیم و پاسۆرد بنوسە");
+            alert("تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە");
             return;
         }
 
@@ -293,6 +289,7 @@
                 data.grade = currentGrade;
                 data.username = currentUsername;
                 
+                // پشکنین: ئەگەر پێشتر ناوی تۆمار نەکردبوو، تەنها و تەنها لەو حاڵەتەدا فۆرمی خۆتۆمارکردن نیشان دەدەین
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
@@ -311,13 +308,11 @@
         });
     }
 
-    // گرتنی وێنە لە کاتی ڕێگستراشن
     document.getElementById("reg-input-photo").addEventListener("change", function(e) {
         isRegisterPhoto = true;
         handlePhotoSelection(e);
     });
 
-    // گرتنی وێنە لە کاتی داشبۆرد
     document.getElementById("input-photo").addEventListener("change", function(e) {
         isRegisterPhoto = false;
         handlePhotoSelection(e);
@@ -400,7 +395,7 @@
         .then(() => {
             setTimeout(() => {
                 loginAfterRegister(group, fullname, phone, address, finalCroppedImage);
-            }, 2000);
+            }, 2500);
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
@@ -508,7 +503,7 @@
             btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
             btn.disabled = false;
             msg.style.color = "var(--success)";
-            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران";
+            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
             
             const savedData = JSON.parse(sessionStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
