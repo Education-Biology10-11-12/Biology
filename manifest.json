@@ -1,7 +1,8 @@
 {
   "name": "داتابەیسی زیندەزانی - ئامادەیی هەڵکەوت",
   "short_name": "زیندەزانی هەڵکەوت",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0284c7",
   "theme_color": "#0284c7",
