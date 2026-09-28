@@ -20,7 +20,6 @@
             --bg-gradient: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --card-bg: #ffffff;
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
@@ -39,57 +38,74 @@
             box-sizing: border-box;
         }
 
+        /* دیزاینی گڵاسی (Glassmorphism) بۆ کارتە سەرەکییەکان */
         .container { 
             width: 100%; 
             max-width: 850px; 
-            background: var(--card-bg); 
-            padding: 35px 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            background: rgba(255, 255, 255, 0.92); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px 25px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             margin: auto; 
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .header-logo { text-align: center; margin-bottom: 15px; }
-        .header-logo img { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        .header-logo img { width: 105px; height: 105px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
         
         h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
         .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
         .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
 
-        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; }
-        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
-        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25); }
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35); }
+        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25); border-radius: 14px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35); }
         button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
         button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
         
         .hidden { display: none !important; }
         
-        .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+        /* سیستمی تابەکان (Tabs Navigation) */
+        .tabs-nav { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 20px; background: #e2e8f0; padding: 6px; border-radius: 16px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 14px; font-weight: bold; color: var(--text-muted); border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 20px; border-radius: 18px; margin-bottom: 15px; }
         .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
 
         .table-responsive { overflow-x: auto; margin-bottom: 15px; }
-        table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
-        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
         th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
         
-        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #e0f2fe; border-radius: 15px; }
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: rgba(224, 242, 254, 0.7); border-radius: 18px; border: 1px solid rgba(2, 132, 199, 0.2); }
         .profile-img { width: 75px; height: 75px; min-width: 75px; min-height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
         
-        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
-        .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
-        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
+        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: white; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.25); border-radius: 15px; }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(5px); border-radius: 18px; }
         
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 15px; }
-        .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; }
+        .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; }
+        .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; border-radius: 12px; }
         .img-container img { max-width: 100%; }
         .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
         .crop-btns button { margin: 0; }
@@ -98,6 +114,7 @@
 </head>
 <body>
 
+<!-- بەشی لۆگین -->
 <div class="container" id="login-section">
     <div class="header-logo">
         <img src="هەڵکەوت22@1.5x.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
@@ -123,15 +140,16 @@
     <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
+<!-- بەشی تۆمارکردنی سەرەتایی (یەکەمجار) -->
 <div class="container hidden" id="register-section">
     <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
     <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
     
     <div style="text-align: center; margin-bottom: 15px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0;">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <label class="field-label">هەڵبژاردنی وێنە (لەگالێری یان گرتن بە کامێرا):</label>
+    <label class="field-label">هەڵبژاردنی وێنە (گالێری یان کامێرا):</label>
     <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
@@ -157,6 +175,7 @@
     <p id="reg-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
+<!-- بەشی داشبۆردی سەرەکی خوێندکار (بە سیستمی تابەکان) -->
 <div class="container hidden" id="dashboard-section">
     
     <div class="profile-header">
@@ -171,59 +190,75 @@
         <div class="notification" id="notification-text"></div>
     </div>
 
-    <div class="card">
-        <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
-        
-        <label class="field-label">ژمارەی مۆبایل:</label>
-        <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
-        
-        <label class="field-label">شوێنی نیشتەجێبوون:</label>
-        <input type="text" id="input-address" placeholder="ناونیشان">
-        
-        <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
-        <input type="file" id="input-photo" accept="image/*" capture="user">
-        
-        <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
-        <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+    <!-- دوگمەکانی تابەکان (Tabs Navigation) -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
     </div>
 
-    <div class="card">
-        <h3>📊 نمرەکانی خوێندکار</h3>
-        
-        <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
-        <div class="table-responsive">
-            <table>
-                <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
-                <tr>
-                    <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
-                    <td id="s1-total" style="font-weight:bold; color:var(--primary);">-</td>
-                </tr>
-            </table>
-        </div>
+    <!-- تابی یەکەم: نمرەکان -->
+    <div id="tab-grades" class="tab-content active">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📊 نمرەکانی خوێندکار</h3>
+            
+            <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr>
+                        <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                        <td id="s1-total" style="font-weight:bold; color:var(--primary);">-</td>
+                    </tr>
+                </table>
+            </div>
 
-        <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
-        <div class="table-responsive">
-            <table>
-                <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
-                <tr>
-                    <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
-                    <td id="s2-total" style="font-weight:bold; color:var(--primary);">-</td>
-                </tr>
-            </table>
-        </div>
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr>
+                        <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                        <td id="s2-total" style="font-weight:bold; color:var(--primary);">-</td>
+                    </tr>
+                </table>
+            </div>
 
-        <div style="background: #e0f2fe; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
-            <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
-            <span id="final-total" style="font-size: 22px; font-weight: bold; color: var(--success);">-</span>
+            <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+                <span id="final-total" style="font-size: 22px; font-weight: bold; color: var(--success);">-</span>
+            </div>
         </div>
     </div>
 
-    <div class="card">
-        <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
-        <div id="materials-list"></div>
+    <!-- تابی دووەم: بابەتەکان و ڤیدیۆکان -->
+    <div id="tab-materials" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
+            <div id="materials-list"></div>
+        </div>
+    </div>
+
+    <!-- تابی سێیەم: نوێکردنەوەی زانیارییەکان -->
+    <div id="tab-settings" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+            
+            <label class="field-label">ژمارەی مۆبایل:</label>
+            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            
+            <label class="field-label">شوێنی نیشتەجێبوون:</label>
+            <input type="text" id="input-address" placeholder="ناونیشان">
+            
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+            <input type="file" id="input-photo" accept="image/*" capture="user">
+            
+            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
+            <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+        </div>
     </div>
     
-    <button class="btn-logout" onclick="logout()">دەرچوون</button>
+    <button class="btn-logout" onclick="logout()" style="margin-top: 25px;">دەرچوون</button>
 </div>
 
 <div class="system-footer hidden" id="footer-section">
@@ -266,6 +301,18 @@
             currentGrade = data.grade;
             renderDashboard(data);
         }
+
+        // چالاککردنی دوگمەی ئینتەر (Enter) لە خانەکانی لۆگیندا
+        document.getElementById("username").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
     };
 
     function login() {
@@ -289,7 +336,6 @@
                 data.grade = currentGrade;
                 data.username = currentUsername;
                 
-                // پشکنین: ئەگەر پێشتر ناوی تۆمار نەکردبوو، تەنها و تەنها لەو حاڵەتەدا فۆرمی خۆتۆمارکردن نیشان دەدەین
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
@@ -306,6 +352,15 @@
             statusMsg.style.color = "var(--danger)";
             statusMsg.innerText = "کێشەیەک هەیە لە پەیوەندی هێڵی ئینتەرنێت.";
         });
+    }
+
+    // سیستمی گۆڕینی تابەکان
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
     }
 
     document.getElementById("reg-input-photo").addEventListener("change", function(e) {
