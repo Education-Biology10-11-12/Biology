@@ -33,7 +33,7 @@
             background: var(--bg-gradient); 
             min-height: 100vh; 
             margin: 0; 
-            padding: 20px 15px; 
+            padding: 20px 10px; /* کەمکردنەوەی لێوارەکان بۆ ئەوەی لە مۆبایلدا پرێس نەبێت */
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -43,9 +43,9 @@
 
         .container { 
             width: 100%; 
-            max-width: 600px; 
+            max-width: 850px; /* فراوانکردنی سندوقەکە لە کۆمپیوتەردا بۆ ئەوەی باریک نەبێت */
             background: var(--card-bg); 
-            padding: 30px 20px; 
+            padding: 35px 30px; /* زیادکردنی بۆشایی ناوەوە بۆ جوانی زیاتر */
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             box-sizing: border-box; 
@@ -88,7 +88,7 @@
         .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 600px; background: rgba(0, 0, 0, 0.25); border-radius: 15px; }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.25); border-radius: 15px; }
         
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 15px; }
@@ -328,7 +328,6 @@
 
     function applyCrop() {
         if(!cropper) return;
-        // قەبارەی وێنە بچووک دەکرێتەوە بۆ ئەوەی کەمترین مەودا بگرێت (ژێر 20 کیلۆبایت)
         const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
         finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
         
