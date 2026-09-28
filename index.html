@@ -33,7 +33,7 @@
             background: var(--bg-gradient); 
             min-height: 100vh; 
             margin: 0; 
-            padding: 20px 10px; /* کەمکردنەوەی لێوارەکان بۆ ئەوەی لە مۆبایلدا پرێس نەبێت */
+            padding: 20px 10px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -43,9 +43,9 @@
 
         .container { 
             width: 100%; 
-            max-width: 850px; /* فراوانکردنی سندوقەکە لە کۆمپیوتەردا بۆ ئەوەی باریک نەبێت */
+            max-width: 850px; 
             background: var(--card-bg); 
-            padding: 35px 30px; /* زیادکردنی بۆشایی ناوەوە بۆ جوانی زیاتر */
+            padding: 35px 30px; 
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             box-sizing: border-box; 
@@ -82,7 +82,8 @@
         tr:last-child td { border-bottom: none; }
         
         .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #e0f2fe; border-radius: 15px; }
-        .profile-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
+        /* ڕێکخستنی وێنەی پرۆفایل بۆ ئەوەی هەرگیز لە مۆبایلدا شێوازی نەگۆڕێت و بازنەیی بمێنێت */
+        .profile-img { width: 75px; height: 75px; min-width: 75px; min-height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
         
         .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
         .material-link { padding: 8px 15px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: bold; }
@@ -256,7 +257,13 @@
                 
                 document.getElementById("input-phone").value = data.phone || "";
                 document.getElementById("input-address").value = data.address || "";
-                if(data.photo) document.getElementById("display-photo").src = data.photo;
+                
+                // دڵنیابوون لە نیشاندانی وێنەی خوێندکار لە کاتی لۆگین بوونەوەدا (ئەگەر لە شیتەکەدا هەبێت)
+                if(data.photo && data.photo.trim() !== "") {
+                    document.getElementById("display-photo").src = data.photo;
+                } else {
+                    document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                }
                 
                 document.getElementById("s1-10a").innerText = data.s1_10a;
                 document.getElementById("s1-20").innerText = data.s1_20;
