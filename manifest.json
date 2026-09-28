@@ -1,0 +1,15 @@
+{
+  "name": "داتابەیسی زیندەزانی - ئامادەیی هەڵکەوت",
+  "short_name": "زیندەزانی هەڵکەوت",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0284c7",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "هەڵکەوت22@1.5x.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
