@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داتابەیسی خوێندکاران - زیندەزانی</title>
+    <!-- هێنانی کتێبخانەی کرۆپکردنی وێنە -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
@@ -124,15 +125,22 @@
     <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
-<!-- بەشی فۆرمی تۆمارکردنی سەرەتایی (بۆ یەکەمجار) -->
+<!-- بەشی فۆرمی تۆمارکردنی سەرەتایی (بۆ یەکەمجار) لەگەڵ وێنە -->
 <div class="container hidden" id="register-section">
     <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
-    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە بە وردی پڕبکەرەوە (ئەمە تەنها بۆ یەکەمجارە):</p>
+    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (ئەمە تەنها بۆ یەکەمجارە):</p>
     
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0;">
+    </div>
+
+    <label class="field-label">هەڵبژاردنی وێنە (لەگالێری یان گرتن بە کامێرا):</label>
+    <input type="file" id="reg-input-photo" accept="image/*" capture="user">
+
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
     <input type="text" id="reg-fullname" placeholder="بۆ نموونە: ئاکام عومەر ئەحمەد">
     
-    <label class="field-label">گرووپی پۆل (اختیاری):</label>
+    <label class="field-label">گرووپی پۆلەکەت:</label>
     <select id="reg-group">
         <option value="Group A">Group A</option>
         <option value="Group B">Group B</option>
@@ -176,7 +184,7 @@
         <label class="field-label">شوێنی نیشتەجێبوون:</label>
         <input type="text" id="input-address" placeholder="ناونیشان">
         
-        <label class="field-label">هەڵبژاردن یان گرتنی وێنەی دەموچاو:</label>
+        <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
         <input type="file" id="input-photo" accept="image/*" capture="user">
         
         <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
@@ -234,7 +242,7 @@
 <div id="crop-modal" class="hidden">
     <div class="crop-container-box">
         <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
-        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە بۆ ئەوەی گونجاو بێت</p>
+        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە</p>
         <div class="img-container">
             <img id="image-to-crop" src="">
         </div>
@@ -252,6 +260,7 @@
     let currentGrade = "";
     let cropper = null;
     let finalCroppedImage = "";
+    let isRegisterPhoto = false; // بۆ جیاکردنەوەی وێنەی ڕێگستر و داشبۆرد
 
     window.onload = function() {
         const savedData = sessionStorage.getItem("student_session");
@@ -284,7 +293,6 @@
                 data.grade = currentGrade;
                 data.username = currentUsername;
                 
-                // پشکنین: ئایا ئەم خوێندکارە پێشتر ناوی تۆمار کردووە؟
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
@@ -303,9 +311,63 @@
         });
     }
 
+    // گرتنی وێنە لە کاتی ڕێگستراشن
+    document.getElementById("reg-input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = true;
+        handlePhotoSelection(e);
+    });
+
+    // گرتنی وێنە لە کاتی داشبۆرد
+    document.getElementById("input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = false;
+        handlePhotoSelection(e);
+    });
+
+    function handlePhotoSelection(e) {
+        const files = e.target.files;
+        if(files && files.length > 0) {
+            const url = URL.createObjectURL(files[0]);
+            const image = document.getElementById("image-to-crop");
+            image.src = url;
+            document.getElementById("crop-modal").classList.remove("hidden");
+            
+            if(cropper) { cropper.destroy(); }
+            cropper = new Cropper(image, {
+                aspectRatio: 3 / 4,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+            });
+        }
+    }
+
+    function cancelCrop() {
+        document.getElementById("crop-modal").classList.add("hidden");
+        document.getElementById("reg-input-photo").value = "";
+        document.getElementById("input-photo").value = "";
+        finalCroppedImage = "";
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
+    function applyCrop() {
+        if(!cropper) return;
+        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
+        
+        if (isRegisterPhoto) {
+            document.getElementById("reg-preview-photo").src = finalCroppedImage;
+        } else {
+            document.getElementById("display-photo").src = finalCroppedImage;
+        }
+
+        document.getElementById("crop-modal").classList.add("hidden");
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
     function submitRegistration() {
         const fullname = document.getElementById("reg-fullname").value.trim();
-        const group = document.getElementById("reg-group").value;
+        const groupSelect = document.getElementById("reg-group");
+        const group = groupSelect.options[groupSelect.selectedIndex].text.trim();
         const phone = document.getElementById("reg-phone").value.trim();
         const address = document.getElementById("reg-address").value.trim();
         const msg = document.getElementById("reg-msg");
@@ -316,7 +378,7 @@
         }
 
         msg.style.color = "var(--primary)";
-        msg.innerText = "چاوەڕێبە...";
+        msg.innerText = "چاوەڕێبە، داتاکان سەیڤ دەبن...";
 
         let payload = {
             action: "registerProfile",
@@ -325,7 +387,8 @@
             studentName: fullname,
             group: group,
             phone: phone,
-            address: address
+            address: address,
+            photo: finalCroppedImage
         };
 
         fetch(SCRIPT_URL, {
@@ -335,25 +398,30 @@
             body: JSON.stringify(payload)
         })
         .then(() => {
-            // دوای تۆمارکردن، زانیارییەکان دەبەین بۆ داشبۆرد
-            let sessionData = {
-                status: "success",
-                studentName: fullname,
-                groupName: group,
-                phone: phone,
-                address: address,
-                grade: currentGrade,
-                username: currentUsername,
-                s1_10a: "-", s1_20: "-", s1_10b: "-", s1_60: "-", season1: "-",
-                s2_10a: "-", s2_20: "-", s2_10b: "-", s2_60: "-", season2: "-",
-                finalGrade: "-"
-            };
-            sessionStorage.setItem("student_session", JSON.stringify(sessionData));
-            renderDashboard(sessionData);
+            setTimeout(() => {
+                loginAfterRegister(group, fullname, phone, address, finalCroppedImage);
+            }, 2000);
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
             msg.innerText = "کێشەیەک ڕویدا، دووبارە هەوڵ بدەرەوە.";
+        });
+    }
+
+    function loginAfterRegister(group, fullname, phone, address, photo) {
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(document.getElementById("password").value.trim()))
+        .then(res => res.json())
+        .then(data => {
+            data.grade = currentGrade;
+            data.username = currentUsername;
+            data.studentName = fullname;
+            data.groupName = group;
+            data.phone = phone;
+            data.address = address;
+            if(photo) data.photo = photo;
+            
+            sessionStorage.setItem("student_session", JSON.stringify(data));
+            renderDashboard(data);
         });
     }
 
@@ -409,41 +477,6 @@
         } else {
             materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
         }
-    }
-
-    document.getElementById("input-photo").addEventListener("change", function(e) {
-        const files = e.target.files;
-        if(files && files.length > 0) {
-            const url = URL.createObjectURL(files[0]);
-            const image = document.getElementById("image-to-crop");
-            image.src = url;
-            document.getElementById("crop-modal").classList.remove("hidden");
-            
-            if(cropper) { cropper.destroy(); }
-            cropper = new Cropper(image, {
-                aspectRatio: 3 / 4,
-                viewMode: 1,
-                dragMode: 'move',
-                autoCropArea: 1,
-            });
-        }
-    });
-
-    function cancelCrop() {
-        document.getElementById("crop-modal").classList.add("hidden");
-        document.getElementById("input-photo").value = "";
-        finalCroppedImage = "";
-        if(cropper) { cropper.destroy(); cropper = null; }
-    }
-
-    function applyCrop() {
-        if(!cropper) return;
-        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
-        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
-        
-        document.getElementById("display-photo").src = finalCroppedImage;
-        document.getElementById("crop-modal").classList.add("hidden");
-        if(cropper) { cropper.destroy(); cropper = null; }
     }
 
     function updateProfile() {
