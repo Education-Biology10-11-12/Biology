@@ -328,8 +328,9 @@
 
     function applyCrop() {
         if(!cropper) return;
-        const canvas = cropper.getCroppedCanvas({ width: 300, height: 400 });
-        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.8);
+        // قەبارەی وێنە بچووک دەکرێتەوە بۆ ئەوەی کەمترین مەودا بگرێت (ژێر 20 کیلۆبایت)
+        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
         
         document.getElementById("display-photo").src = finalCroppedImage;
         document.getElementById("crop-modal").classList.add("hidden");
