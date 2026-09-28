@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داتابەیسی خوێندکاران - زیندەزانی</title>
     
-    <!-- ڕێکخستنی PWA بۆ ئەوەی وەک ئەپ لەسەر مۆبایل ئینستاڵ ببێت -->
-    <link rel="manifest" href="manifest.json">
+    <!-- ڕێکخستنی مۆبایل و پڕۆفایلی ئەپ -->
+    <meta name="application-name" content="زیندەزانی هەڵکەوت">
+    <meta name="apple-mobile-web-app-title" content="زیندەزانی هەڵکەوت">
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="هەڵکەوت22@1.5x.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -107,7 +109,6 @@
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        /* دیزاینی گڵاسی و قەشەنگی پۆستەری خوارەوە لەگەڵ لۆگۆ */
         .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
 
@@ -263,7 +264,6 @@
     <button class="btn-logout" onclick="logout()" style="margin-top: 25px;">دەرچوون</button>
 </div>
 
-<!-- بەشی خوارەوە (Footer) لەگەڵ لۆگۆ و زانیارییەکان بە دیزاینی گڵاسی -->
 <div class="system-footer hidden" id="footer-section">
     <img src="هەڵکەوت22@1.5x.png" alt="لۆگۆ" class="footer-logo">
     <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
