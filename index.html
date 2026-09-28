@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
-        /* ناساندنی فۆنتە نوێیەکە */
         @font-face {
             font-family: 'GoranFont';
             src: url('GoranFontRegular-Regular.ttf') format('truetype');
@@ -82,7 +81,6 @@
         tr:last-child td { border-bottom: none; }
         
         .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: #e0f2fe; border-radius: 15px; }
-        /* ڕێکخستنی وێنەی پرۆفایل بۆ ئەوەی هەرگیز لە مۆبایلدا شێوازی نەگۆڕێت و بازنەیی بمێنێت */
         .profile-img { width: 75px; height: 75px; min-width: 75px; min-height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
         
         .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
@@ -228,6 +226,17 @@
     let cropper = null;
     let finalCroppedImage = "";
 
+    // پشکنین بۆ ئەوەی ئەگەر خوێندکار پێشتر لۆگین بووبێت، لە کاتی ڕیفرێشدا لە ئەکاونتەکەی دەرنەچێت
+    window.onload = function() {
+        const savedData = sessionStorage.getItem("student_session");
+        if(savedData) {
+            const data = JSON.parse(savedData);
+            currentUsername = data.username;
+            currentGrade = data.grade;
+            renderDashboard(data);
+        }
+    };
+
     function login() {
         currentGrade = document.getElementById("grade-level").value;
         currentUsername = document.getElementById("username").value.trim();
@@ -246,57 +255,12 @@
         .then(res => res.json())
         .then(data => {
             if(data.status === "success") {
-                document.getElementById("login-section").classList.add("hidden");
-                document.getElementById("dashboard-section").classList.remove("hidden");
-                document.getElementById("footer-section").classList.remove("hidden");
+                // پاشەکەوتکردنی زانیارییەکان لە SessionStorage تا لە کاتی ڕیفرێشدا نەسڕێنەوە
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                sessionStorage.setItem("student_session", JSON.stringify(data));
                 
-                let groupDisplay = data.groupName ? " - " + data.groupName : "";
-                document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
-                
-                document.getElementById("student-name").innerText = data.studentName;
-                
-                document.getElementById("input-phone").value = data.phone || "";
-                document.getElementById("input-address").value = data.address || "";
-                
-                // دڵنیابوون لە نیشاندانی وێنەی خوێندکار لە کاتی لۆگین بوونەوەدا (ئەگەر لە شیتەکەدا هەبێت)
-                if(data.photo && data.photo.trim() !== "") {
-                    document.getElementById("display-photo").src = data.photo;
-                } else {
-                    document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-                }
-                
-                document.getElementById("s1-10a").innerText = data.s1_10a;
-                document.getElementById("s1-20").innerText = data.s1_20;
-                document.getElementById("s1-10b").innerText = data.s1_10b;
-                document.getElementById("s1-60").innerText = data.s1_60;
-                document.getElementById("s1-total").innerText = data.season1;
-                
-                document.getElementById("s2-10a").innerText = data.s2_10a;
-                document.getElementById("s2-20").innerText = data.s2_20;
-                document.getElementById("s2-10b").innerText = data.s2_10b;
-                document.getElementById("s2-60").innerText = data.s2_60;
-                document.getElementById("s2-total").innerText = data.season2;
-                
-                document.getElementById("final-total").innerText = data.finalGrade;
-                
-                if(data.notification && data.notification !== "") {
-                    document.getElementById("notification-area").classList.remove("hidden");
-                    document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
-                }
-                
-                const materialsDiv = document.getElementById("materials-list");
-                materialsDiv.innerHTML = "";
-                if(data.materials && data.materials.length > 0) {
-                    data.materials.forEach(mat => {
-                        materialsDiv.innerHTML += `
-                        <div class="material-item">
-                            <b>${mat.title}</b>
-                            <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
-                        </div>`;
-                    });
-                } else {
-                    materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
-                }
+                renderDashboard(data);
             } else {
                 statusMsg.style.color = "var(--danger)";
                 statusMsg.innerText = "زانیارییەکان هەڵەن، تکایە دڵنیابەرەوە!";
@@ -306,6 +270,59 @@
             statusMsg.style.color = "var(--danger)";
             statusMsg.innerText = "کێشەیەک هەیە لە پەیوەندی هێڵی ئینتەرنێت.";
         });
+    }
+
+    function renderDashboard(data) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("dashboard-section").classList.remove("hidden");
+        document.getElementById("footer-section").classList.remove("hidden");
+        
+        let groupDisplay = data.groupName ? " - " + data.groupName : "";
+        document.getElementById("student-grade-display").innerText = "خوێندکاری پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
+        
+        document.getElementById("student-name").innerText = data.studentName;
+        
+        document.getElementById("input-phone").value = data.phone || "";
+        document.getElementById("input-address").value = data.address || "";
+        
+        if(data.photo && data.photo.trim() !== "") {
+            document.getElementById("display-photo").src = data.photo;
+        } else {
+            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        }
+        
+        document.getElementById("s1-10a").innerText = data.s1_10a;
+        document.getElementById("s1-20").innerText = data.s1_20;
+        document.getElementById("s1-10b").innerText = data.s1_10b;
+        document.getElementById("s1-60").innerText = data.s1_60;
+        document.getElementById("s1-total").innerText = data.season1;
+        
+        document.getElementById("s2-10a").innerText = data.s2_10a;
+        document.getElementById("s2-20").innerText = data.s2_20;
+        document.getElementById("s2-10b").innerText = data.s2_10b;
+        document.getElementById("s2-60").innerText = data.s2_60;
+        document.getElementById("s2-total").innerText = data.season2;
+        
+        document.getElementById("final-total").innerText = data.finalGrade;
+        
+        if(data.notification && data.notification !== "") {
+            document.getElementById("notification-area").classList.remove("hidden");
+            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
+        }
+        
+        const materialsDiv = document.getElementById("materials-list");
+        materialsDiv.innerHTML = "";
+        if(data.materials && data.materials.length > 0) {
+            data.materials.forEach(mat => {
+                materialsDiv.innerHTML += `
+                <div class="material-item">
+                    <b>${mat.title}</b>
+                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
+                </div>`;
+            });
+        } else {
+            materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
+        }
     }
 
     document.getElementById("input-photo").addEventListener("change", function(e) {
@@ -377,6 +394,16 @@
             btn.disabled = false;
             msg.style.color = "var(--success)";
             msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
+            
+            // نوێکردنەوەی SessionStorage بە تەلەفۆن و ناونیشان و وێنەی نوێ
+            const savedData = JSON.parse(sessionStorage.getItem("student_session") || "{}");
+            savedData.phone = payload.phone;
+            savedData.address = payload.address;
+            if(finalCroppedImage) {
+                savedData.photo = finalCroppedImage;
+            }
+            sessionStorage.setItem("student_session", JSON.stringify(savedData));
+
             finalCroppedImage = ""; 
         })
         .catch(err => {
@@ -388,6 +415,7 @@
     }
 
     function logout() {
+        sessionStorage.removeItem("student_session"); // پاککردنەوەی سشن لە کاتی دەچوونە دەرەوەی ڕاستەقینەدا
         window.location.reload();
     }
 </script>
