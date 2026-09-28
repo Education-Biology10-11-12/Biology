@@ -1,0 +1,16 @@
+{
+  "name": "داتابەیسی زیندەزانی - ئامادەیی هەڵکەوت",
+  "short_name": "زیندەزانی هەڵکەوت",
+  "start_url": "/Education-Biology10-11-12/",
+  "scope": "/Education-Biology10-11-12/",
+  "display": "standalone",
+  "background_color": "#0284c7",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "/Education-Biology10-11-12/هەڵکەوت22@1.5x.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
