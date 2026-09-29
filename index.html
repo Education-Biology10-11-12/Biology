@@ -115,6 +115,7 @@
         
         .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; }
@@ -238,7 +239,6 @@
                 <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
             </div>
 
-            <!-- دوگمەی نوێکردنەوە (بەدەست) -->
             <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
             <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
         </div>
@@ -276,7 +276,8 @@
     <img src="logo.png" alt="لۆگۆ" class="footer-logo">
     <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
     <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
-    <div style="font-size: 12px; opacity: 0.9;">مامۆستای زیندەزانی (10،11،12) | خاوەنی بڕوانامەی CCNA</div>
+    <div style="font-size: 13px; opacity: 0.9; margin: 4px 0;">مامۆستای زیندەزانی (10،11،12)</div>
+    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
     <div style="margin-top: 8px; direction: ltr; font-weight: bold;">07748134314 - 07501224994</div>
 </div>
 
@@ -315,11 +316,7 @@
             currentGrade = data.grade;
             currentPassword = savedPass;
             renderDashboard(data);
-            
-            // نوێکردنەوە لە کاتی لۆگینبوونی سەرەتایی
             refreshDataSilent();
-            
-            // دەستپێکردنی سیستمی ئۆتۆماتیکی (هەر ٥ چرکە جارێک)
             startAutoRefresh();
         }
 
@@ -373,7 +370,6 @@
         });
     }
 
-    // دوگمەی نوێکردنەوە (بەدەست)
     function refreshData() {
         const msg = document.getElementById("refresh-msg");
         msg.style.color = "var(--primary)";
@@ -401,7 +397,6 @@
         });
     }
 
-    // نوێکردنەوەی بێدەنگ لە پاشبنەما
     function refreshDataSilent() {
         if(!currentPassword) return;
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
@@ -416,7 +411,6 @@
         }).catch(err => {});
     }
 
-    // دەستپێکردنی نوێکردنەوەی خۆکارانە هەر ٥ چرکە جارێک
     function startAutoRefresh() {
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         autoRefreshTimer = setInterval(() => {
