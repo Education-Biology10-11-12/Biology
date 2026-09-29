@@ -70,6 +70,13 @@
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
+        /* کلاس بۆ دیاریکردنی خانەی هەڵە بە ڕەنگی سوور */
+        .input-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+            background: #fef2f2 !important;
+        }
+
         button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25); border-radius: 14px; }
         button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35); }
         button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
@@ -161,7 +168,6 @@
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <!-- تەنها هەڵبژاردنی وێنە بەبێ (گالێری یان کامێرا) -->
     <label class="field-label">هەڵبژاردنی وێنە:</label>
     <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
@@ -185,7 +191,7 @@
     <input type="text" id="reg-address" placeholder="سلێمانی - ...">
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
-    <p id="reg-msg" style="text-align:center; font-weight:bold; margin-top:10px;"></p>
+    <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
 </div>
 
 <div class="container hidden" id="dashboard-section">
@@ -551,6 +557,7 @@
         
         if (isRegisterPhoto) {
             document.getElementById("reg-preview-photo").src = finalCroppedImage;
+            document.getElementById("reg-preview-photo").classList.remove("input-error");
         } else {
             document.getElementById("display-photo").src = finalCroppedImage;
         }
@@ -560,24 +567,54 @@
     }
 
     function submitRegistration() {
-        const fullname = document.getElementById("reg-fullname").value.trim();
+        const photoImg = document.getElementById("reg-preview-photo");
+        const fullnameInput = document.getElementById("reg-fullname");
         const groupSelect = document.getElementById("reg-group");
-        const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
-        const phone = document.getElementById("reg-phone").value.trim();
-        const address = document.getElementById("reg-address").value.trim();
+        const phoneInput = document.getElementById("reg-phone");
+        const addressInput = document.getElementById("reg-address");
         const msg = document.getElementById("reg-msg");
 
-        // پشکنینی پڕکردنەوەی خانەکان
-        if(!fullname || !phone || !address) {
+        // لابردنی هێمای سووری پێشوو لەسەر هەموو خانەکان
+        photoImg.classList.remove("input-error");
+        fullnameInput.classList.remove("input-error");
+        groupSelect.classList.remove("input-error");
+        phoneInput.classList.remove("input-error");
+        addressInput.classList.remove("input-error");
+
+        const fullname = fullnameInput.value.trim();
+        const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
+        const phone = phoneInput.value.trim();
+        const address = addressInput.value.trim();
+
+        // پشکنینی خانە بە خانە بە ڕەنگکردنی چوارچێوەی خانەی بەتاڵ بە سوور
+        if(!finalCroppedImage) {
+            photoImg.classList.add("input-error");
             msg.style.color = "var(--danger)";
-            msg.innerText = "زانیارییەکان پڕبکەرەوە";
+            msg.innerText = "تکایە وێنە هەڵبژێرە";
             return;
         }
-
-        // پشکنینی ڕاستیی گرووپ
+        if(!fullname) {
+            fullnameInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە ناوی سیانی بنووسە";
+            return;
+        }
         if (correctGroup && selectedGroup !== correctGroup.trim()) {
+            groupSelect.classList.add("input-error");
             msg.style.color = "var(--danger)";
             msg.innerText = "تکایە گروپی خۆت بنووسە";
+            return;
+        }
+        if(!phone) {
+            phoneInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
+            return;
+        }
+        if(!address) {
+            addressInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە شوێنی نیشتەجێبوون بنووسە";
             return;
         }
 
