@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داتابەیسی خوێندکاران - زیندەزانی</title>
     
-    <!-- لینککردنی فایلی مانفیست بۆ ئینستاڵکردنی ئەپەکە -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
@@ -75,6 +74,7 @@
         button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35); }
         button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
         button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
+        button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 10px; font-size: 14px; padding: 10px; }
         
         .hidden { display: none !important; }
         
@@ -231,6 +231,10 @@
                 <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
                 <span id="final-total" style="font-size: 22px; font-weight: bold; color: var(--success);">-</span>
             </div>
+
+            <!-- دوگمەی نوێکردنەوە و داتا وەرگرتنی ڕاستەوخۆ -->
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوەی نمرەکان و زانیارییەکان</button>
+            <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
         </div>
     </div>
 
@@ -289,17 +293,25 @@
     
     let currentUsername = "";
     let currentGrade = "";
+    let currentPassword = "";
     let cropper = null;
     let finalCroppedImage = "";
     let isRegisterPhoto = false;
 
     window.onload = function() {
-        const savedData = sessionStorage.getItem("student_session");
-        if(savedData) {
+        // بەکارهێنانی localStorage بۆ ئەوەی لە کاتی بێخەتیدا داتاکان بمێننەوە
+        const savedData = localStorage.getItem("student_session");
+        const savedPass = localStorage.getItem("student_pass");
+        
+        if(savedData && savedPass) {
             const data = JSON.parse(savedData);
             currentUsername = data.username;
             currentGrade = data.grade;
+            currentPassword = savedPass;
             renderDashboard(data);
+            
+            // هەوڵدانی بەخۆڕسک بۆ نوێکردنەوەی داتاکان ئەگەر ئینتەرنێت هەبێت
+            refreshDataSilent();
         }
 
         document.getElementById("username").addEventListener("keypress", function(event) {
@@ -330,12 +342,14 @@
             if(data.status === "success") {
                 data.grade = currentGrade;
                 data.username = currentUsername;
+                currentPassword = pass;
                 
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
                 } else {
-                    sessionStorage.setItem("student_session", JSON.stringify(data));
+                    localStorage.setItem("student_session", JSON.stringify(data));
+                    localStorage.setItem("student_pass", pass);
                     renderDashboard(data);
                 }
             } else {
@@ -345,7 +359,52 @@
         })
         .catch(err => {
             statusMsg.style.color = "var(--danger)";
-            statusMsg.innerText = "کێشەیەک هەیە لە پەیوەندی هێڵی ئینتەرنێت.";
+            statusMsg.innerText = "کێشەی هێڵی ئینتەرنێت هەیە یان ئۆفلاینە.";
+        });
+    }
+
+    // نوێکردنەوەی نمرەکان بە کلیک لەسەر دوگمەی نوێکردنەوە
+    function refreshData() {
+        const msg = document.getElementById("refresh-msg");
+        msg.style.color = "var(--primary)";
+        msg.innerText = "دەگەڕێت بەدوای گۆڕانکارییەکاندا...";
+
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+                msg.style.color = "var(--success)";
+                msg.innerText = "نمرە و زانیارییەکان نوێ کرانەوە!";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "نوێکردنەوە سەرکەوتوو نەبوو.";
+            }
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "هیچ ئینتەرنێتێک نییە (داتای پاشەکەوتکراو پیشان دەدرێت).";
+        });
+    }
+
+    // نوێکردنەوەی بێدەنگ لە پاشبنەما کاتێک ئەپەکە دەکرێتەوە
+    function refreshDataSilent() {
+        if(!currentPassword) return;
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+            }
+        }).catch(err => {
+            // ئەگەر خەت نەبوو، هیچ نەکات و داتای کۆن لە localStorage بهێڵێتەوە
         });
     }
 
@@ -453,7 +512,8 @@
     }
 
     function loginAfterRegister(group, fullname, phone, address, photo) {
-        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(document.getElementById("password").value.trim()))
+        const pass = document.getElementById("password").value.trim();
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
         .then(data => {
             data.grade = currentGrade;
@@ -464,7 +524,9 @@
             data.address = address;
             if(photo) data.photo = photo;
             
-            sessionStorage.setItem("student_session", JSON.stringify(data));
+            currentPassword = pass;
+            localStorage.setItem("student_session", JSON.stringify(data));
+            localStorage.setItem("student_pass", pass);
             renderDashboard(data);
         });
     }
@@ -554,13 +616,13 @@
             msg.style.color = "var(--success)";
             msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
             
-            const savedData = JSON.parse(sessionStorage.getItem("student_session") || "{}");
+            const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
             savedData.address = payload.address;
             if(finalCroppedImage) {
                 savedData.photo = finalCroppedImage;
             }
-            sessionStorage.setItem("student_session", JSON.stringify(savedData));
+            localStorage.setItem("student_session", JSON.stringify(savedData));
             finalCroppedImage = ""; 
         })
         .catch(err => {
@@ -572,7 +634,8 @@
     }
 
     function logout() {
-        sessionStorage.removeItem("student_session");
+        localStorage.removeItem("student_session");
+        localStorage.removeItem("student_pass");
         window.location.reload();
     }
 </script>
