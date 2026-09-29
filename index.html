@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داتابەیسی خوێندکاران - زیندەزانی</title>
+    <title id="app-title">بەخێربێن</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0284c7">
@@ -133,10 +133,6 @@
     </style>
 </head>
 <body>
-
-<div id="offline-banner" style="display:none; position:fixed; top:0; left:0; width:100%; background:var(--danger); color:white; text-align:center; padding:10px; z-index:9999; font-weight:bold;">
-    تکایە هێڵی ئینتەرنێت بەکاربهێنە
-</div>
 
 <div class="container" id="login-section">
     <div class="header-logo">
@@ -345,11 +341,10 @@
     };
 
     function checkOnlineStatus() {
-        const banner = document.getElementById("offline-banner");
         if (!navigator.onLine) {
-            banner.style.display = "block";
+            document.getElementById("app-title").innerText = "تکایە هێڵی ئینتەرنێت بەکاربهێنە";
         } else {
-            banner.style.display = "none";
+            document.getElementById("app-title").innerText = "بەخێربێن";
         }
     }
 
