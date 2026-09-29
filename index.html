@@ -264,7 +264,7 @@
             <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
             <input type="file" id="input-photo" accept="image/*" capture="user">
             
-            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردنی زانیارییەکان</button>
+            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
             <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
         </div>
     </div>
@@ -366,7 +366,7 @@
         })
         .catch(err => {
             statusMsg.style.color = "var(--danger)";
-            statusMsg.innerText = "کێشەی هێڵی ئینتەرنێت هەیە یان ئۆفلاینە.";
+            statusMsg.innerText = "سەرکەوتوونەبوو";
         });
     }
 
@@ -384,16 +384,16 @@
                 localStorage.setItem("student_session", JSON.stringify(data));
                 renderDashboard(data);
                 msg.style.color = "var(--success)";
-                msg.innerText = "هەموو زانیاری و نمرەکان نوێ کرانەوە!";
+                msg.innerText = "سەرکەوتوبوو";
                 setTimeout(() => { msg.innerText = ""; }, 3000);
             } else {
                 msg.style.color = "var(--danger)";
-                msg.innerText = "نوێکردنەوە سەرکەوتوو نەبوو.";
+                msg.innerText = "سەرکەوتوونەبوو";
             }
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
-            msg.innerText = "هیچ ئینتەرنێتێک نییە (داتای پاشەکەوتکراو پیشان دەدرێت).";
+            msg.innerText = "سەرکەوتوونەبوو";
         });
     }
 
@@ -556,7 +556,7 @@
         }
 
         msg.style.color = "var(--primary)";
-        msg.innerText = "چاوەڕێبە، داتاکان سەیڤ دەبن...";
+        msg.innerText = "چاوەڕێبە...";
 
         let payload = {
             action: "registerProfile",
@@ -582,7 +582,7 @@
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
-            msg.innerText = "کێشەیەک ڕویدا، دووبارە هەوڵ بدەرەوە.";
+            msg.innerText = "سەرکەوتوونەبوو";
         });
     }
 
@@ -633,10 +633,10 @@
             body: JSON.stringify(payload)
         })
         .then(() => {
-            btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
+            btn.innerText = "پاشەکەوتکردن";
             btn.disabled = false;
             msg.style.color = "var(--success)";
-            msg.innerText = "زانیارییەکان بە سەرکەوتوویی پاشەکەوت کران!";
+            msg.innerText = "سەرکەوتوبوو";
             
             const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
@@ -646,12 +646,13 @@
             }
             localStorage.setItem("student_session", JSON.stringify(savedData));
             finalCroppedImage = ""; 
+            setTimeout(() => { msg.innerText = ""; }, 3000);
         })
         .catch(err => {
-            btn.innerText = "پاشەکەوتکردنی زانیارییەکان";
+            btn.innerText = "پاشەکەوتکردن";
             btn.disabled = false;
             msg.style.color = "var(--danger)";
-            msg.innerText = "کێشەی هێڵی ئینتەرنێت هەیە.";
+            msg.innerText = "سەرکەوتوونەبوو";
         });
     }
 
