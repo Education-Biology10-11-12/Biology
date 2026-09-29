@@ -59,8 +59,9 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        .header-logo { text-align: center; margin-bottom: 15px; }
+        .header-logo { text-align: center; margin-bottom: 5px; }
         .header-logo img { width: 105px; height: 105px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        .welcome-text { text-align: center; font-weight: bold; color: var(--primary); font-size: 16px; margin-bottom: 15px; }
         
         h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
         .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
@@ -70,7 +71,6 @@
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
-        /* کلاس بۆ دیاریکردنی خانەی هەڵە بە ڕەنگی سوور */
         .input-error {
             border-color: var(--danger) !important;
             box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
@@ -135,10 +135,16 @@
 </head>
 <body>
 
+<!-- بەشی پشکنینی ئینتەرنێت و دەرکەوتنی ئاگاداری ئۆفلاین -->
+<div id="offline-banner" style="display:none; position:fixed; top:0; left:0; width:100%; background:var(--danger); color:white; text-align:center; padding:10px; z-index:9999; font-weight:bold;">
+    تکایە هێڵی ئینتەرنێت بەکاربهێنە
+</div>
+
 <div class="container" id="login-section">
     <div class="header-logo">
         <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
     </div>
+    <div class="welcome-text">بەخێربێیت</div>
     
     <h2>داتابەیسی خوێندکاران</h2>
     <div class="subtitle-box">
@@ -315,6 +321,10 @@
     let autoRefreshTimer = null;
 
     window.onload = function() {
+        checkOnlineStatus();
+        window.addEventListener('online', checkOnlineStatus);
+        window.addEventListener('offline', checkOnlineStatus);
+
         const savedData = localStorage.getItem("student_session");
         const savedPass = localStorage.getItem("student_pass");
         
@@ -336,6 +346,15 @@
             if (event.key === "Enter") { login(); }
         });
     };
+
+    function checkOnlineStatus() {
+        const banner = document.getElementById("offline-banner");
+        if (!navigator.onLine) {
+            banner.style.display = "block";
+        } else {
+            banner.style.display = "none";
+        }
+    }
 
     function login() {
         currentGrade = document.getElementById("grade-level").value;
@@ -574,7 +593,6 @@
         const addressInput = document.getElementById("reg-address");
         const msg = document.getElementById("reg-msg");
 
-        // لابردنی هێمای سووری پێشوو لەسەر هەموو خانەکان
         photoImg.classList.remove("input-error");
         fullnameInput.classList.remove("input-error");
         groupSelect.classList.remove("input-error");
@@ -586,7 +604,6 @@
         const phone = phoneInput.value.trim();
         const address = addressInput.value.trim();
 
-        // پشکنینی خانە بە خانە بە ڕەنگکردنی چوارچێوەی خانەی بەتاڵ بە سوور
         if(!finalCroppedImage) {
             photoImg.classList.add("input-error");
             msg.style.color = "var(--danger)";
