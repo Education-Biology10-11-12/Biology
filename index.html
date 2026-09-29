@@ -78,6 +78,13 @@
         
         .hidden { display: none !important; }
         
+        /* کلاس برای نمرە کەوتووەکان (رەنگی سوور و هێڵی ژێرەوە) */
+        .failed-grade {
+            color: var(--danger) !important;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
         .tabs-nav { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 20px; background: #e2e8f0; padding: 6px; border-radius: 16px; }
         .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 14px; font-weight: bold; color: var(--text-muted); border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
@@ -211,7 +218,7 @@
                     <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
                     <tr>
                         <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
-                        <td id="s1-total" style="font-weight:bold; color:var(--primary);">-</td>
+                        <td id="s1-total" style="font-weight:bold;">-</td>
                     </tr>
                 </table>
             </div>
@@ -222,18 +229,17 @@
                     <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
                     <tr>
                         <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
-                        <td id="s2-total" style="font-weight:bold; color:var(--primary);">-</td>
+                        <td id="s2-total" style="font-weight:bold;">-</td>
                     </tr>
                 </table>
             </div>
 
             <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
                 <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
-                <span id="final-total" style="font-size: 22px; font-weight: bold; color: var(--success);">-</span>
+                <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
             </div>
 
-            <!-- دوگمەی نوێکردنەوە و داتا وەرگرتنی ڕاستەوخۆ -->
-            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوەی نمرەکان و زانیارییەکان</button>
             <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
         </div>
     </div>
@@ -299,7 +305,6 @@
     let isRegisterPhoto = false;
 
     window.onload = function() {
-        // بەکارهێنانی localStorage بۆ ئەوەی لە کاتی بێخەتیدا داتاکان بمێننەوە
         const savedData = localStorage.getItem("student_session");
         const savedPass = localStorage.getItem("student_pass");
         
@@ -309,8 +314,6 @@
             currentGrade = data.grade;
             currentPassword = savedPass;
             renderDashboard(data);
-            
-            // هەوڵدانی بەخۆڕسک بۆ نوێکردنەوەی داتاکان ئەگەر ئینتەرنێت هەبێت
             refreshDataSilent();
         }
 
@@ -363,7 +366,6 @@
         });
     }
 
-    // نوێکردنەوەی نمرەکان بە کلیک لەسەر دوگمەی نوێکردنەوە
     function refreshData() {
         const msg = document.getElementById("refresh-msg");
         msg.style.color = "var(--primary)";
@@ -391,7 +393,6 @@
         });
     }
 
-    // نوێکردنەوەی بێدەنگ لە پاشبنەما کاتێک ئەپەکە دەکرێتەوە
     function refreshDataSilent() {
         if(!currentPassword) return;
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
@@ -403,9 +404,76 @@
                 localStorage.setItem("student_session", JSON.stringify(data));
                 renderDashboard(data);
             }
-        }).catch(err => {
-            // ئەگەر خەت نەبوو، هیچ نەکات و داتای کۆن لە localStorage بهێڵێتەوە
-        });
+        }).catch(err => {});
+    }
+
+    // پشکنینی نمرە بۆ دیاریکردنی کەوتوو (کەمتر لە نیوەی نمرەکە)
+    function setGradeWithCheck(elementId, val, maxLimit) {
+        const el = document.getElementById(elementId);
+        let num = parseFloat(val);
+        el.innerText = (val !== "" && val !== null && val !== undefined) ? val : "-";
+        
+        el.classList.remove("failed-grade");
+        if (!isNaN(num) && num < (maxLimit / 2)) {
+            el.classList.add("failed-grade");
+        }
+    }
+
+    function renderDashboard(data) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("register-section").classList.add("hidden");
+        document.getElementById("dashboard-section").classList.remove("hidden");
+        document.getElementById("footer-section").classList.remove("hidden");
+        
+        let groupDisplay = data.groupName ? " - " + data.groupName : "";
+        document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
+        
+        document.getElementById("student-name").innerText = data.studentName;
+        
+        document.getElementById("input-phone").value = data.phone || "";
+        document.getElementById("input-address").value = data.address || "";
+        
+        if(data.photo && data.photo.trim() !== "") {
+            document.getElementById("display-photo").src = data.photo;
+        } else {
+            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        }
+        
+        // وەرزی یەکەم (مەرجەکان: ١٠، ٢٠، ١٠، ٦٠، کۆی گشتی ١٠٠)
+        setGradeWithCheck("s1-10a", data.s1_10a, 10);
+        setGradeWithCheck("s1-20", data.s1_20, 20);
+        setGradeWithCheck("s1-10b", data.s1_10b, 10);
+        setGradeWithCheck("s1-60", data.s1_60, 60);
+        setGradeWithCheck("s1-total", data.season1, 100);
+        
+        // وەرزی دووەم (مەرجەکان: ١٠، ٢٠، ١٠، ٦٠، کۆی گشتی ١٠٠)
+        setGradeWithCheck("s2-10a", data.s2_10a, 10);
+        setGradeWithCheck("s2-20", data.s2_20, 20);
+        setGradeWithCheck("s2-10b", data.s2_10b, 10);
+        setGradeWithCheck("s2-60", data.s2_60, 60);
+        setGradeWithCheck("s2-total", data.season2, 100);
+        
+        // تێکڕای کۆتایی ساڵ (لە ١٠٠)
+        setGradeWithCheck("final-total", data.finalGrade, 100);
+        
+        if(data.notification && data.notification !== "") {
+            document.getElementById("notification-area").classList.remove("hidden");
+            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
+        }
+        
+        const materialsDiv = document.getElementById("materials-list");
+        materialsDiv.innerHTML = "";
+        if(data.materials && data.materials.length > 0) {
+            data.materials.forEach(mat => {
+                materialsDiv.innerHTML += `
+                <div class="material-item">
+                    <b>${mat.title}</b>
+                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
+                </div>`;
+            });
+        } else {
+            materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
+        }
     }
 
     function switchTab(tabId) {
@@ -529,60 +597,6 @@
             localStorage.setItem("student_pass", pass);
             renderDashboard(data);
         });
-    }
-
-    function renderDashboard(data) {
-        document.getElementById("login-section").classList.add("hidden");
-        document.getElementById("register-section").classList.add("hidden");
-        document.getElementById("dashboard-section").classList.remove("hidden");
-        document.getElementById("footer-section").classList.remove("hidden");
-        
-        let groupDisplay = data.groupName ? " - " + data.groupName : "";
-        document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
-        
-        document.getElementById("student-name").innerText = data.studentName;
-        
-        document.getElementById("input-phone").value = data.phone || "";
-        document.getElementById("input-address").value = data.address || "";
-        
-        if(data.photo && data.photo.trim() !== "") {
-            document.getElementById("display-photo").src = data.photo;
-        } else {
-            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-        }
-        
-        document.getElementById("s1-10a").innerText = data.s1_10a;
-        document.getElementById("s1-20").innerText = data.s1_20;
-        document.getElementById("s1-10b").innerText = data.s1_10b;
-        document.getElementById("s1-60").innerText = data.s1_60;
-        document.getElementById("s1-total").innerText = data.season1;
-        
-        document.getElementById("s2-10a").innerText = data.s2_10a;
-        document.getElementById("s2-20").innerText = data.s2_20;
-        document.getElementById("s2-10b").innerText = data.s2_10b;
-        document.getElementById("s2-60").innerText = data.s2_60;
-        document.getElementById("s2-total").innerText = data.season2;
-        
-        document.getElementById("final-total").innerText = data.finalGrade;
-        
-        if(data.notification && data.notification !== "") {
-            document.getElementById("notification-area").classList.remove("hidden");
-            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
-        }
-        
-        const materialsDiv = document.getElementById("materials-list");
-        materialsDiv.innerHTML = "";
-        if(data.materials && data.materials.length > 0) {
-            data.materials.forEach(mat => {
-                materialsDiv.innerHTML += `
-                <div class="material-item">
-                    <b>${mat.title}</b>
-                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
-                </div>`;
-            });
-        } else {
-            materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
-        }
     }
 
     function updateProfile() {
