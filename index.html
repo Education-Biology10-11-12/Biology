@@ -314,10 +314,6 @@
     let autoRefreshTimer = null;
 
     window.onload = function() {
-        checkOnlineStatus();
-        window.addEventListener('online', checkOnlineStatus);
-        window.addEventListener('offline', checkOnlineStatus);
-
         const savedData = localStorage.getItem("student_session");
         const savedPass = localStorage.getItem("student_pass");
         
@@ -339,14 +335,6 @@
             if (event.key === "Enter") { login(); }
         });
     };
-
-    function checkOnlineStatus() {
-        if (!navigator.onLine) {
-            document.getElementById("app-title").innerText = "تکایە هێڵی ئینتەرنێت بەکاربهێنە";
-        } else {
-            document.getElementById("app-title").innerText = "بەخێربێن";
-        }
-    }
 
     function login() {
         currentGrade = document.getElementById("grade-level").value;
@@ -401,7 +389,7 @@
         })
         .catch(err => {
             statusMsg.style.color = "var(--danger)";
-            statusMsg.innerText = "سەرکەوتوونەبوو";
+            statusMsg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
         });
     }
 
@@ -424,12 +412,12 @@
                 setTimeout(() => { msg.innerText = ""; }, 3000);
             } else {
                 msg.style.color = "var(--danger)";
-                msg.innerText = "سەرکەوتوونەبوو";
+                msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
             }
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
-            msg.innerText = "سەرکەوتوونەبوو";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
         });
     }
 
@@ -659,7 +647,7 @@
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
-            msg.innerText = "سەرکەوتوونەبوو";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
         });
     }
 
@@ -729,7 +717,7 @@
             btn.innerText = "پاشەکەوتکردن";
             btn.disabled = false;
             msg.style.color = "var(--danger)";
-            msg.innerText = "سەرکەوتوونەبوو";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
         });
     }
 
