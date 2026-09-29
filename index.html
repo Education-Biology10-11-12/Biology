@@ -135,7 +135,6 @@
 </head>
 <body>
 
-<!-- بەشی پشکنینی ئینتەرنێت و دەرکەوتنی ئاگاداری ئۆفلاین -->
 <div id="offline-banner" style="display:none; position:fixed; top:0; left:0; width:100%; background:var(--danger); color:white; text-align:center; padding:10px; z-index:9999; font-weight:bold;">
     تکایە هێڵی ئینتەرنێت بەکاربهێنە
 </div>
@@ -159,7 +158,7 @@
         <option value="12">پۆلی ١٢ی زانستی</option>
     </select>
 
-    <input type="text" id="username" placeholder="یوزەرنەیم (کە مامۆستا پێیدایت)">
+    <input type="text" id="username" placeholder="یوزەر نەیم (مامۆستا گۆران بۆی دابینکردوون)">
     <input type="password" id="password" placeholder="پاسۆرد">
     
     <button onclick="login()">چوونەژوورەوە</button>
@@ -399,6 +398,9 @@
                     renderDashboard(data);
                     startAutoRefresh();
                 }
+            } else if(data.status === "wrong_grade") {
+                statusMsg.style.color = "var(--danger)";
+                statusMsg.innerText = "تکایە پۆلی خۆت هەڵبژێرە";
             } else {
                 statusMsg.style.color = "var(--danger)";
                 statusMsg.innerText = "یوزەرنەیم یان پاسۆرد هەڵەیە!";
