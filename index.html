@@ -161,7 +161,8 @@
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <label class="field-label">هەڵبژاردنی وێنە (گالێری یان کامێرا):</label>
+    <!-- تەنها هەڵبژاردنی وێنە بەبێ (گالێری یان کامێرا) -->
+    <label class="field-label">هەڵبژاردنی وێنە:</label>
     <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
@@ -184,7 +185,7 @@
     <input type="text" id="reg-address" placeholder="سلێمانی - ...">
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
-    <p id="reg-msg" style="text-align:center; font-weight:bold;"></p>
+    <p id="reg-msg" style="text-align:center; font-weight:bold; margin-top:10px;"></p>
 </div>
 
 <div class="container hidden" id="dashboard-section">
@@ -301,6 +302,7 @@
     let currentUsername = "";
     let currentGrade = "";
     let currentPassword = "";
+    let correctGroup = "";
     let cropper = null;
     let finalCroppedImage = "";
     let isRegisterPhoto = false;
@@ -315,6 +317,7 @@
             currentUsername = data.username;
             currentGrade = data.grade;
             currentPassword = savedPass;
+            correctGroup = data.groupName || "";
             renderDashboard(data);
             refreshDataSilent();
             startAutoRefresh();
@@ -335,7 +338,8 @@
         const statusMsg = document.getElementById("status-msg");
         
         if(!currentUsername || !pass) {
-            alert("تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە");
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە";
             return;
         }
 
@@ -349,7 +353,18 @@
                 data.grade = currentGrade;
                 data.username = currentUsername;
                 currentPassword = pass;
+                correctGroup = data.groupName || "";
                 
+                if(data.groupName) {
+                    const groupSelect = document.getElementById("reg-group");
+                    for (let i = 0; i < groupSelect.options.length; i++) {
+                        if (groupSelect.options[i].text.trim() === data.groupName.trim()) {
+                            groupSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
@@ -381,6 +396,7 @@
             if(data.status === "success") {
                 data.grade = currentGrade;
                 data.username = currentUsername;
+                correctGroup = data.groupName || "";
                 localStorage.setItem("student_session", JSON.stringify(data));
                 renderDashboard(data);
                 msg.style.color = "var(--success)";
@@ -405,6 +421,7 @@
             if(data.status === "success") {
                 data.grade = currentGrade;
                 data.username = currentUsername;
+                correctGroup = data.groupName || "";
                 localStorage.setItem("student_session", JSON.stringify(data));
                 renderDashboard(data);
             }
@@ -545,13 +562,22 @@
     function submitRegistration() {
         const fullname = document.getElementById("reg-fullname").value.trim();
         const groupSelect = document.getElementById("reg-group");
-        const group = groupSelect.options[groupSelect.selectedIndex].text.trim();
+        const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
         const phone = document.getElementById("reg-phone").value.trim();
         const address = document.getElementById("reg-address").value.trim();
         const msg = document.getElementById("reg-msg");
 
+        // پشکنینی پڕکردنەوەی خانەکان
         if(!fullname || !phone || !address) {
-            alert("تکایە هەموو خانەکان پڕبکەرەوە");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "زانیارییەکان پڕبکەرەوە";
+            return;
+        }
+
+        // پشکنینی ڕاستیی گرووپ
+        if (correctGroup && selectedGroup !== correctGroup.trim()) {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە گروپی خۆت بنووسە";
             return;
         }
 
@@ -563,7 +589,7 @@
             grade: currentGrade,
             username: currentUsername,
             studentName: fullname,
-            group: group,
+            group: selectedGroup,
             phone: phone,
             address: address,
             photo: finalCroppedImage
@@ -576,9 +602,11 @@
             body: JSON.stringify(payload)
         })
         .then(() => {
+            msg.style.color = "var(--success)";
+            msg.innerText = "سەرکەوتوبوو";
             setTimeout(() => {
-                loginAfterRegister(group, fullname, phone, address, finalCroppedImage);
-            }, 2500);
+                loginAfterRegister(selectedGroup, fullname, phone, address, finalCroppedImage);
+            }, 1500);
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
