@@ -78,7 +78,6 @@
         
         .hidden { display: none !important; }
         
-        /* کلاس برای نمرە کەوتووەکان (رەنگی سوور و هێڵی ژێرەوە) */
         .failed-grade {
             color: var(--danger) !important;
             text-decoration: underline;
@@ -239,7 +238,8 @@
                 <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
             </div>
 
-            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوەی نمرەکان و زانیارییەکان</button>
+            <!-- دوگمەی نوێکردنەوە (بەدەست) -->
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
             <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
         </div>
     </div>
@@ -303,6 +303,7 @@
     let cropper = null;
     let finalCroppedImage = "";
     let isRegisterPhoto = false;
+    let autoRefreshTimer = null;
 
     window.onload = function() {
         const savedData = localStorage.getItem("student_session");
@@ -314,7 +315,12 @@
             currentGrade = data.grade;
             currentPassword = savedPass;
             renderDashboard(data);
+            
+            // نوێکردنەوە لە کاتی لۆگینبوونی سەرەتایی
             refreshDataSilent();
+            
+            // دەستپێکردنی سیستمی ئۆتۆماتیکی (هەر ٥ چرکە جارێک)
+            startAutoRefresh();
         }
 
         document.getElementById("username").addEventListener("keypress", function(event) {
@@ -354,6 +360,7 @@
                     localStorage.setItem("student_session", JSON.stringify(data));
                     localStorage.setItem("student_pass", pass);
                     renderDashboard(data);
+                    startAutoRefresh();
                 }
             } else {
                 statusMsg.style.color = "var(--danger)";
@@ -366,6 +373,7 @@
         });
     }
 
+    // دوگمەی نوێکردنەوە (بەدەست)
     function refreshData() {
         const msg = document.getElementById("refresh-msg");
         msg.style.color = "var(--primary)";
@@ -380,7 +388,7 @@
                 localStorage.setItem("student_session", JSON.stringify(data));
                 renderDashboard(data);
                 msg.style.color = "var(--success)";
-                msg.innerText = "نمرە و زانیارییەکان نوێ کرانەوە!";
+                msg.innerText = "هەموو زانیاری و نمرەکان نوێ کرانەوە!";
                 setTimeout(() => { msg.innerText = ""; }, 3000);
             } else {
                 msg.style.color = "var(--danger)";
@@ -393,6 +401,7 @@
         });
     }
 
+    // نوێکردنەوەی بێدەنگ لە پاشبنەما
     function refreshDataSilent() {
         if(!currentPassword) return;
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
@@ -407,7 +416,14 @@
         }).catch(err => {});
     }
 
-    // پشکنینی نمرە بۆ دیاریکردنی کەوتوو (کەمتر لە نیوەی نمرەکە)
+    // دەستپێکردنی نوێکردنەوەی خۆکارانە هەر ٥ چرکە جارێک
+    function startAutoRefresh() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        autoRefreshTimer = setInterval(() => {
+            refreshDataSilent();
+        }, 5000);
+    }
+
     function setGradeWithCheck(elementId, val, maxLimit) {
         const el = document.getElementById(elementId);
         let num = parseFloat(val);
@@ -439,21 +455,18 @@
             document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         }
         
-        // وەرزی یەکەم (مەرجەکان: ١٠، ٢٠، ١٠، ٦٠، کۆی گشتی ١٠٠)
         setGradeWithCheck("s1-10a", data.s1_10a, 10);
         setGradeWithCheck("s1-20", data.s1_20, 20);
         setGradeWithCheck("s1-10b", data.s1_10b, 10);
         setGradeWithCheck("s1-60", data.s1_60, 60);
         setGradeWithCheck("s1-total", data.season1, 100);
         
-        // وەرزی دووەم (مەرجەکان: ١٠، ٢٠، ١٠، ٦٠، کۆی گشتی ١٠٠)
         setGradeWithCheck("s2-10a", data.s2_10a, 10);
         setGradeWithCheck("s2-20", data.s2_20, 20);
         setGradeWithCheck("s2-10b", data.s2_10b, 10);
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
         
-        // تێکڕای کۆتایی ساڵ (لە ١٠٠)
         setGradeWithCheck("final-total", data.finalGrade, 100);
         
         if(data.notification && data.notification !== "") {
@@ -596,6 +609,7 @@
             localStorage.setItem("student_session", JSON.stringify(data));
             localStorage.setItem("student_pass", pass);
             renderDashboard(data);
+            startAutoRefresh();
         });
     }
 
@@ -648,6 +662,7 @@
     }
 
     function logout() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         localStorage.removeItem("student_session");
         localStorage.removeItem("student_pass");
         window.location.reload();
