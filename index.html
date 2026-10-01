@@ -46,10 +46,12 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: flex-start; /* گۆڕدرا بۆ ئەوەی سکرۆڵ لە سەرەوە دەست پێبکات */
             padding: 15px; 
             color: var(--text-main); 
             box-sizing: border-box;
+            overflow-y: auto; /* زیادکردنی سکرۆڵی ستوونی گشتی بۆ پەڕەکە */
+            overflow-x: hidden;
         }
 
         .container { 
@@ -63,7 +65,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
-            margin: auto;
+            margin: 20px auto; /* ڕێکخستنی مەرجینی سەرەوە و خوارەوە بۆ ئەوەی نەقرتێت */
         }
 
         @media (min-width: 768px) {
@@ -642,102 +644,71 @@
         document.getElementById("crop-modal").classList.add("hidden");
         document.getElementById("reg-input-photo").value = "";
         document.getElementById("input-photo").value = "";
-        finalCroppedImage = "";
-        if(cropper) { cropper.destroy(); cropper = null; }
+        if(cropper) { cropper.destroy(); }
     }
 
     function applyCrop() {
         if(!cropper) return;
-        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
-        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 400
+        });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.85);
         
-        if (isRegisterPhoto) {
+        document.getElementById("crop-modal").classList.add("hidden");
+        
+        if(isRegisterPhoto) {
             document.getElementById("reg-preview-photo").src = finalCroppedImage;
-            document.getElementById("reg-preview-photo").classList.remove("input-error");
         } else {
             document.getElementById("display-photo").src = finalCroppedImage;
         }
-
-        document.getElementById("crop-modal").classList.add("hidden");
-        if(cropper) { cropper.destroy(); cropper = null; }
+        if(cropper) { cropper.destroy(); }
     }
 
     function submitRegistration() {
-        const photoImg = document.getElementById("reg-preview-photo");
-        const fullnameInput = document.getElementById("reg-fullname");
-        const groupSelect = document.getElementById("reg-group");
-        const oldSchoolInput = document.getElementById("reg-oldschool");
-        const phoneInput = document.getElementById("reg-phone");
+        const fullname = document.getElementById("reg-fullname").value.trim();
+        const group = document.getElementById("reg-group").value;
+        const oldschool = document.getElementById("reg-oldschool").value.trim();
+        const phone = document.getElementById("reg-phone").value.trim();
         const msg = document.getElementById("reg-msg");
 
-        photoImg.classList.remove("input-error");
-        fullnameInput.classList.remove("input-error");
-        groupSelect.classList.remove("input-error");
-        oldSchoolInput.classList.remove("input-error");
-        phoneInput.classList.remove("input-error");
-
-        const fullname = fullnameInput.value.trim();
-        const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
-        const oldSchool = oldSchoolInput.value.trim();
-        const phone = phoneInput.value.trim();
-
-        if(!finalCroppedImage) {
-            photoImg.classList.add("input-error");
+        if(!fullname || !oldschool || !phone) {
             msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە وێنە هەڵبژێرە";
-            return;
-        }
-        if(!fullname) {
-            fullnameInput.classList.add("input-error");
-            msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە ناوی سیانی بنووسە";
-            return;
-        }
-        if (correctGroup && selectedGroup !== correctGroup.trim()) {
-            groupSelect.classList.add("input-error");
-            msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە گروپی خۆت بنووسە";
-            return;
-        }
-        if(!oldSchool) {
-            oldSchoolInput.classList.add("input-error");
-            msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە ناوی قوتابخانەی پێشووی پۆلی ٩ بنووسە";
-            return;
-        }
-        if(!phone) {
-            phoneInput.classList.add("input-error");
-            msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
+            msg.innerText = "تکایە هەموو خانه پڕبکەرەوە";
             return;
         }
 
         msg.style.color = "var(--primary)";
-        msg.innerText = "چاوەڕێبە...";
+        msg.innerText = "تۆمار دەکرێت، چاوەڕێ بکە...";
 
-        let payload = {
+        const payload = {
             action: "registerProfile",
             grade: currentGrade,
             username: currentUsername,
+            password: currentPassword,
             studentName: fullname,
-            group: selectedGroup,
-            oldSchool: oldSchool,
+            group: group,
+            oldSchool: oldschool,
             phone: phone,
             photo: finalCroppedImage
         };
 
         fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
+            method: "POST",
             body: JSON.stringify(payload)
         })
-        .then(() => {
-            msg.style.color = "var(--success)";
-            msg.innerText = "سەرکەوتوبوو";
-            setTimeout(() => {
-                loginAfterRegister(selectedGroup, fullname, oldSchool, phone, finalCroppedImage);
-            }, 1500);
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                msg.style.color = "var(--success)";
+                msg.innerText = "سەرکەوتووبوو! دەگوازرێیتەوە...";
+                setTimeout(() => {
+                    login();
+                }, 1500);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "هەڵە ڕوویدا، دووبارە هەوڵ بدەرەوە";
+            }
         })
         .catch(err => {
             msg.style.color = "var(--danger)";
@@ -745,71 +716,41 @@
         });
     }
 
-    function loginAfterRegister(group, fullname, oldSchool, phone, photo) {
-        const pass = document.getElementById("password").value.trim();
-        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
-        .then(res => res.json())
-        .then(data => {
-            data.grade = currentGrade;
-            data.username = currentUsername;
-            data.studentName = fullname;
-            data.groupName = group;
-            data.oldSchool = oldSchool;
-            data.phone = phone;
-            if(photo) data.photo = photo;
-            
-            currentPassword = pass;
-            localStorage.setItem("student_session", JSON.stringify(data));
-            localStorage.setItem("student_pass", pass);
-            renderDashboard(data);
-            startAutoRefresh();
-        });
-    }
-
     function updateProfile() {
-        const oldSchool = document.getElementById("input-oldschool").value.trim();
+        const oldschool = document.getElementById("input-oldschool").value.trim();
         const phone = document.getElementById("input-phone").value.trim();
-        const btn = document.getElementById("btn-update");
         const msg = document.getElementById("update-msg");
-        
-        btn.innerText = "چاوەڕێبە...";
-        btn.disabled = true;
-        msg.innerText = "";
-        
-        let payload = {
+
+        msg.style.color = "var(--primary)";
+        msg.innerText = "پاشەکەوت دەکرێت...";
+
+        const payload = {
             action: "updateProfile",
             grade: currentGrade,
             username: currentUsername,
-            oldSchool: oldSchool,
+            password: currentPassword,
+            oldSchool: oldschool,
             phone: phone,
             photo: finalCroppedImage
         };
 
         fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
+            method: "POST",
             body: JSON.stringify(payload)
         })
-        .then(() => {
-            btn.innerText = "پاشەکەوتکردن";
-            btn.disabled = false;
-            msg.style.color = "var(--success)";
-            msg.innerText = "سەرکەوتوبوو";
-            
-            const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
-            savedData.oldSchool = payload.oldSchool;
-            savedData.phone = payload.phone;
-            if(finalCroppedImage) {
-                savedData.photo = finalCroppedImage;
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                msg.style.color = "var(--success)";
+                msg.innerText = "بە سەرکەوتوویی پاشەکەوت کرا";
+                refreshData();
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "هەڵە ڕوویدا";
             }
-            localStorage.setItem("student_session", JSON.stringify(savedData));
-            finalCroppedImage = ""; 
-            setTimeout(() => { msg.innerText = ""; }, 3000);
         })
         .catch(err => {
-            btn.innerText = "پاشەکەوتکردن";
-            btn.disabled = false;
             msg.style.color = "var(--danger)";
             msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
         });
@@ -819,9 +760,21 @@
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         localStorage.removeItem("student_session");
         localStorage.removeItem("student_pass");
-        window.location.reload();
+        currentUsername = "";
+        currentGrade = "";
+        currentPassword = "";
+        correctGroup = "";
+        finalCroppedImage = "";
+        
+        document.getElementById("dashboard-section").classList.add("hidden");
+        document.getElementById("footer-section").classList.add("hidden");
+        document.getElementById("register-section").classList.add("hidden");
+        document.getElementById("login-section").classList.remove("hidden");
+        
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("status-msg").innerText = "";
     }
 </script>
-
 </body>
 </html>
