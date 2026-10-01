@@ -47,37 +47,35 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            padding: 15px; 
+            padding: 20px 10px; 
             color: var(--text-main); 
             box-sizing: border-box;
         }
 
         .container { 
             width: 100%; 
-            max-width: 850px; 
-            min-height: 520px; /* زیادکردنی بەرزی و قەبارەی باکگراوندە سپییەکە بۆ ئەوەی خوارەوەی پڕ بکاتەوە */
+            max-width: 550px; /* گەڕاندنەوەی قەبارەی ڕێکوپێکی کۆمپیوتەر بۆ ئەوەی زۆر پان نەبێتەوە */
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 35px 25px; /* زیادکردنی بۆشایی ناوەوەی کارتەکە */
+            padding: 30px 25px; 
             border-radius: 24px; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            margin: auto;
         }
 
         .header-logo { text-align: center; margin-bottom: 15px; }
         .header-logo img { width: 105px; height: 105px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
         
-        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
         .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
         .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
 
-        input, select, button { width: 100%; padding: 13px; margin: 10px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        select { font-family: 'GoranFont', Tahoma, sans-serif; } /* دڵنیابوونەوە لەوەی فۆنتەکە بۆ هەڵبژاردنی پۆل بەکاربێت */
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
         .input-error {
@@ -117,7 +115,7 @@
 
         .table-responsive { overflow-x: auto; margin-bottom: 15px; }
         table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
-        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
         th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
@@ -129,8 +127,8 @@
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 25px; margin-bottom: 15px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .footer-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 8px; }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -191,7 +189,11 @@
         <option value="Group D">Group D</option>
         <option value="Group E">Group E</option>
         <option value="Group F">Group F</option>
+        <option value="Group G">Group G</option>
     </select>
+
+    <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+    <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پێشووی پۆلی ٩">
 
     <label class="field-label">ژمارەی مۆبایل:</label>
     <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
@@ -238,6 +240,10 @@
                     </tr>
                 </table>
             </div>
+            <!-- خولی دووەمی وەرزی یەکەم -->
+            <div id="s1-second-chance" class="hidden" style="margin-top: 8px; font-size: 13px; color: var(--danger); font-weight: bold;">
+                ⚠️️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
+            </div>
 
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
             <div class="table-responsive">
@@ -248,6 +254,10 @@
                         <td id="s2-total" style="font-weight:bold;">-</td>
                     </tr>
                 </table>
+            </div>
+            <!-- خولی دووەمی وەرزی دووەم -->
+            <div id="s2-second-chance" class="hidden" style="margin-top: 8px; font-size: 13px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
             </div>
 
             <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
@@ -271,6 +281,9 @@
         <div class="card" style="margin-bottom: 0;">
             <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
             
+            <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+            <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+
             <label class="field-label">ژمارەی مۆبایل:</label>
             <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
             
@@ -487,6 +500,7 @@
         
         document.getElementById("student-name").innerText = data.studentName;
         
+        document.getElementById("input-oldschool").value = data.oldSchool || "";
         document.getElementById("input-phone").value = data.phone || "";
         document.getElementById("input-address").value = data.address || "";
         
@@ -501,12 +515,28 @@
         setGradeWithCheck("s1-10b", data.s1_10b, 10);
         setGradeWithCheck("s1-60", data.s1_60, 60);
         setGradeWithCheck("s1-total", data.season1, 100);
+
+        // پشکنینی خولی دووەمی وەرزی یەکەم
+        if (data.s1_second && data.s1_second.trim() !== "" && data.s1_second !== "-") {
+            document.getElementById("s1-second-chance").classList.remove("hidden");
+            document.getElementById("s1-second-chance").innerText = "⚠️ خولی دووەمی وەرزی یەکەم: " + data.s1_second;
+        } else {
+            document.getElementById("s1-second-chance").classList.add("hidden");
+        }
         
         setGradeWithCheck("s2-10a", data.s2_10a, 10);
         setGradeWithCheck("s2-20", data.s2_20, 20);
         setGradeWithCheck("s2-10b", data.s2_10b, 10);
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
+
+        // پشکنینی خولی دووەمی وەرزی دووەم
+        if (data.s2_second && data.s2_second.trim() !== "" && data.s2_second !== "-") {
+            document.getElementById("s2-second-chance").classList.remove("hidden");
+            document.getElementById("s2-second-chance").innerText = "⚠️ خولی دووەمی وەرزی دووەم: " + data.s2_second;
+        } else {
+            document.getElementById("s2-second-chance").classList.add("hidden");
+        }
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
         
@@ -594,6 +624,7 @@
         const photoImg = document.getElementById("reg-preview-photo");
         const fullnameInput = document.getElementById("reg-fullname");
         const groupSelect = document.getElementById("reg-group");
+        const oldSchoolInput = document.getElementById("reg-oldschool");
         const phoneInput = document.getElementById("reg-phone");
         const addressInput = document.getElementById("reg-address");
         const msg = document.getElementById("reg-msg");
@@ -601,11 +632,13 @@
         photoImg.classList.remove("input-error");
         fullnameInput.classList.remove("input-error");
         groupSelect.classList.remove("input-error");
+        oldSchoolInput.classList.remove("input-error");
         phoneInput.classList.remove("input-error");
         addressInput.classList.remove("input-error");
 
         const fullname = fullnameInput.value.trim();
         const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
+        const oldSchool = oldSchoolInput.value.trim();
         const phone = phoneInput.value.trim();
         const address = addressInput.value.trim();
 
@@ -625,6 +658,12 @@
             groupSelect.classList.add("input-error");
             msg.style.color = "var(--danger)";
             msg.innerText = "تکایە گروپی خۆت بنووسە";
+            return;
+        }
+        if(!oldSchool) {
+            oldSchoolInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە ناوی قوتابخانەی پێشووی پۆلی ٩ بنووسە";
             return;
         }
         if(!phone) {
@@ -649,6 +688,7 @@
             username: currentUsername,
             studentName: fullname,
             group: selectedGroup,
+            oldSchool: oldSchool,
             phone: phone,
             address: address,
             photo: finalCroppedImage
@@ -664,7 +704,7 @@
             msg.style.color = "var(--success)";
             msg.innerText = "سەرکەوتوبوو";
             setTimeout(() => {
-                loginAfterRegister(selectedGroup, fullname, phone, address, finalCroppedImage);
+                loginAfterRegister(selectedGroup, fullname, oldSchool, phone, address, finalCroppedImage);
             }, 1500);
         })
         .catch(err => {
@@ -673,7 +713,7 @@
         });
     }
 
-    function loginAfterRegister(group, fullname, phone, address, photo) {
+    function loginAfterRegister(group, fullname, oldSchool, phone, address, photo) {
         const pass = document.getElementById("password").value.trim();
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
@@ -682,6 +722,7 @@
             data.username = currentUsername;
             data.studentName = fullname;
             data.groupName = group;
+            data.oldSchool = oldSchool;
             data.phone = phone;
             data.address = address;
             if(photo) data.photo = photo;
@@ -695,6 +736,7 @@
     }
 
     function updateProfile() {
+        const oldSchool = document.getElementById("input-oldschool").value.trim();
         const phone = document.getElementById("input-phone").value.trim();
         const address = document.getElementById("input-address").value.trim();
         const btn = document.getElementById("btn-update");
@@ -708,6 +750,7 @@
             action: "updateProfile",
             grade: currentGrade,
             username: currentUsername,
+            oldSchool: oldSchool,
             phone: phone,
             address: address,
             photo: finalCroppedImage
@@ -726,6 +769,7 @@
             msg.innerText = "سەرکەوتوبوو";
             
             const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
+            savedData.oldSchool = payload.oldSchool;
             savedData.phone = payload.phone;
             savedData.address = payload.address;
             if(finalCroppedImage) {
