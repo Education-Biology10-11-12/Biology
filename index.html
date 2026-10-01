@@ -47,7 +47,7 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: flex-start; 
-            padding: 10px; 
+            padding: 15px 10px; 
             color: var(--text-main); 
             box-sizing: border-box;
             overflow-y: auto; 
@@ -60,7 +60,7 @@
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 20px 15px; 
+            padding: 22px 18px; 
             border-radius: 20px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
@@ -71,23 +71,8 @@
         @media (min-width: 768px) {
             .container {
                 max-width: 800px;
-                padding: 30px;
+                padding: 35px;
             }
-        }
-
-        #dashboard-section {
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #dashboard-scrollable-content {
-            overflow-y: auto;
-            overflow-x: hidden;
-            flex-grow: 1;
-            padding: 2px;
-            max-height: calc(90vh - 150px);
-            -webkit-overflow-scrolling: touch;
         }
 
         .header-logo { text-align: center; margin-bottom: 10px; }
@@ -110,7 +95,7 @@
 
         button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 10px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); border-radius: 12px; padding: 11px; }
         button:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35); }
-        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); margin-top: 12px; margin-bottom: 0; }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); margin-top: 15px; margin-bottom: 0; }
         button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
         button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 8px; font-size: 13px; padding: 8px; }
         
@@ -151,7 +136,7 @@
         .material-link { padding: 6px 14px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 10px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: bold; border-right: 4px solid var(--danger); font-size: 12px; }
         
-        .system-footer { margin-top: 15px; margin-bottom: 10px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 520px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .system-footer { margin-top: 15px; margin-bottom: 15px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 520px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
         .footer-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 4px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; opacity: 0.95; }
 
@@ -237,98 +222,96 @@
         </div>
     </div>
 
-    <div id="dashboard-scrollable-content">
-        <div id="notification-area" class="hidden">
-            <div class="notification" id="notification-text"></div>
-        </div>
+    <div id="notification-area" class="hidden">
+        <div class="notification" id="notification-text"></div>
+    </div>
 
-        <div class="tabs-nav">
-            <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
-            <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
-            <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
-        </div>
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
+    </div>
 
-        <div id="tab-grades" class="tab-content active">
-            <div class="card" style="margin-bottom: 0;">
-                <h3>📊 نمرەکانی خوێندکار</h3>
-                
-                <h4 style="margin-bottom: 4px; color: var(--primary); font-size: 13px;">وەرزی یەکەم</h4>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
-                            <th id="th-s1-20" class="hidden">هەڵسەنگاندن (20%)</th>
-                            <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
-                            <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
-                        </tr>
-                        <tr>
-                            <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
-                            <td id="s1-total" style="font-weight:bold;">-</td>
-                            <td id="s1-20pct" class="hidden">-</td>
-                            <td id="s1-80pct" class="hidden">-</td>
-                            <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="s1-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
-                    ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
-                </div>
-
-                <h4 style="margin-bottom: 4px; margin-top: 12px; color: var(--primary); font-size: 13px;">وەرزی دووەم</h4>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
-                            <th id="th-s2-20" class="hidden">هەڵسەنگاندن (20%)</th>
-                            <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
-                            <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
-                        </tr>
-                        <tr>
-                            <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
-                            <td id="s2-total" style="font-weight:bold;">-</td>
-                            <td id="s2-20pct" class="hidden">-</td>
-                            <td id="s2-80pct" class="hidden">-</td>
-                            <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="s2-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
-                    ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
-                </div>
-
-                <div style="background: #e0f2fe; padding: 10px; border-radius: 10px; margin-top: 12px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
-                    <span style="font-size: 14px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
-                    <span id="final-total" style="font-size: 18px; font-weight: bold;">-</span>
-                </div>
-
-                <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
-                <p id="refresh-msg" style="text-align:center; font-size:12px; margin:4px 0 0 0; font-weight:bold;"></p>
+    <div id="tab-grades" class="tab-content active">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📊 نمرەکانی خوێندکار</h3>
+            
+            <h4 style="margin-bottom: 4px; color: var(--primary); font-size: 13px;">وەرزی یەکەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s1-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                        <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
+                    <tr>
+                        <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                        <td id="s1-total" style="font-weight:bold;">-</td>
+                        <td id="s1-20pct" class="hidden">-</td>
+                        <td id="s1-80pct" class="hidden">-</td>
+                        <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                    </tr>
+                </table>
             </div>
-        </div>
-
-        <div id="tab-materials" class="tab-content">
-            <div class="card" style="margin-bottom: 0;">
-                <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
-                <div id="materials-list"></div>
+            <div id="s1-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
             </div>
-        </div>
 
-        <div id="tab-settings" class="tab-content">
-            <div class="card" style="margin-bottom: 0;">
-                <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
-                
-                <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
-                <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
-
-                <label class="field-label">ژمارەی مۆبایل:</label>
-                <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
-                
-                <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
-                <input type="file" id="input-photo" accept="image/*" capture="user">
-                
-                <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
-                <p id="update-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+            <h4 style="margin-bottom: 4px; margin-top: 12px; color: var(--primary); font-size: 13px;">وەرزی دووەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s2-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                        <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
+                    <tr>
+                        <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                        <td id="s2-total" style="font-weight:bold;">-</td>
+                        <td id="s2-20pct" class="hidden">-</td>
+                        <td id="s2-80pct" class="hidden">-</td>
+                        <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                    </tr>
+                </table>
             </div>
+            <div id="s2-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
+            </div>
+
+            <div style="background: #e0f2fe; padding: 10px; border-radius: 10px; margin-top: 12px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 14px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+                <span id="final-total" style="font-size: 18px; font-weight: bold;">-</span>
+            </div>
+
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
+            <p id="refresh-msg" style="text-align:center; font-size:12px; margin:4px 0 0 0; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <div id="tab-materials" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
+            <div id="materials-list"></div>
+        </div>
+    </div>
+
+    <div id="tab-settings" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+            
+            <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+            <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+
+            <label class="field-label">ژمارەی مۆبایل:</label>
+            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+            <input type="file" id="input-photo" accept="image/*" capture="user">
+            
+            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
+            <p id="update-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
         </div>
     </div>
     
