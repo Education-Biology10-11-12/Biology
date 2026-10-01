@@ -46,31 +46,39 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: flex-start; 
-            padding: 20px 10px; 
+            justify-content: center; 
+            padding: 15px; 
             color: var(--text-main); 
             box-sizing: border-box;
         }
 
         .container { 
             width: 100%; 
-            max-width: 650px; 
+            max-width: 520px; /* لە مۆبایلدات ڕێک و ستانداردە */
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 30px 25px; 
+            padding: 25px 20px; 
             border-radius: 24px; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
-            margin: 10px auto;
+            margin: auto;
         }
 
-        .header-logo { text-align: center; margin-bottom: 15px; }
-        .header-logo img { width: 105px; height: 105px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        /* لە کۆمپیوتەردا (Laptop & PC) با شاشە سپییەکە پانتر بێت */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 35px 35px;
+            }
+        }
+
+        .header-logo { text-align: center; margin-bottom: 12px; }
+        .header-logo img { width: 95px; height: 95px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
         
         h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
-        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
         .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
 
@@ -127,8 +135,8 @@
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 650px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .system-footer { margin-top: 25px; margin-bottom: 15px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; width: 100%; max-width: 800px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .footer-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 8px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -197,9 +205,6 @@
 
     <label class="field-label">ژمارەی مۆبایل:</label>
     <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
-
-    <label class="field-label">شوێنی نیشتەجێبوون:</label>
-    <input type="text" id="reg-address" placeholder="سلێمانی - ...">
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
     <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
@@ -300,9 +305,6 @@
 
             <label class="field-label">ژمارەی مۆبایل:</label>
             <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
-            
-            <label class="field-label">شوێنی نیشتەجێبوون:</label>
-            <input type="text" id="input-address" placeholder="ناونیشان">
             
             <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
             <input type="file" id="input-photo" accept="image/*" capture="user">
@@ -516,7 +518,6 @@
         
         document.getElementById("input-oldschool").value = data.oldSchool || "";
         document.getElementById("input-phone").value = data.phone || "";
-        document.getElementById("input-address").value = data.address || "";
         
         if(data.photo && data.photo.trim() !== "") {
             document.getElementById("display-photo").src = data.photo;
@@ -530,7 +531,6 @@
         setGradeWithCheck("s1-60", data.s1_60, 60);
         setGradeWithCheck("s1-total", data.season1, 100);
 
-        // پشکنینی خولی دووەمی وەرزی یەکەم
         if (data.s1_final_second && data.s1_final_second.toString().trim() !== "" && data.s1_final_second.toString().trim() !== "-") {
             document.getElementById("th-s1-20").classList.remove("hidden");
             document.getElementById("th-s1-80").classList.remove("hidden");
@@ -559,7 +559,6 @@
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
 
-        // پشکنینی خولی دووەمی وەرزی دووەم
         if (data.s2_final_second && data.s2_final_second.toString().trim() !== "" && data.s2_final_second.toString().trim() !== "-") {
             document.getElementById("th-s2-20").classList.remove("hidden");
             document.getElementById("th-s2-80").classList.remove("hidden");
@@ -670,7 +669,6 @@
         const groupSelect = document.getElementById("reg-group");
         const oldSchoolInput = document.getElementById("reg-oldschool");
         const phoneInput = document.getElementById("reg-phone");
-        const addressInput = document.getElementById("reg-address");
         const msg = document.getElementById("reg-msg");
 
         photoImg.classList.remove("input-error");
@@ -678,13 +676,11 @@
         groupSelect.classList.remove("input-error");
         oldSchoolInput.classList.remove("input-error");
         phoneInput.classList.remove("input-error");
-        addressInput.classList.remove("input-error");
 
         const fullname = fullnameInput.value.trim();
         const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
         const oldSchool = oldSchoolInput.value.trim();
         const phone = phoneInput.value.trim();
-        const address = addressInput.value.trim();
 
         if(!finalCroppedImage) {
             photoImg.classList.add("input-error");
@@ -716,12 +712,6 @@
             msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
             return;
         }
-        if(!address) {
-            addressInput.classList.add("input-error");
-            msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە شوێنی نیشتەجێبوون بنووسە";
-            return;
-        }
 
         msg.style.color = "var(--primary)";
         msg.innerText = "چاوەڕێبە...";
@@ -734,7 +724,6 @@
             group: selectedGroup,
             oldSchool: oldSchool,
             phone: phone,
-            address: address,
             photo: finalCroppedImage
         };
 
@@ -748,7 +737,7 @@
             msg.style.color = "var(--success)";
             msg.innerText = "سەرکەوتوبوو";
             setTimeout(() => {
-                loginAfterRegister(selectedGroup, fullname, oldSchool, phone, address, finalCroppedImage);
+                loginAfterRegister(selectedGroup, fullname, oldSchool, phone, finalCroppedImage);
             }, 1500);
         })
         .catch(err => {
@@ -757,7 +746,7 @@
         });
     }
 
-    function loginAfterRegister(group, fullname, oldSchool, phone, address, photo) {
+    function loginAfterRegister(group, fullname, oldSchool, phone, photo) {
         const pass = document.getElementById("password").value.trim();
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
@@ -768,7 +757,6 @@
             data.groupName = group;
             data.oldSchool = oldSchool;
             data.phone = phone;
-            data.address = address;
             if(photo) data.photo = photo;
             
             currentPassword = pass;
@@ -782,7 +770,6 @@
     function updateProfile() {
         const oldSchool = document.getElementById("input-oldschool").value.trim();
         const phone = document.getElementById("input-phone").value.trim();
-        const address = document.getElementById("input-address").value.trim();
         const btn = document.getElementById("btn-update");
         const msg = document.getElementById("update-msg");
         
@@ -796,7 +783,6 @@
             username: currentUsername,
             oldSchool: oldSchool,
             phone: phone,
-            address: address,
             photo: finalCroppedImage
         };
 
@@ -815,7 +801,6 @@
             const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
             savedData.oldSchool = payload.oldSchool;
             savedData.phone = payload.phone;
-            savedData.address = payload.address;
             if(finalCroppedImage) {
                 savedData.photo = finalCroppedImage;
             }
