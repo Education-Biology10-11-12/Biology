@@ -46,8 +46,8 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; /* ناوەندگیرکردنی شاشە بۆ ئەوەی قەبارەکە هاوسەنگ بێت */
-            padding: 10px; 
+            justify-content: flex-start; 
+            padding: 15px 10px; 
             color: var(--text-main); 
             box-sizing: border-box;
             overflow-y: auto; 
@@ -56,13 +56,13 @@
 
         .container { 
             width: 100%; 
-            max-width: 500px; 
+            max-width: 520px; 
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             padding: 20px 18px; 
             border-radius: 20px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
             margin: 10px auto; 
@@ -71,7 +71,19 @@
         @media (min-width: 768px) {
             .container {
                 max-width: 750px;
-                padding: 30px;
+                padding: 25px;
+            }
+        }
+
+        /* لە کۆمپیوتەردا کاتێک زووم دەبێت یان لە 150٪ دەبێت، بەشی سەرەوە جێگیر دەبێت تا هەمیشە بینرابێت */
+        @media (min-width: 1024px) {
+            .profile-header {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: rgba(224, 242, 254, 0.95) !important;
+                backdrop-filter: blur(8px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             }
         }
 
@@ -119,10 +131,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 12px; border-radius: 14px; margin-bottom: 8px; }
+        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 14px; border-radius: 14px; margin-bottom: 10px; }
         .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px; color: #0f766e; font-size: 15px; }
 
-        .table-responsive { overflow-x: auto; margin-bottom: 6px; -webkit-overflow-scrolling: touch; }
+        .table-responsive { overflow-x: auto; margin-bottom: 8px; -webkit-overflow-scrolling: touch; }
         table { width: 100%; min-width: 450px; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
         th, td { padding: 8px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 12px; white-space: nowrap; }
         th { background-color: #e0f2fe; color: var(--primary); }
@@ -136,7 +148,7 @@
         .material-link { padding: 6px 14px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 10px 12px; border-radius: 10px; margin-bottom: 10px; font-weight: bold; border-right: 4px solid var(--danger); font-size: 12px; }
         
-        .system-footer { margin-top: 15px; margin-bottom: 10px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 500px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .system-footer { margin-top: 15px; margin-bottom: 15px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 520px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
         .footer-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 4px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; opacity: 0.95; }
 
@@ -258,7 +270,7 @@
                 ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
             </div>
 
-            <h4 style="margin-bottom: 4px; margin-top: 10px; color: var(--primary); font-size: 13px;">وەرزی دووەم</h4>
+            <h4 style="margin-bottom: 4px; margin-top: 12px; color: var(--primary); font-size: 13px;">وەرزی دووەم</h4>
             <div class="table-responsive">
                 <table>
                     <tr>
@@ -280,7 +292,7 @@
                 ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
             </div>
 
-            <div style="background: #e0f2fe; padding: 10px; border-radius: 10px; margin-top: 10px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+            <div style="background: #e0f2fe; padding: 10px; border-radius: 10px; margin-top: 12px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
                 <span style="font-size: 14px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
                 <span id="final-total" style="font-size: 18px; font-weight: bold;">-</span>
             </div>
