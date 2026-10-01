@@ -113,9 +113,8 @@
         .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 20px; border-radius: 18px; margin-bottom: 15px; }
         .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
 
-        /* تەیبڵەکان خاوەنی سکڕۆڵن بۆ ئەوەی لە مۆبایل و کۆمپیوتەریشدا بە باشی دیار ببن */
         .table-responsive { overflow-x: auto; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; min-width: 450px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        table { width: 100%; min-width: 480px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
         th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; white-space: nowrap; }
         th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
@@ -234,10 +233,17 @@
             <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th><th id="th-s1-2nd" class="hidden">خولی دووەم</th></tr>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s1-20" class="hidden">هەنگاوندن (20%)</th>
+                        <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
                     <tr>
                         <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
                         <td id="s1-total" style="font-weight:bold;">-</td>
+                        <td id="s1-20pct" class="hidden">-</td>
+                        <td id="s1-80pct" class="hidden">-</td>
                         <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
                     </tr>
                 </table>
@@ -249,10 +255,17 @@
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th><th id="th-s2-2nd" class="hidden">خولی دووەم</th></tr>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s2-20" class="hidden">هەنگاوندن (20%)</th>
+                        <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
                     <tr>
                         <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
                         <td id="s2-total" style="font-weight:bold;">-</td>
+                        <td id="s2-20pct" class="hidden">-</td>
+                        <td id="s2-80pct" class="hidden">-</td>
                         <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
                     </tr>
                 </table>
@@ -517,14 +530,25 @@
         setGradeWithCheck("s1-60", data.s1_60, 60);
         setGradeWithCheck("s1-total", data.season1, 100);
 
-        // پشکنینی خولی دووەمی وەرزی یەکەم لە شیتەوە
-        if (data.s1_second && data.s1_second.toString().trim() !== "" && data.s1_second.toString().trim() !== "-") {
-            document.getElementById("th-s1-2nd").classList.remove("hidden");
+        // پشکنینی خولی دووەمی وەرزی یەکەم
+        if (data.s1_final_second && data.s1_final_second.toString().trim() !== "" && data.s1_final_second.toString().trim() !== "-") {
+            document.getElementById("th-s1-20").classList.remove("hidden");
+            document.getElementById("th-s1-80").classList.remove("hidden");
+            document.getElementById("th-s1-final").classList.remove("hidden");
+            document.getElementById("s1-20pct").classList.remove("hidden");
+            document.getElementById("s1-80pct").classList.remove("hidden");
             document.getElementById("s1-second").classList.remove("hidden");
-            setGradeWithCheck("s1-second", data.s1_second, 100);
+
+            setGradeWithCheck("s1-20pct", data.s1_20pct, 100);
+            setGradeWithCheck("s1-80pct", data.s1_80pct, 100);
+            setGradeWithCheck("s1-second", data.s1_final_second, 100);
             document.getElementById("s1-second-notice").classList.remove("hidden");
         } else {
-            document.getElementById("th-s1-2nd").classList.add("hidden");
+            document.getElementById("th-s1-20").classList.add("hidden");
+            document.getElementById("th-s1-80").classList.add("hidden");
+            document.getElementById("th-s1-final").classList.add("hidden");
+            document.getElementById("s1-20pct").classList.add("hidden");
+            document.getElementById("s1-80pct").classList.add("hidden");
             document.getElementById("s1-second").classList.add("hidden");
             document.getElementById("s1-second-notice").classList.add("hidden");
         }
@@ -535,14 +559,25 @@
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
 
-        // پشکنینی خولی دووەمی وەرزی دووەم لە شیتەوە
-        if (data.s2_second && data.s2_second.toString().trim() !== "" && data.s2_second.toString().trim() !== "-") {
-            document.getElementById("th-s2-2nd").classList.remove("hidden");
+        // پشکنینی خولی دووەمی وەرزی دووەم
+        if (data.s2_final_second && data.s2_final_second.toString().trim() !== "" && data.s2_final_second.toString().trim() !== "-") {
+            document.getElementById("th-s2-20").classList.remove("hidden");
+            document.getElementById("th-s2-80").classList.remove("hidden");
+            document.getElementById("th-s2-final").classList.remove("hidden");
+            document.getElementById("s2-20pct").classList.remove("hidden");
+            document.getElementById("s2-80pct").classList.remove("hidden");
             document.getElementById("s2-second").classList.remove("hidden");
-            setGradeWithCheck("s2-second", data.s2_second, 100);
+
+            setGradeWithCheck("s2-20pct", data.s2_20pct, 100);
+            setGradeWithCheck("s2-80pct", data.s2_80pct, 100);
+            setGradeWithCheck("s2-second", data.s2_final_second, 100);
             document.getElementById("s2-second-notice").classList.remove("hidden");
         } else {
-            document.getElementById("th-s2-2nd").classList.add("hidden");
+            document.getElementById("th-s2-20").classList.add("hidden");
+            document.getElementById("th-s2-80").classList.add("hidden");
+            document.getElementById("th-s2-final").classList.add("hidden");
+            document.getElementById("s2-20pct").classList.add("hidden");
+            document.getElementById("s2-80pct").classList.add("hidden");
             document.getElementById("s2-second").classList.add("hidden");
             document.getElementById("s2-second-notice").classList.add("hidden");
         }
