@@ -46,7 +46,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: flex-start; 
             padding: 20px 10px; 
             color: var(--text-main); 
             box-sizing: border-box;
@@ -54,7 +54,7 @@
 
         .container { 
             width: 100%; 
-            max-width: 550px; /* گەڕاندنەوەی قەبارەی ڕێکوپێکی کۆمپیوتەر بۆ ئەوەی زۆر پان نەبێتەوە */
+            max-width: 650px; 
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -63,7 +63,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
-            margin: auto;
+            margin: 10px auto;
         }
 
         .header-logo { text-align: center; margin-bottom: 15px; }
@@ -75,7 +75,7 @@
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
 
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
-        select { font-family: 'GoranFont', Tahoma, sans-serif; } /* دڵنیابوونەوە لەوەی فۆنتەکە بۆ هەڵبژاردنی پۆل بەکاربێت */
+        select { font-family: 'GoranFont', Tahoma, sans-serif; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
         .input-error {
@@ -113,9 +113,10 @@
         .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 20px; border-radius: 18px; margin-bottom: 15px; }
         .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
 
-        .table-responsive { overflow-x: auto; margin-bottom: 15px; }
-        table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
-        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+        /* تەیبڵەکان خاوەنی سکڕۆڵن بۆ ئەوەی لە مۆبایل و کۆمپیوتەریشدا بە باشی دیار ببن */
+        .table-responsive { overflow-x: auto; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; min-width: 450px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; white-space: nowrap; }
         th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
@@ -127,7 +128,7 @@
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 650px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
@@ -193,7 +194,7 @@
     </select>
 
     <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
-    <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پێشووی پۆلی ٩">
+    <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
 
     <label class="field-label">ژمارەی مۆبایل:</label>
     <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
@@ -233,30 +234,30 @@
             <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th><th id="th-s1-2nd" class="hidden">خولی دووەم</th></tr>
                     <tr>
                         <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
                         <td id="s1-total" style="font-weight:bold;">-</td>
+                        <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
                     </tr>
                 </table>
             </div>
-            <!-- خولی دووەمی وەرزی یەکەم -->
-            <div id="s1-second-chance" class="hidden" style="margin-top: 8px; font-size: 13px; color: var(--danger); font-weight: bold;">
-                ⚠️️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
+            <div id="s1-second-notice" class="hidden" style="margin-top: 6px; font-size: 13px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
             </div>
 
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th><th id="th-s2-2nd" class="hidden">خولی دووەم</th></tr>
                     <tr>
                         <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
                         <td id="s2-total" style="font-weight:bold;">-</td>
+                        <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
                     </tr>
                 </table>
             </div>
-            <!-- خولی دووەمی وەرزی دووەم -->
-            <div id="s2-second-chance" class="hidden" style="margin-top: 8px; font-size: 13px; color: var(--danger); font-weight: bold;">
+            <div id="s2-second-notice" class="hidden" style="margin-top: 6px; font-size: 13px; color: var(--danger); font-weight: bold;">
                 ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
             </div>
 
@@ -516,12 +517,16 @@
         setGradeWithCheck("s1-60", data.s1_60, 60);
         setGradeWithCheck("s1-total", data.season1, 100);
 
-        // پشکنینی خولی دووەمی وەرزی یەکەم
-        if (data.s1_second && data.s1_second.trim() !== "" && data.s1_second !== "-") {
-            document.getElementById("s1-second-chance").classList.remove("hidden");
-            document.getElementById("s1-second-chance").innerText = "⚠️ خولی دووەمی وەرزی یەکەم: " + data.s1_second;
+        // پشکنینی خولی دووەمی وەرزی یەکەم لە شیتەوە
+        if (data.s1_second && data.s1_second.toString().trim() !== "" && data.s1_second.toString().trim() !== "-") {
+            document.getElementById("th-s1-2nd").classList.remove("hidden");
+            document.getElementById("s1-second").classList.remove("hidden");
+            setGradeWithCheck("s1-second", data.s1_second, 100);
+            document.getElementById("s1-second-notice").classList.remove("hidden");
         } else {
-            document.getElementById("s1-second-chance").classList.add("hidden");
+            document.getElementById("th-s1-2nd").classList.add("hidden");
+            document.getElementById("s1-second").classList.add("hidden");
+            document.getElementById("s1-second-notice").classList.add("hidden");
         }
         
         setGradeWithCheck("s2-10a", data.s2_10a, 10);
@@ -530,12 +535,16 @@
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
 
-        // پشکنینی خولی دووەمی وەرزی دووەم
-        if (data.s2_second && data.s2_second.trim() !== "" && data.s2_second !== "-") {
-            document.getElementById("s2-second-chance").classList.remove("hidden");
-            document.getElementById("s2-second-chance").innerText = "⚠️ خولی دووەمی وەرزی دووەم: " + data.s2_second;
+        // پشکنینی خولی دووەمی وەرزی دووەم لە شیتەوە
+        if (data.s2_second && data.s2_second.toString().trim() !== "" && data.s2_second.toString().trim() !== "-") {
+            document.getElementById("th-s2-2nd").classList.remove("hidden");
+            document.getElementById("s2-second").classList.remove("hidden");
+            setGradeWithCheck("s2-second", data.s2_second, 100);
+            document.getElementById("s2-second-notice").classList.remove("hidden");
         } else {
-            document.getElementById("s2-second-chance").classList.add("hidden");
+            document.getElementById("th-s2-2nd").classList.add("hidden");
+            document.getElementById("s2-second").classList.add("hidden");
+            document.getElementById("s2-second-notice").classList.add("hidden");
         }
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
