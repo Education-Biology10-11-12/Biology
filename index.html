@@ -43,14 +43,11 @@
             background: var(--bg-gradient); 
             background-attachment: fixed; 
             min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: flex-start; /* گۆڕدرا بۆ ئەوەی سکرۆڵ لە سەرەوە دەست پێبکات */
-            padding: 15px; 
+            display: block; /* گۆڕدرا بۆ block بۆ ئەوەی سکرۆڵ لە یەکەم خاڵەوە بە تەواوی کار بکات */
+            padding: 20px 15px; 
             color: var(--text-main); 
             box-sizing: border-box;
-            overflow-y: auto; /* زیادکردنی سکرۆڵی ستوونی گشتی بۆ پەڕەکە */
+            overflow-y: auto; /* زیادکردنی سکرۆڵی ستوونی */
             overflow-x: hidden;
         }
 
@@ -65,7 +62,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
-            margin: 20px auto; /* ڕێکخستنی مەرجینی سەرەوە و خوارەوە بۆ ئەوەی نەقرتێت */
+            margin: 20px auto; /* ناوەندخستنی کۆنتێنەر لەگەڵ هێشتنەوەی مەودا لە سەرەوە و خوارەوە */
         }
 
         @media (min-width: 768px) {
@@ -136,7 +133,7 @@
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 25px; margin-bottom: 15px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; width: 100%; max-width: 800px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .system-footer { margin-top: 25px; margin-bottom: 15px; text-align: center; padding: 20px; color: #ffffff; font-size: 13px; line-height: 1.8; width: 100%; max-width: 800px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin-left: auto; margin-right: auto; }
         .footer-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 8px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
