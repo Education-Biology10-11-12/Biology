@@ -43,11 +43,13 @@
             background: var(--bg-gradient); 
             background-attachment: fixed; 
             min-height: 100vh; 
-            display: block; 
-            padding: 10px 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; /* دەهێڵێتەوە بۆ ئەوەی پەیجی چوونەژوورەوە لە ناوەڕاستدا بێت */
+            padding: 15px; 
             color: var(--text-main); 
             box-sizing: border-box;
-            overflow-y: auto; 
             overflow-x: hidden;
         }
 
@@ -57,45 +59,60 @@
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            padding: 18px 20px; 
-            border-radius: 20px; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
+            padding: 25px 20px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             box-sizing: border-box; 
             border: 1px solid rgba(255, 255, 255, 0.5);
             margin: 10px auto; 
         }
 
-        /* قەبارەی پانتر و گونجاو بۆ کۆمپیوتەر بەبێ پێویست بوون بە زووم ئاوت */
+        /* قەبارەی داشبۆرد بۆ ئەوەی بەشی ناوەوەی سکرۆڵی هەبێت و سەر و خوارەوەی ببڕرێت */
+        #dashboard-section {
+            max-height: 85vh; /* سنووردارکردنی بەرزی کارتەکە لەسەر کۆمپیوتەر */
+            display: flex;
+            flex-direction: column;
+        }
+
+        #dashboard-scrollable-content {
+            overflow-y: auto; /* دابینکردنی سکرۆڵ تەنها بۆ ناوەڕۆکی داشبۆرد */
+            overflow-x: hidden;
+            flex-grow: 1;
+            padding-left: 5px;
+            padding-right: 5px;
+            max-height: calc(85vh - 120px);
+        }
+
         @media (min-width: 768px) {
             .container {
-                max-width: 950px; 
-                padding: 25px 30px;
+                max-width: 650px;
+                padding: 30px 35px;
             }
         }
 
-        .header-logo { text-align: center; margin-bottom: 8px; }
-        .header-logo img { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        .header-logo { text-align: center; margin-bottom: 12px; }
+        .header-logo img { width: 95px; height: 95px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
         
-        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 3px; color: var(--primary); font-size: 22px; }
-        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 12px; font-size: 13px; line-height: 1.4; }
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
+        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
         .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
         .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
 
-        input, select, button { width: 100%; padding: 10px; margin: 6px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
         select { font-family: 'GoranFont', Tahoma, sans-serif; }
-        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); background: #ffffff; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
         .input-error {
             border-color: var(--danger) !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
             background: #fef2f2 !important;
         }
 
-        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25); border-radius: 12px; }
-        button:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35); }
-        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
+        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25); border-radius: 14px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35); }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); margin-top: 15px; margin-bottom: 0; }
         button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
-        button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 8px; font-size: 13px; padding: 8px; }
+        button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 10px; font-size: 14px; padding: 10px; }
         
         .hidden { display: none !important; }
         
@@ -105,37 +122,37 @@
             font-weight: bold;
         }
         
-        .tabs-nav { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 15px; background: #e2e8f0; padding: 5px; border-radius: 14px; }
-        .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 13px; font-weight: bold; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
-        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+        .tabs-nav { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 20px; background: #e2e8f0; padding: 6px; border-radius: 16px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 14px; font-weight: bold; color: var(--text-muted); border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
 
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 12px; }
-        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; color: #0f766e; font-size: 16px; }
+        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 20px; border-radius: 18px; margin-bottom: 15px; }
+        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
 
-        .table-responsive { overflow-x: auto; margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; min-width: 480px; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
-        th, td { padding: 8px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 12px; white-space: nowrap; }
+        .table-responsive { overflow-x: auto; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; min-width: 480px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 13px; white-space: nowrap; }
         th { background-color: #e0f2fe; color: var(--primary); }
         td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
         tr:last-child td { border-bottom: none; }
         
-        .profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; background: rgba(224, 242, 254, 0.7); border-radius: 15px; border: 1px solid rgba(2, 132, 199, 0.2); }
-        .profile-img { width: 65px; height: 65px; min-width: 65px; min-height: 65px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: rgba(224, 242, 254, 0.7); border-radius: 18px; border: 1px solid rgba(2, 132, 199, 0.2); }
+        .profile-img { width: 75px; height: 75px; min-width: 75px; min-height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
         
-        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .material-link { padding: 6px 14px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; }
-        .notification { background: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-weight: bold; border-right: 4px solid var(--danger); font-size: 13px; }
+        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: white; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
         
-        .system-footer { margin-top: 15px; margin-bottom: 10px; text-align: center; padding: 15px; color: #ffffff; font-size: 12px; line-height: 1.6; width: 100%; max-width: 950px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 25px rgba(0,0,0,0.15); margin-left: auto; margin-right: auto; }
-        .footer-logo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.2); margin-bottom: 6px; }
+        .system-footer { margin-top: 15px; text-align: center; padding: 15px; color: #ffffff; font-size: 12px; line-height: 1.8; width: 100%; max-width: 650px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .footer-logo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 6px; }
         .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -144,7 +161,7 @@
         .img-container img { max-width: 100%; }
         .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
         .crop-btns button { margin: 0; }
-        .field-label { display:block; margin-top: 10px; margin-bottom: 4px; font-size: 13px; color: var(--text-main); font-weight:bold; text-align: right; }
+        .field-label { display:block; margin-top: 12px; margin-bottom: 5px; font-size: 14px; color: var(--text-main); font-weight:bold; text-align: right; }
     </style>
 </head>
 <body>
@@ -176,10 +193,10 @@
 
 <div class="container hidden" id="register-section">
     <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
-    <p style="text-align: center; color: var(--text-muted); font-size: 13px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
+    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
     
-    <div style="text-align: center; margin-bottom: 12px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
     <label class="field-label">هەڵبژاردنی وێنە:</label>
@@ -206,114 +223,117 @@
     <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
-    <p id="reg-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-top:8px;"></p>
+    <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
 </div>
 
 <div class="container hidden" id="dashboard-section">
     
-    <div class="profile-header">
+    <div class="profile-header" style="margin-bottom: 15px; padding: 12px 15px;">
         <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
         <div>
-            <h2 style="margin: 0; text-align: right; color: var(--primary); font-size: 20px;"><span id="student-name"></span> 👋</h2>
+            <h2 style="margin: 0; text-align: right; color: var(--primary); font-size: 19px;"><span id="student-name"></span> 👋</h2>
             <p style="margin: 2px 0 0 0; color: var(--text-main); font-weight: bold; font-size: 13px;">ئامادەیی هەڵکەوتی کوڕان</p>
             <p style="margin: 2px 0 0 0; color: var(--text-muted); font-size: 12px;" id="student-grade-display"></p>
         </div>
     </div>
 
-    <div id="notification-area" class="hidden">
-        <div class="notification" id="notification-text"></div>
-    </div>
-
-    <div class="tabs-nav">
-        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
-        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
-        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
-    </div>
-
-    <div id="tab-grades" class="tab-content active">
-        <div class="card" style="margin-bottom: 0;">
-            <h3>📊 نمرەکانی خوێندکار</h3>
-            
-            <h4 style="margin-bottom: 4px; color: var(--primary); font-size: 14px;">وەرزی یەکەم</h4>
-            <div class="table-responsive">
-                <table>
-                    <tr>
-                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
-                        <th id="th-s1-20" class="hidden">هەڵسەنگاندن (20%)</th>
-                        <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
-                        <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
-                    </tr>
-                    <tr>
-                        <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
-                        <td id="s1-total" style="font-weight:bold;">-</td>
-                        <td id="s1-20pct" class="hidden">-</td>
-                        <td id="s1-80pct" class="hidden">-</td>
-                        <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
-                    </tr>
-                </table>
-            </div>
-            <div id="s1-second-notice" class="hidden" style="margin-top: 5px; font-size: 12px; color: var(--danger); font-weight: bold;">
-                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
-            </div>
-
-            <h4 style="margin-bottom: 4px; margin-top: 12px; color: var(--primary); font-size: 14px;">وەرزی دووەم</h4>
-            <div class="table-responsive">
-                <table>
-                    <tr>
-                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
-                        <th id="th-s2-20" class="hidden">هەڵسەنگاندن (20%)</th>
-                        <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
-                        <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
-                    </tr>
-                    <tr>
-                        <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
-                        <td id="s2-total" style="font-weight:bold;">-</td>
-                        <td id="s2-20pct" class="hidden">-</td>
-                        <td id="s2-80pct" class="hidden">-</td>
-                        <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
-                    </tr>
-                </table>
-            </div>
-            <div id="s2-second-notice" class="hidden" style="margin-top: 5px; font-size: 12px; color: var(--danger); font-weight: bold;">
-                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
-            </div>
-
-            <div style="background: #e0f2fe; padding: 12px; border-radius: 10px; margin-top: 12px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
-                <span style="font-size: 15px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
-                <span id="final-total" style="font-size: 20px; font-weight: bold;">-</span>
-            </div>
-
-            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
-            <p id="refresh-msg" style="text-align:center; font-size:12px; margin:4px 0 0 0; font-weight:bold;"></p>
+    <!-- بەشی سکرۆڵکراوی ناوەوەی داشبۆرد بۆ تابەکان و نمرەکان -->
+    <div id="dashboard-scrollable-content">
+        <div id="notification-area" class="hidden">
+            <div class="notification" id="notification-text"></div>
         </div>
-    </div>
 
-    <div id="tab-materials" class="tab-content">
-        <div class="card" style="margin-bottom: 0;">
-            <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
-            <div id="materials-list"></div>
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
+            <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
+            <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
         </div>
-    </div>
 
-    <div id="tab-settings" class="tab-content">
-        <div class="card" style="margin-bottom: 0;">
-            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
-            
-            <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
-            <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+        <div id="tab-grades" class="tab-content active">
+            <div class="card" style="margin-bottom: 0;">
+                <h3>📊 نمرەکانی خوێندکار</h3>
+                
+                <h4 style="margin-bottom: 5px; color: var(--primary); font-size: 14px;">وەرزی یەکەم</h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                            <th id="th-s1-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                            <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
+                            <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
+                        </tr>
+                        <tr>
+                            <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                            <td id="s1-total" style="font-weight:bold;">-</td>
+                            <td id="s1-20pct" class="hidden">-</td>
+                            <td id="s1-80pct" class="hidden">-</td>
+                            <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="s1-second-notice" class="hidden" style="margin-top: 6px; font-size: 12px; color: var(--danger); font-weight: bold;">
+                    ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
+                </div>
 
-            <label class="field-label">ژمارەی مۆبایل:</label>
-            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
-            
-            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
-            <input type="file" id="input-photo" accept="image/*" capture="user">
-            
-            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
-            <p id="update-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+                <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary); font-size: 14px;">وەرزی دووەم</h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                            <th id="th-s2-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                            <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
+                            <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
+                        </tr>
+                        <tr>
+                            <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                            <td id="s2-total" style="font-weight:bold;">-</td>
+                            <td id="s2-20pct" class="hidden">-</td>
+                            <td id="s2-80pct" class="hidden">-</td>
+                            <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="s2-second-notice" class="hidden" style="margin-top: 6px; font-size: 12px; color: var(--danger); font-weight: bold;">
+                    ⚠️️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
+                </div>
+
+                <div style="background: #e0f2fe; padding: 12px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                    <span style="font-size: 15px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+                    <span id="final-total" style="font-size: 20px; font-weight: bold;">-</span>
+                </div>
+
+                <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
+                <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
+            </div>
+        </div>
+
+        <div id="tab-materials" class="tab-content">
+            <div class="card" style="margin-bottom: 0;">
+                <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
+                <div id="materials-list"></div>
+            </div>
+        </div>
+
+        <div id="tab-settings" class="tab-content">
+            <div class="card" style="margin-bottom: 0;">
+                <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+                
+                <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+                <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+
+                <label class="field-label">ژمارەی مۆبایل:</label>
+                <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+                
+                <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+                <input type="file" id="input-photo" accept="image/*" capture="user">
+                
+                <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
+                <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+            </div>
         </div>
     </div>
     
-    <button class="btn-logout" onclick="logout()" style="margin-top: 20px;">دەرچوون</button>
+    <button class="btn-logout" onclick="logout()">دەرچوون</button>
 </div>
 
 <div class="system-footer hidden" id="footer-section">
