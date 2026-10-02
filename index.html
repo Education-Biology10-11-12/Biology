@@ -163,7 +163,8 @@
             #dashboard-section, #footer-section { max-width: min(1250px, 96vw); }
             .grades-grid { grid-template-columns: 1fr 1fr; }
             .grades-grid table { min-width: 0; }
-            #tab-settings .card { max-width: 700px; margin: 0 auto !important; }
+            .settings-grid { grid-template-columns: 1fr 1fr; }
+            .settings-grid .field-wide { grid-column: 1 / -1; }
 
             #dashboard-section:not(.hidden) {
                 display: flex; flex-direction: column;
@@ -182,6 +183,17 @@
                 gap: 4px 28px; margin: 12px 0 0; padding: 10px 20px; line-height: 1.5;
             }
             #footer-section .footer-logo { width: 40px; height: 40px; margin: 0; }
+        }
+
+        .settings-grid { display: grid; grid-template-columns: 1fr; gap: 0 18px; }
+        .profile-logo-wrap { display: none; flex: 1; justify-content: center; align-items: center; }
+        .profile-logo { width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+        /* لۆگۆ: لە کۆمپیوتەر و کاتێک مۆبایل ڕۆتەیت دەکرێت */
+        @media (min-width: 700px), (orientation: landscape) {
+            .profile-logo-wrap { display: flex; }
+        }
+        @media (orientation: landscape) and (max-height: 500px) {
+            .profile-logo { width: 55px; height: 55px; }
         }
 </style>
 </head>
@@ -253,6 +265,9 @@
         <div class="profile-main">
             <h2><span id="student-name"></span> 👋</h2>
             <p>ئامادەیی هەڵکەوتی کوڕان</p>
+        </div>
+        <div class="profile-logo-wrap">
+            <img src="logo.png" class="profile-logo" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان" onerror="this.style.display='none'">
         </div>
         <div class="profile-details">
             <p id="student-grade-display"></p>
@@ -352,14 +367,22 @@
         <div class="card" style="margin-bottom: 0;">
             <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
             
+            <div class="settings-grid">
+            <div class="settings-field">
             <label class="field-label">ژمارەی مۆبایل:</label>
             <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            </div>
             
+            <div class="settings-field">
             <label class="field-label">قوتابخانەی پۆلی ٩:</label>
             <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پۆلی ٩">
+            </div>
             
+            <div class="settings-field field-wide">
             <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
             <input type="file" id="input-photo" accept="image/*" capture="user">
+            </div>
+            </div>
             
             <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
             <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
