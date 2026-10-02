@@ -70,7 +70,6 @@
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
         
-        /* کلاس بۆ دیاریکردنی خانەی هەڵە بە ڕەنگی سوور */
         .input-error {
             border-color: var(--danger) !important;
             box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
@@ -187,8 +186,8 @@
     <label class="field-label">ژمارەی مۆبایل:</label>
     <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
 
-    <label class="field-label">شوێنی نیشتەجێبوون:</label>
-    <input type="text" id="reg-address" placeholder="سلێمانی - ...">
+    <label class="field-label">قوتابخانەی پۆلی ٩:</label>
+    <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پۆلی ٩ی ناوەندی">
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
     <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
@@ -202,6 +201,7 @@
             <h2 style="margin: 0; text-align: right; color: var(--primary);"><span id="student-name"></span> 👋</h2>
             <p style="margin: 3px 0 0 0; color: var(--text-main); font-weight: bold; font-size: 14px;">ئامادەیی هەڵکەوتی کوڕان</p>
             <p style="margin: 3px 0 0 0; color: var(--text-muted); font-size: 13px;" id="student-grade-display"></p>
+            <p style="margin: 3px 0 0 0; color: var(--text-muted); font-size: 13px;" id="student-oldschool-display"></p>
         </div>
     </div>
 
@@ -210,9 +210,9 @@
     </div>
 
     <div class="tabs-nav">
-        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
-        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
-        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
+        <button class="tab-btn active" onclick="switchTab('tab-grades', this)">📊 نمرەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-materials', this)">📚 بابەتەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings', this)">⚙️ زانیارییەکان</button>
     </div>
 
     <div id="tab-grades" class="tab-content active">
@@ -241,6 +241,28 @@
                 </table>
             </div>
 
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">خولی یەکەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>دەرئەنجام</th></tr>
+                    <tr>
+                        <td id="e1-eval">-</td><td id="e1-exam">-</td>
+                        <td id="e1-res" style="font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">خولی دووەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>دەرئەنجام</th></tr>
+                    <tr>
+                        <td id="e2-eval">-</td><td id="e2-exam">-</td>
+                        <td id="e2-res" style="font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+
             <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
                 <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
                 <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
@@ -265,8 +287,8 @@
             <label class="field-label">ژمارەی مۆبایل:</label>
             <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
             
-            <label class="field-label">شوێنی نیشتەجێبوون:</label>
-            <input type="text" id="input-address" placeholder="ناونیشان">
+            <label class="field-label">قوتابخانەی پۆلی ٩:</label>
+            <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پۆلی ٩">
             
             <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
             <input type="file" id="input-photo" accept="image/*" capture="user">
@@ -304,6 +326,7 @@
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2NpkFu_mH9wY8C_1RGhblpFHCre6kMyJne6YckMEVRA2BKdXQJRmM3XL98X0Epbf0/exec";
+    const DEFAULT_PHOTO = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
     
     let currentUsername = "";
     let currentGrade = "";
@@ -461,15 +484,20 @@
         let groupDisplay = data.groupName ? " - " + data.groupName : "";
         document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
         
+        document.getElementById("student-oldschool-display").innerText = data.oldSchool ? "قوتابخانەی پۆلی ٩: " + data.oldSchool : "";
+        
         document.getElementById("student-name").innerText = data.studentName;
         
-        document.getElementById("input-phone").value = data.phone || "";
-        document.getElementById("input-address").value = data.address || "";
+        // تێبینی: نابێت لە کاتی نووسینی خوێندکار، نوێکردنەوەی خۆکار ڕەشی بکاتەوە
+        const phoneEl = document.getElementById("input-phone");
+        const schoolEl = document.getElementById("input-oldschool");
+        if (document.activeElement !== phoneEl) phoneEl.value = data.phone || "";
+        if (document.activeElement !== schoolEl) schoolEl.value = data.oldSchool || "";
         
         if(data.photo && data.photo.trim() !== "") {
             document.getElementById("display-photo").src = data.photo;
         } else {
-            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            document.getElementById("display-photo").src = DEFAULT_PHOTO;
         }
         
         setGradeWithCheck("s1-10a", data.s1_10a, 10);
@@ -483,6 +511,13 @@
         setGradeWithCheck("s2-10b", data.s2_10b, 10);
         setGradeWithCheck("s2-60", data.s2_60, 60);
         setGradeWithCheck("s2-total", data.season2, 100);
+        
+        setGradeWithCheck("e1-eval", data.e1_eval, 20);
+        setGradeWithCheck("e1-exam", data.e1_exam, 80);
+        setGradeWithCheck("e1-res", data.e1_res, 100);
+        setGradeWithCheck("e2-eval", data.e2_eval, 20);
+        setGradeWithCheck("e2-exam", data.e2_exam, 80);
+        setGradeWithCheck("e2-res", data.e2_res, 100);
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
         
@@ -506,12 +541,12 @@
         }
     }
 
-    function switchTab(tabId) {
+    function switchTab(tabId, btn) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        if (btn) btn.classList.add('active');
     }
 
     document.getElementById("reg-input-photo").addEventListener("change", function(e) {
@@ -571,22 +606,20 @@
         const fullnameInput = document.getElementById("reg-fullname");
         const groupSelect = document.getElementById("reg-group");
         const phoneInput = document.getElementById("reg-phone");
-        const addressInput = document.getElementById("reg-address");
+        const oldSchoolInput = document.getElementById("reg-oldschool");
         const msg = document.getElementById("reg-msg");
 
-        // لابردنی هێمای سووری پێشوو لەسەر هەموو خانەکان
         photoImg.classList.remove("input-error");
         fullnameInput.classList.remove("input-error");
         groupSelect.classList.remove("input-error");
         phoneInput.classList.remove("input-error");
-        addressInput.classList.remove("input-error");
+        oldSchoolInput.classList.remove("input-error");
 
         const fullname = fullnameInput.value.trim();
         const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
         const phone = phoneInput.value.trim();
-        const address = addressInput.value.trim();
+        const oldSchool = oldSchoolInput.value.trim();
 
-        // پشکنینی خانە بە خانە بە ڕەنگکردنی چوارچێوەی خانەی بەتاڵ بە سوور
         if(!finalCroppedImage) {
             photoImg.classList.add("input-error");
             msg.style.color = "var(--danger)";
@@ -611,10 +644,10 @@
             msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
             return;
         }
-        if(!address) {
-            addressInput.classList.add("input-error");
+        if(!oldSchool) {
+            oldSchoolInput.classList.add("input-error");
             msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە شوێنی نیشتەجێبوون بنووسە";
+            msg.innerText = "تکایە ناوی قوتابخانەی پۆلی ٩ بنووسە";
             return;
         }
 
@@ -628,7 +661,7 @@
             studentName: fullname,
             group: selectedGroup,
             phone: phone,
-            address: address,
+            oldSchool: oldSchool,
             photo: finalCroppedImage
         };
 
@@ -642,7 +675,7 @@
             msg.style.color = "var(--success)";
             msg.innerText = "سەرکەوتوبوو";
             setTimeout(() => {
-                loginAfterRegister(selectedGroup, fullname, phone, address, finalCroppedImage);
+                loginAfterRegister(selectedGroup, fullname, phone, oldSchool, finalCroppedImage);
             }, 1500);
         })
         .catch(err => {
@@ -651,7 +684,7 @@
         });
     }
 
-    function loginAfterRegister(group, fullname, phone, address, photo) {
+    function loginAfterRegister(group, fullname, phone, oldSchool, photo) {
         const pass = document.getElementById("password").value.trim();
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
@@ -661,9 +694,10 @@
             data.studentName = fullname;
             data.groupName = group;
             data.phone = phone;
-            data.address = address;
+            data.oldSchool = oldSchool;
             if(photo) data.photo = photo;
             
+            correctGroup = group;
             currentPassword = pass;
             localStorage.setItem("student_session", JSON.stringify(data));
             localStorage.setItem("student_pass", pass);
@@ -674,7 +708,7 @@
 
     function updateProfile() {
         const phone = document.getElementById("input-phone").value.trim();
-        const address = document.getElementById("input-address").value.trim();
+        const oldSchool = document.getElementById("input-oldschool").value.trim();
         const btn = document.getElementById("btn-update");
         const msg = document.getElementById("update-msg");
         
@@ -685,9 +719,10 @@
         let payload = {
             action: "updateProfile",
             grade: currentGrade,
+            group: correctGroup,
             username: currentUsername,
             phone: phone,
-            address: address,
+            oldSchool: oldSchool,
             photo: finalCroppedImage
         };
 
@@ -705,11 +740,12 @@
             
             const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
             savedData.phone = payload.phone;
-            savedData.address = payload.address;
+            savedData.oldSchool = payload.oldSchool;
             if(finalCroppedImage) {
                 savedData.photo = finalCroppedImage;
             }
             localStorage.setItem("student_session", JSON.stringify(savedData));
+            document.getElementById("student-oldschool-display").innerText = oldSchool ? "قوتابخانەی پۆلی ٩: " + oldSchool : "";
             finalCroppedImage = ""; 
             setTimeout(() => { msg.innerText = ""; }, 3000);
         })
