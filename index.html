@@ -1,257 +1,733 @@
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ئامادەیی هەڵکەوتی کوڕان - پۆلی ١٠، ١١، ١٢</title>
-<link rel="manifest" href="manifest.json">
-<link rel="preload" href="GoranFontRegular-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<style>
-@font-face { font-family: 'GoranFont'; src: url('GoranFontRegular-Regular.ttf') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
-* { box-sizing: border-box; font-family: 'GoranFont', sans-serif; }
-body { margin: 0; background: #0b5c75; color: #333; display: flex; justify-content: center; min-height: 100vh; }
-.container { width: 100%; max-width: 650px; background: #f4f8fb; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px; padding-bottom: 50px; box-shadow: 0 0 25px rgba(0,0,0,.15); }
-.hidden { display: none !important; }
-.tabs { display: flex; justify-content: space-around; width: 100%; background: #fff; padding: 10px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.05); margin-bottom: 20px; flex-wrap: wrap; gap: 5px; }
-.tab-btn { background: none; border: none; font-size: 15px; font-weight: bold; color: #0b5c75; cursor: pointer; padding: 8px 12px; border-radius: 12px; }
-.tab-btn.active { background: #e1f0f5; }
-.tab-btn:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #f0ad4e; outline-offset: 2px; }
-.section { display: none; width: 100%; }
-.section.active { display: flex; flex-direction: column; align-items: center; }
-.card { background: #fff; width: 100%; border-radius: 20px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,.05); margin-bottom: 15px; text-align: center; }
-.title { font-size: 18px; font-weight: bold; color: #0b5c75; margin-bottom: 12px; }
-.sub { font-weight: bold; color: #0b5c75; margin: 16px 0 6px; }
-.muted { color: #6b7f88; font-size: 13px; margin-bottom: 8px; }
-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
-th, td { border: 1px solid #e1f0f5; padding: 9px 4px; text-align: center; font-size: 14px; }
-th { background: #f4f8fb; color: #0b5c75; font-size: 13px; }
-.total-box { background: #e1f0f5; padding: 14px; border-radius: 15px; font-size: 18px; font-weight: bold; color: #b02a27; margin-top: 14px; }
-button { cursor: pointer; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; padding: 12px; width: 100%; margin-top: 12px; color: #fff; }
-.btn-update { background: #f0ad4e; }
-.btn-exit { background: #d9534f; }
-.btn-main { background: #0b5c75; }
-button:disabled { opacity: .6; cursor: wait; }
-input, select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #cfe3ea; border-radius: 12px; font-size: 16px; background: #fff; }
-label { display: block; text-align: right; font-size: 13px; color: #0b5c75; margin-top: 10px; }
-.error { color: #b02a27; font-size: 14px; margin-top: 10px; min-height: 18px; }
-.ok { color: #2a7a3b; }
-.notice { background: #fff4df; color: #8a5a00; border-radius: 12px; padding: 10px; margin-bottom: 12px; font-size: 14px; }
-.row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #eef5f8; font-size: 14px; }
-.row span:first-child { color: #6b7f88; }
-.mat { display: block; background: #f4f8fb; color: #0b5c75; text-decoration: none; padding: 12px; border-radius: 12px; margin-top: 8px; font-weight: bold; }
-.avatar { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #e1f0f5; }
-.about-card { background: #0b5c75; color: #fff; width: 100%; border-radius: 20px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-.about-logo { width: 70px; height: 70px; object-fit: contain; margin-bottom: 15px; }
-.about-text { font-size: 14px; line-height: 1.8; }
-.login-logo { width: 84px; height: 84px; object-fit: contain; margin: 20px 0 14px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داتابەیسی خوێندکاران - زیندەزانی</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'GoranFont';
+            src: url('GoranFontRegular-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-gradient: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body { 
+            font-family: 'GoranFont', Tahoma, sans-serif; 
+            background: var(--bg-gradient); 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--text-main); 
+            box-sizing: border-box;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 850px; 
+            background: rgba(255, 255, 255, 0.92); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px 25px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            box-sizing: border-box; 
+            margin: auto; 
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header-logo { text-align: center; margin-bottom: 15px; }
+        .header-logo img { width: 105px; height: 105px; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
+        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+        .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
+        .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
+
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 14px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 15px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15); background: #ffffff; }
+        
+        /* کلاس بۆ دیاریکردنی خانەی هەڵە بە ڕەنگی سوور */
+        .input-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+            background: #fef2f2 !important;
+        }
+
+        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 15px; box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25); border-radius: 14px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35); }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); }
+        button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
+        button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 10px; font-size: 14px; padding: 10px; }
+        
+        .hidden { display: none !important; }
+        
+        .failed-grade {
+            color: var(--danger) !important;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        .tabs-nav { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 20px; background: #e2e8f0; padding: 6px; border-radius: 16px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 14px; font-weight: bold; color: var(--text-muted); border-radius: 12px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 20px; border-radius: 18px; margin-bottom: 15px; }
+        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; color: #0f766e; font-size: 17px; }
+
+        .table-responsive { overflow-x: auto; margin-bottom: 15px; }
+        table { width: 100%; min-width: 400px; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background-color: #e0f2fe; color: var(--primary); }
+        td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
+        tr:last-child td { border-bottom: none; }
+        
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding: 15px; background: rgba(224, 242, 254, 0.7); border-radius: 18px; border: 1px solid rgba(2, 132, 199, 0.2); }
+        .profile-img { width: 75px; height: 75px; min-width: 75px; min-height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; }
+        
+        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: white; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
+        
+        .system-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; padding: 22px; color: #ffffff; font-size: 13px; line-height: 1.8; max-width: 850px; width: 100%; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .footer-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
+
+        #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; }
+        .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; border-radius: 12px; }
+        .img-container img { max-width: 100%; }
+        .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
+        .crop-btns button { margin: 0; }
+        .field-label { display:block; margin-top: 12px; margin-bottom: 5px; font-size: 14px; color: var(--text-main); font-weight:bold; text-align: right; }
+    </style>
 </head>
 <body>
 
-<!-- چوونەژوورەوە -->
-<div class="container" id="loginView">
-  <img src="logo.png" alt="" class="login-logo" onerror="this.style.display='none'">
-  <div class="card">
-    <div class="title">چوونەژوورەوەی خوێندکار</div>
-    <label for="grade">پۆل</label>
-    <select id="grade">
-      <option value="10">پۆلی ١٠</option>
-      <option value="11">پۆلی ١١</option>
-      <option value="12">پۆلی ١٢</option>
+<div class="container" id="login-section">
+    <div class="header-logo">
+        <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
+    </div>
+    
+    <h2>داتابەیسی خوێندکاران</h2>
+    <div class="subtitle-box">
+        <div class="grade-sub">زیندەزانی (10،11،12)ی زانستی</div>
+        <div class="school-sub">ئامادەیی هەڵکەوتی کوڕان</div>
+        <div class="teacher-sub">مامۆستای زیندەزانی: گۆران محمد احمد</div>
+    </div>
+    
+    <select id="grade-level">
+        <option value="10">پۆلی ١٠ی زانستی</option>
+        <option value="11">پۆلی ١١ی زانستی</option>
+        <option value="12">پۆلی ١٢ی زانستی</option>
     </select>
-    <label for="username">یوزەرنەیم</label>
-    <input id="username" dir="ltr" autocomplete="username" autocapitalize="characters">
-    <label for="password">پاسۆرد</label>
-    <input id="password" dir="ltr" type="password" autocomplete="current-password" inputmode="numeric">
-    <div class="error" id="loginError" role="alert"></div>
-    <button class="btn-main" id="loginBtn">چوونەژوورەوە</button>
-  </div>
+
+    <input type="text" id="username" placeholder="یوزەرنەیم (کە مامۆستا پێیدایت)">
+    <input type="password" id="password" placeholder="پاسۆرد">
+    
+    <button onclick="login()">چوونەژوورەوە</button>
+    <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
 </div>
 
-<!-- بەرنامەکە -->
-<div class="container hidden" id="appView">
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="grades">نمرەکان</button>
-    <button class="tab-btn" data-tab="subjects">بابەتەکان</button>
-    <button class="tab-btn" data-tab="info">زانیارییەکان</button>
-    <button class="tab-btn" data-tab="about">دەربارەی ئێمە</button>
-  </div>
+<div class="container hidden" id="register-section">
+    <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
+    <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
+    
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    </div>
 
-  <div id="grades" class="section active">
-    <div class="card">
-      <div class="title">📊 نمرەکانی خوێندکار</div>
-      <div class="muted" id="who"></div>
-      <div id="gradesBody"></div>
-      <button class="btn-update" id="refreshBtn">🔄 نوێکردنەوە</button>
-    </div>
-    <button class="btn-exit" id="logoutBtn">دەرچوون</button>
-  </div>
+    <label class="field-label">هەڵبژاردنی وێنە:</label>
+    <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
-  <div id="subjects" class="section">
-    <div class="card">
-      <div class="title">📚 بابەتەکانی خوێندن</div>
-      <div id="materials"></div>
-    </div>
-  </div>
+    <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
+    <input type="text" id="reg-fullname" placeholder="بۆ نموونە: ئاکام عومەر ئەحمەد">
+    
+    <label class="field-label">گرووپی پۆلەکەت:</label>
+    <select id="reg-group">
+        <option value="Group A">Group A</option>
+        <option value="Group B">Group B</option>
+        <option value="Group C">Group C</option>
+        <option value="Group D">Group D</option>
+        <option value="Group E">Group E</option>
+        <option value="Group F">Group F</option>
+    </select>
 
-  <div id="info" class="section">
-    <div class="card">
-      <div class="title">⚙️ زانیارییەکان</div>
-      <div id="infoNotice"></div>
-      <div id="avatarBox"></div>
-      <div id="infoRows"></div>
-    </div>
-    <div class="card">
-      <div class="title">گۆڕینی زانیاری</div>
-      <label for="fName">ناوی سیانی</label>
-      <input id="fName">
-      <label for="fPhone">ژمارەی مۆبایل</label>
-      <input id="fPhone" dir="ltr" inputmode="tel">
-      <label for="fSchool">قوتابخانەی پێشوو</label>
-      <input id="fSchool">
-      <div class="error" id="saveMsg" role="status"></div>
-      <button class="btn-main" id="saveBtn">پاشەکەوتکردن</button>
-    </div>
-  </div>
+    <label class="field-label">ژمارەی مۆبایل:</label>
+    <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
 
-  <div id="about" class="section">
-    <div class="about-card">
-      <img src="logo.png" alt="لۆگۆ" class="about-logo" onerror="this.style.display='none'">
-      <div class="about-text">
-        ئامادەیی هەڵکەوتی کوڕان - بەشی زیندەزانی<br>
-        دیزاین و ئامادەکردنی مامۆستا گۆران محمد احمد<br>
-        مامۆستای زیندەزانی<br>
-        تەلەفۆن: 07748134314 - 07501224994
-      </div>
+    <label class="field-label">شوێنی نیشتەجێبوون:</label>
+    <input type="text" id="reg-address" placeholder="سلێمانی - ...">
+
+    <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
+    <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
+</div>
+
+<div class="container hidden" id="dashboard-section">
+    
+    <div class="profile-header">
+        <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+        <div>
+            <h2 style="margin: 0; text-align: right; color: var(--primary);"><span id="student-name"></span> 👋</h2>
+            <p style="margin: 3px 0 0 0; color: var(--text-main); font-weight: bold; font-size: 14px;">ئامادەیی هەڵکەوتی کوڕان</p>
+            <p style="margin: 3px 0 0 0; color: var(--text-muted); font-size: 13px;" id="student-grade-display"></p>
+        </div>
     </div>
-  </div>
+
+    <div id="notification-area" class="hidden">
+        <div class="notification" id="notification-text"></div>
+    </div>
+
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
+    </div>
+
+    <div id="tab-grades" class="tab-content active">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📊 نمرەکانی خوێندکار</h3>
+            
+            <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr>
+                        <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                        <td id="s1-total" style="font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr>
+                        <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                        <td id="s2-total" style="font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+                <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
+            </div>
+
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
+            <p id="refresh-msg" style="text-align:center; font-size:13px; margin:5px 0 0 0; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <div id="tab-materials" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
+            <div id="materials-list"></div>
+        </div>
+    </div>
+
+    <div id="tab-settings" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+            
+            <label class="field-label">ژمارەی مۆبایل:</label>
+            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            
+            <label class="field-label">شوێنی نیشتەجێبوون:</label>
+            <input type="text" id="input-address" placeholder="ناونیشان">
+            
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+            <input type="file" id="input-photo" accept="image/*" capture="user">
+            
+            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
+            <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+        </div>
+    </div>
+    
+    <button class="btn-logout" onclick="logout()" style="margin-top: 25px;">دەرچوون</button>
+</div>
+
+<div class="system-footer hidden" id="footer-section">
+    <img src="logo.png" alt="لۆگۆ" class="footer-logo">
+    <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
+    <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
+    <div style="font-size: 13px; opacity: 0.9; margin: 4px 0;">مامۆستای زیندەزانی (10،11،12)</div>
+    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
+    <div style="margin-top: 8px; direction: ltr; font-weight: bold;">07748134314 - 07501224994</div>
+</div>
+
+<div id="crop-modal" class="hidden">
+    <div class="crop-container-box">
+        <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
+        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە</p>
+        <div class="img-container">
+            <img id="image-to-crop" src="">
+        </div>
+        <div class="crop-btns">
+            <button onclick="cancelCrop()" style="background: var(--danger); width: 48%;">پاشگەزبوونەوە</button>
+            <button onclick="applyCrop()" style="background: var(--success); width: 48%;">پەسەندکردن</button>
+        </div>
+    </div>
 </div>
 
 <script>
-// لینکی Web App ی Apps Script لێرە دابنێ (Deploy ← Web app ← Anyone)
-const API_URL = "PASTE_WEB_APP_URL_HERE";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2NpkFu_mH9wY8C_1RGhblpFHCre6kMyJne6YckMEVRA2BKdXQJRmM3XL98X0Epbf0/exec";
+    
+    let currentUsername = "";
+    let currentGrade = "";
+    let currentPassword = "";
+    let correctGroup = "";
+    let cropper = null;
+    let finalCroppedImage = "";
+    let isRegisterPhoto = false;
+    let autoRefreshTimer = null;
 
-const $ = id => document.getElementById(id);
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const has = v => v !== undefined && v !== null && v !== "" && v !== "-";
-let sess = null, data = null;
+    window.onload = function() {
+        const savedData = localStorage.getItem("student_session");
+        const savedPass = localStorage.getItem("student_pass");
+        
+        if(savedData && savedPass) {
+            const data = JSON.parse(savedData);
+            currentUsername = data.username;
+            currentGrade = data.grade;
+            currentPassword = savedPass;
+            correctGroup = data.groupName || "";
+            renderDashboard(data);
+            refreshDataSilent();
+            startAutoRefresh();
+        }
 
-function showTab(id) {
-  document.querySelectorAll(".section").forEach(s => s.classList.toggle("active", s.id === id));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === id));
-}
-document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+        document.getElementById("username").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { login(); }
+        });
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { login(); }
+        });
+    };
 
-async function fetchLogin(g, u, p) {
-  if (API_URL.indexOf("PASTE") === 0) throw new Error("API_URL دانەنراوە");
-  const url = API_URL + "?action=login&grade=" + encodeURIComponent(g) + "&username=" + encodeURIComponent(u) + "&password=" + encodeURIComponent(p);
-  const r = await fetch(url);
-  return r.json();
-}
+    function login() {
+        currentGrade = document.getElementById("grade-level").value;
+        currentUsername = document.getElementById("username").value.trim();
+        const pass = document.getElementById("password").value.trim();
+        const statusMsg = document.getElementById("status-msg");
+        
+        if(!currentUsername || !pass) {
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە";
+            return;
+        }
 
-async function login(g, u, p, silent) {
-  const btn = $("loginBtn");
-  btn.disabled = true; $("loginError").textContent = "";
-  try {
-    const d = await fetchLogin(g, u, p);
-    if (d.status === "success") {
-      sess = { g, u, p }; data = d;
-      localStorage.setItem("sess", JSON.stringify(sess));
-      render();
-      return true;
+        statusMsg.style.color = "var(--primary)";
+        statusMsg.innerText = "چاوەڕێ بکە...";
+
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                currentPassword = pass;
+                correctGroup = data.groupName || "";
+                
+                if(data.groupName) {
+                    const groupSelect = document.getElementById("reg-group");
+                    for (let i = 0; i < groupSelect.options.length; i++) {
+                        if (groupSelect.options[i].text.trim() === data.groupName.trim()) {
+                            groupSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (!data.isRegistered) {
+                    document.getElementById("login-section").classList.add("hidden");
+                    document.getElementById("register-section").classList.remove("hidden");
+                } else {
+                    localStorage.setItem("student_session", JSON.stringify(data));
+                    localStorage.setItem("student_pass", pass);
+                    renderDashboard(data);
+                    startAutoRefresh();
+                }
+            } else {
+                statusMsg.style.color = "var(--danger)";
+                statusMsg.innerText = "یوزەرنەیم یان پاسۆرد هەڵەیە!";
+            }
+        })
+        .catch(err => {
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "سەرکەوتوونەبوو";
+        });
     }
-    if (!silent) $("loginError").textContent = d.status === "wrong_grade"
-      ? "ئەم یوزەرە لە پۆلی هەڵبژێردراودا نییە. پۆلەکە بگۆڕە."
-      : "یوزەر یان پاسۆرد هەڵەیە. دووبارە بنووسەوە.";
-    if (silent) localStorage.removeItem("sess");
-  } catch (e) {
-    if (!silent) $("loginError").textContent = e.message === "API_URL دانەنراوە" ? e.message : "پەیوەندی نییە. ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە.";
-  } finally { btn.disabled = false; }
-  return false;
-}
 
-function seasonTable(title, a, b, c, d, t) {
-  return '<div class="sub">' + title + '</div><table><tr><th>نمرەی ١٠</th><th>نمرەی ٢٠</th><th>نمرەی ١٠</th><th>نمرەی ٦٠</th><th>کۆ (100)</th></tr><tr><td>' +
-    [a, b, c, d].map(esc).join("</td><td>") + "</td><td><b>" + esc(t) + "</b></td></tr></table>";
-}
+    function refreshData() {
+        const msg = document.getElementById("refresh-msg");
+        msg.style.color = "var(--primary)";
+        msg.innerText = "دەگەڕێت بەدوای گۆڕانکارییەکاندا...";
 
-function render() {
-  $("loginView").classList.add("hidden");
-  $("appView").classList.remove("hidden");
-  const d = data;
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                correctGroup = data.groupName || "";
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+                msg.style.color = "var(--success)";
+                msg.innerText = "سەرکەوتوبوو";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "سەرکەوتوونەبوو";
+            }
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "سەرکەوتوونەبوو";
+        });
+    }
 
-  $("who").textContent = (d.studentName || sess.u) + " | " + d.groupName;
+    function refreshDataSilent() {
+        if(!currentPassword) return;
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                correctGroup = data.groupName || "";
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+            }
+        }).catch(err => {});
+    }
 
-  let html = seasonTable("وەرزی یەکەم", d.s1_10a, d.s1_20, d.s1_10b, d.s1_60, d.season1) +
-             seasonTable("وەرزی دووەم", d.s2_10a, d.s2_20, d.s2_10b, d.s2_60, d.season2);
-  html += '<div class="total-box">تێکڕای خولی یەکەم: ' + esc(d.finalGrade) + " / 100</div>";
+    function startAutoRefresh() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        autoRefreshTimer = setInterval(() => {
+            refreshDataSilent();
+        }, 5000);
+    }
 
-  if (has(d.s1_80pct) || has(d.s2_80pct)) {
-    html += '<div class="sub">خولی دووەم</div><table><tr><th>وەرز</th><th>هەڵسەنگاندن (20)</th><th>تاقیکردنەوە (80)</th><th>ئەنجام (100)</th></tr>' +
-      "<tr><td>یەکەم</td><td>" + esc(d.s1_20pct) + "</td><td>" + esc(d.s1_80pct) + "</td><td><b>" + esc(d.s1_final_second) + "</b></td></tr>" +
-      "<tr><td>دووەم</td><td>" + esc(d.s2_20pct) + "</td><td>" + esc(d.s2_80pct) + "</td><td><b>" + esc(d.s2_final_second) + "</b></td></tr></table>";
-    if (has(d.finalGrade2)) html += '<div class="total-box">تێکڕای خولی دووەم: ' + esc(d.finalGrade2) + " / 100</div>";
-  }
-  $("gradesBody").innerHTML = html;
+    function setGradeWithCheck(elementId, val, maxLimit) {
+        const el = document.getElementById(elementId);
+        let num = parseFloat(val);
+        el.innerText = (val !== "" && val !== null && val !== undefined) ? val : "-";
+        
+        el.classList.remove("failed-grade");
+        if (!isNaN(num) && num < (maxLimit / 2)) {
+            el.classList.add("failed-grade");
+        }
+    }
 
-  const mats = Array.isArray(d.materials) ? d.materials.filter(m => /^https?:\/\//.test(m.link)) : [];
-  $("materials").innerHTML = mats.length
-    ? mats.map(m => '<a class="mat" target="_blank" rel="noopener" href="' + esc(m.link) + '">' + esc(m.title) + "</a>").join("")
-    : '<div class="muted">هێشتا هیچ بابەتێک دانەنراوە.</div>';
+    function renderDashboard(data) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("register-section").classList.add("hidden");
+        document.getElementById("dashboard-section").classList.remove("hidden");
+        document.getElementById("footer-section").classList.remove("hidden");
+        
+        let groupDisplay = data.groupName ? " - " + data.groupName : "";
+        document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
+        
+        document.getElementById("student-name").innerText = data.studentName;
+        
+        document.getElementById("input-phone").value = data.phone || "";
+        document.getElementById("input-address").value = data.address || "";
+        
+        if(data.photo && data.photo.trim() !== "") {
+            document.getElementById("display-photo").src = data.photo;
+        } else {
+            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        }
+        
+        setGradeWithCheck("s1-10a", data.s1_10a, 10);
+        setGradeWithCheck("s1-20", data.s1_20, 20);
+        setGradeWithCheck("s1-10b", data.s1_10b, 10);
+        setGradeWithCheck("s1-60", data.s1_60, 60);
+        setGradeWithCheck("s1-total", data.season1, 100);
+        
+        setGradeWithCheck("s2-10a", data.s2_10a, 10);
+        setGradeWithCheck("s2-20", data.s2_20, 20);
+        setGradeWithCheck("s2-10b", data.s2_10b, 10);
+        setGradeWithCheck("s2-60", data.s2_60, 60);
+        setGradeWithCheck("s2-total", data.season2, 100);
+        
+        setGradeWithCheck("final-total", data.finalGrade, 100);
+        
+        if(data.notification && data.notification !== "") {
+            document.getElementById("notification-area").classList.remove("hidden");
+            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
+        }
+        
+        const materialsDiv = document.getElementById("materials-list");
+        materialsDiv.innerHTML = "";
+        if(data.materials && data.materials.length > 0) {
+            data.materials.forEach(mat => {
+                materialsDiv.innerHTML += `
+                <div class="material-item">
+                    <b>${mat.title}</b>
+                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
+                </div>`;
+            });
+        } else {
+            materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
+        }
+    }
 
-  $("avatarBox").innerHTML = /^https?:\/\//.test(d.photo || "") ? '<img class="avatar" alt="" src="' + esc(d.photo) + '">' : "";
-  const rows = [["ناو", d.studentName || "-"], ["پۆل", sess.g], ["گروپ", d.groupName], ["یوزەرنەیم", sess.u], ["مۆبایل", d.phone || "-"], ["قوتابخانەی پێشوو", d.oldSchool || "-"]];
-  $("infoRows").innerHTML = rows.map(r => '<div class="row"><span>' + r[0] + "</span><span>" + esc(r[1]) + "</span></div>").join("");
-  $("fName").value = d.studentName || ""; $("fPhone").value = d.phone || ""; $("fSchool").value = d.oldSchool || "";
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
 
-  if (!d.isRegistered) {
-    $("infoNotice").innerHTML = '<div class="notice">تکایە ناو و زانیارییەکانت تۆمار بکە، پاشان نمرەکانت بە ناوی خۆتەوە دەبینیت.</div>';
-    showTab("info");
-  } else { $("infoNotice").innerHTML = ""; }
-}
-
-$("loginBtn").addEventListener("click", () => {
-  const u = $("username").value.trim(), p = $("password").value.trim();
-  if (!u || !p) { $("loginError").textContent = "یوزەرنەیم و پاسۆرد بنووسە."; return; }
-  login($("grade").value, u, p, false);
-});
-["username", "password"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); }));
-
-$("refreshBtn").addEventListener("click", async () => {
-  const b = $("refreshBtn"); b.disabled = true; b.textContent = "...";
-  await login(sess.g, sess.u, sess.p, true);
-  b.disabled = false; b.textContent = "🔄 نوێکردنەوە";
-});
-
-$("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("sess"); sess = null; data = null;
-  $("password").value = "";
-  $("appView").classList.add("hidden"); $("loginView").classList.remove("hidden");
-  showTab("grades");
-});
-
-$("saveBtn").addEventListener("click", async () => {
-  const name = $("fName").value.trim(), msg = $("saveMsg");
-  if (!name) { msg.className = "error"; msg.textContent = "ناو بنووسە."; return; }
-  const b = $("saveBtn"); b.disabled = true; msg.className = "error"; msg.textContent = "";
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: "updateProfile", grade: sess.g, group: data.groupName, username: sess.u, studentName: name, phone: $("fPhone").value.trim(), oldSchool: $("fSchool").value.trim() })
+    document.getElementById("reg-input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = true;
+        handlePhotoSelection(e);
     });
-    await login(sess.g, sess.u, sess.p, true);
-    msg.className = "error ok"; msg.textContent = "پاشەکەوت کرا.";
-    showTab("info");
-  } catch (e) { msg.textContent = "پاشەکەوت نەکرا. دووبارە هەوڵ بدەرەوە."; }
-  b.disabled = false;
-});
 
-// چوونەژوورەوەی خۆکار ئەگەر پێشتر چووبێتە ژوورەوە
-try {
-  const saved = JSON.parse(localStorage.getItem("sess") || "null");
-  if (saved && saved.g && saved.u && saved.p) { $("grade").value = saved.g; login(saved.g, saved.u, saved.p, true); }
-} catch (e) { localStorage.removeItem("sess"); }
+    document.getElementById("input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = false;
+        handlePhotoSelection(e);
+    });
+
+    function handlePhotoSelection(e) {
+        const files = e.target.files;
+        if(files && files.length > 0) {
+            const url = URL.createObjectURL(files[0]);
+            const image = document.getElementById("image-to-crop");
+            image.src = url;
+            document.getElementById("crop-modal").classList.remove("hidden");
+            
+            if(cropper) { cropper.destroy(); }
+            cropper = new Cropper(image, {
+                aspectRatio: 3 / 4,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+            });
+        }
+    }
+
+    function cancelCrop() {
+        document.getElementById("crop-modal").classList.add("hidden");
+        document.getElementById("reg-input-photo").value = "";
+        document.getElementById("input-photo").value = "";
+        finalCroppedImage = "";
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
+    function applyCrop() {
+        if(!cropper) return;
+        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.5);
+        
+        if (isRegisterPhoto) {
+            document.getElementById("reg-preview-photo").src = finalCroppedImage;
+            document.getElementById("reg-preview-photo").classList.remove("input-error");
+        } else {
+            document.getElementById("display-photo").src = finalCroppedImage;
+        }
+
+        document.getElementById("crop-modal").classList.add("hidden");
+        if(cropper) { cropper.destroy(); cropper = null; }
+    }
+
+    function submitRegistration() {
+        const photoImg = document.getElementById("reg-preview-photo");
+        const fullnameInput = document.getElementById("reg-fullname");
+        const groupSelect = document.getElementById("reg-group");
+        const phoneInput = document.getElementById("reg-phone");
+        const addressInput = document.getElementById("reg-address");
+        const msg = document.getElementById("reg-msg");
+
+        // لابردنی هێمای سووری پێشوو لەسەر هەموو خانەکان
+        photoImg.classList.remove("input-error");
+        fullnameInput.classList.remove("input-error");
+        groupSelect.classList.remove("input-error");
+        phoneInput.classList.remove("input-error");
+        addressInput.classList.remove("input-error");
+
+        const fullname = fullnameInput.value.trim();
+        const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
+        const phone = phoneInput.value.trim();
+        const address = addressInput.value.trim();
+
+        // پشکنینی خانە بە خانە بە ڕەنگکردنی چوارچێوەی خانەی بەتاڵ بە سوور
+        if(!finalCroppedImage) {
+            photoImg.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە وێنە هەڵبژێرە";
+            return;
+        }
+        if(!fullname) {
+            fullnameInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە ناوی سیانی بنووسە";
+            return;
+        }
+        if (correctGroup && selectedGroup !== correctGroup.trim()) {
+            groupSelect.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە گروپی خۆت بنووسە";
+            return;
+        }
+        if(!phone) {
+            phoneInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
+            return;
+        }
+        if(!address) {
+            addressInput.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە شوێنی نیشتەجێبوون بنووسە";
+            return;
+        }
+
+        msg.style.color = "var(--primary)";
+        msg.innerText = "چاوەڕێبە...";
+
+        let payload = {
+            action: "registerProfile",
+            grade: currentGrade,
+            username: currentUsername,
+            studentName: fullname,
+            group: selectedGroup,
+            phone: phone,
+            address: address,
+            photo: finalCroppedImage
+        };
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            msg.style.color = "var(--success)";
+            msg.innerText = "سەرکەوتوبوو";
+            setTimeout(() => {
+                loginAfterRegister(selectedGroup, fullname, phone, address, finalCroppedImage);
+            }, 1500);
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "سەرکەوتوونەبوو";
+        });
+    }
+
+    function loginAfterRegister(group, fullname, phone, address, photo) {
+        const pass = document.getElementById("password").value.trim();
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
+        .then(res => res.json())
+        .then(data => {
+            data.grade = currentGrade;
+            data.username = currentUsername;
+            data.studentName = fullname;
+            data.groupName = group;
+            data.phone = phone;
+            data.address = address;
+            if(photo) data.photo = photo;
+            
+            currentPassword = pass;
+            localStorage.setItem("student_session", JSON.stringify(data));
+            localStorage.setItem("student_pass", pass);
+            renderDashboard(data);
+            startAutoRefresh();
+        });
+    }
+
+    function updateProfile() {
+        const phone = document.getElementById("input-phone").value.trim();
+        const address = document.getElementById("input-address").value.trim();
+        const btn = document.getElementById("btn-update");
+        const msg = document.getElementById("update-msg");
+        
+        btn.innerText = "چاوەڕێبە...";
+        btn.disabled = true;
+        msg.innerText = "";
+        
+        let payload = {
+            action: "updateProfile",
+            grade: currentGrade,
+            username: currentUsername,
+            phone: phone,
+            address: address,
+            photo: finalCroppedImage
+        };
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            btn.innerText = "پاشەکەوتکردن";
+            btn.disabled = false;
+            msg.style.color = "var(--success)";
+            msg.innerText = "سەرکەوتوبوو";
+            
+            const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
+            savedData.phone = payload.phone;
+            savedData.address = payload.address;
+            if(finalCroppedImage) {
+                savedData.photo = finalCroppedImage;
+            }
+            localStorage.setItem("student_session", JSON.stringify(savedData));
+            finalCroppedImage = ""; 
+            setTimeout(() => { msg.innerText = ""; }, 3000);
+        })
+        .catch(err => {
+            btn.innerText = "پاشەکەوتکردن";
+            btn.disabled = false;
+            msg.style.color = "var(--danger)";
+            msg.innerText = "سەرکەوتوونەبوو";
+        });
+    }
+
+    function logout() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        localStorage.removeItem("student_session");
+        localStorage.removeItem("student_pass");
+        window.location.reload();
+    }
 </script>
+
 </body>
 </html>
