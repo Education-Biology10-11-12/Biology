@@ -1,342 +1,257 @@
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ئامادەیی هەڵکەوتی کوڕان - پۆلی ١٠، ١١، ١٢</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="GoranFontRegular-Regular.ttf">
-    <style>
-        @font-face {
-            font-family: 'GoranFont';
-            src: url('GoranFontRegular-Regular.ttf') format('truetype');
-        }
-        * {
-            box-sizing: border-box;
-            font-family: 'GoranFont', sans-serif;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0b5c75;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: #f4f8fb;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.15);
-            position: relative;
-            padding-bottom: 50px;
-        }
-        /* Top Profile Card */
-        .profile-header {
-            background: #fff;
-            width: 100%;
-            border-radius: 20px;
-            padding: 15px 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .profile-info {
-            text-align: right;
-        }
-        .profile-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #0b5c75;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .profile-school {
-            font-size: 13px;
-            color: #666;
-            margin-top: 3px;
-        }
-        .profile-avatar {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #0b5c75;
-        }
-        /* Navigation Tabs */
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            background: #fff;
-            padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 15px;
-            font-weight: bold;
-            color: #0b5c75;
-            cursor: pointer;
-            padding: 8px 15px;
-            border-radius: 12px;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background: #e1f0f5;
-            color: #0b5c75;
-        }
-        /* Content Sections */
-        .section {
-            display: none;
-            width: 100%;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .section.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Card Styles */
-        .card {
-            background: #fff;
-            width: 100%;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0b5c75;
-            margin-bottom: 15px;
-        }
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #e1f0f5;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-        }
-        th {
-            background-color: #f4f8fb;
-            color: #0b5c75;
-        }
-        .total-box {
-            background: #e1f0f5;
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #d9534f;
-            margin-top: 15px;
-        }
-        /* Buttons */
-        .btn-update {
-            background: #f0ad4e;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .btn-exit {
-            background: #d9534f;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        /* About Tab Card */
-        .about-card {
-            background: #0b5c75;
-            color: white;
-            width: 100%;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .about-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-        .about-text {
-            font-size: 15px;
-            line-height: 1.9;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ئامادەیی هەڵکەوتی کوڕان - پۆلی ١٠، ١١، ١٢</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preload" href="GoranFontRegular-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+@font-face { font-family: 'GoranFont'; src: url('GoranFontRegular-Regular.ttf') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }
+* { box-sizing: border-box; font-family: 'GoranFont', sans-serif; }
+body { margin: 0; background: #0b5c75; color: #333; display: flex; justify-content: center; min-height: 100vh; }
+.container { width: 100%; max-width: 650px; background: #f4f8fb; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px; padding-bottom: 50px; box-shadow: 0 0 25px rgba(0,0,0,.15); }
+.hidden { display: none !important; }
+.tabs { display: flex; justify-content: space-around; width: 100%; background: #fff; padding: 10px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.05); margin-bottom: 20px; flex-wrap: wrap; gap: 5px; }
+.tab-btn { background: none; border: none; font-size: 15px; font-weight: bold; color: #0b5c75; cursor: pointer; padding: 8px 12px; border-radius: 12px; }
+.tab-btn.active { background: #e1f0f5; }
+.tab-btn:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #f0ad4e; outline-offset: 2px; }
+.section { display: none; width: 100%; }
+.section.active { display: flex; flex-direction: column; align-items: center; }
+.card { background: #fff; width: 100%; border-radius: 20px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,.05); margin-bottom: 15px; text-align: center; }
+.title { font-size: 18px; font-weight: bold; color: #0b5c75; margin-bottom: 12px; }
+.sub { font-weight: bold; color: #0b5c75; margin: 16px 0 6px; }
+.muted { color: #6b7f88; font-size: 13px; margin-bottom: 8px; }
+table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+th, td { border: 1px solid #e1f0f5; padding: 9px 4px; text-align: center; font-size: 14px; }
+th { background: #f4f8fb; color: #0b5c75; font-size: 13px; }
+.total-box { background: #e1f0f5; padding: 14px; border-radius: 15px; font-size: 18px; font-weight: bold; color: #b02a27; margin-top: 14px; }
+button { cursor: pointer; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; padding: 12px; width: 100%; margin-top: 12px; color: #fff; }
+.btn-update { background: #f0ad4e; }
+.btn-exit { background: #d9534f; }
+.btn-main { background: #0b5c75; }
+button:disabled { opacity: .6; cursor: wait; }
+input, select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #cfe3ea; border-radius: 12px; font-size: 16px; background: #fff; }
+label { display: block; text-align: right; font-size: 13px; color: #0b5c75; margin-top: 10px; }
+.error { color: #b02a27; font-size: 14px; margin-top: 10px; min-height: 18px; }
+.ok { color: #2a7a3b; }
+.notice { background: #fff4df; color: #8a5a00; border-radius: 12px; padding: 10px; margin-bottom: 12px; font-size: 14px; }
+.row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #eef5f8; font-size: 14px; }
+.row span:first-child { color: #6b7f88; }
+.mat { display: block; background: #f4f8fb; color: #0b5c75; text-decoration: none; padding: 12px; border-radius: 12px; margin-top: 8px; font-weight: bold; }
+.avatar { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #e1f0f5; }
+.about-card { background: #0b5c75; color: #fff; width: 100%; border-radius: 20px; padding: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.about-logo { width: 70px; height: 70px; object-fit: contain; margin-bottom: 15px; }
+.about-text { font-size: 14px; line-height: 1.8; }
+.login-logo { width: 84px; height: 84px; object-fit: contain; margin: 20px 0 14px; }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Top Profile Card -->
-        <div class="profile-header">
-            <div class="profile-info">
-                <div class="profile-name">
-                    محمد عومەر 
-                    <span style="font-size: 14px;">⭐</span>
-                </div>
-                <div class="profile-school">ئامادەیی هەڵکەوتی کوڕان</div>
-            </div>
-            <img src="Logo.png" alt="پڕۆفایل" class="profile-avatar">
-        </div>
+<!-- چوونەژوورەوە -->
+<div class="container" id="loginView">
+  <img src="logo.png" alt="" class="login-logo" onerror="this.style.display='none'">
+  <div class="card">
+    <div class="title">چوونەژوورەوەی خوێندکار</div>
+    <label for="grade">پۆل</label>
+    <select id="grade">
+      <option value="10">پۆلی ١٠</option>
+      <option value="11">پۆلی ١١</option>
+      <option value="12">پۆلی ١٢</option>
+    </select>
+    <label for="username">یوزەرنەیم</label>
+    <input id="username" dir="ltr" autocomplete="username" autocapitalize="characters">
+    <label for="password">پاسۆرد</label>
+    <input id="password" dir="ltr" type="password" autocomplete="current-password" inputmode="numeric">
+    <div class="error" id="loginError" role="alert"></div>
+    <button class="btn-main" id="loginBtn">چوونەژوورەوە</button>
+  </div>
+</div>
 
-        <!-- Navigation Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('grades', this)">نمرەکان</button>
-            <button class="tab-btn" onclick="switchTab('subjects', this)">بابەتەکان</button>
-            <button class="tab-btn" onclick="switchTab('info', this)">زانیارییەکان</button>
-            <button class="tab-btn" onclick="switchTab('about', this)">دەربارەی ئێمە</button>
-        </div>
+<!-- بەرنامەکە -->
+<div class="container hidden" id="appView">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="grades">نمرەکان</button>
+    <button class="tab-btn" data-tab="subjects">بابەتەکان</button>
+    <button class="tab-btn" data-tab="info">زانیارییەکان</button>
+    <button class="tab-btn" data-tab="about">دەربارەی ئێمە</button>
+  </div>
 
-        <!-- Grades Section -->
-        <div id="grades" class="section active">
-            <div class="card">
-                <div class="title">📊 نمرەکانی خوێندکار</div>
-                
-                <div style="font-weight: bold; color: #0b5c75; margin-bottom: 5px; text-align: right;">وەرزی یەکەم</div>
-                <table>
-                    <tr>
-                        <th>بابەت</th>
-                        <th>تەقویمی</th>
-                        <th>پۆل</th>
-                        <th>کۆتایی</th>
-                        <th>کۆی گشتی</th>
-                    </tr>
-                    <tr>
-                        <td>زیندەزانی</td>
-                        <td>١٠</td>
-                        <td>٢٠</td>
-                        <td>١٠</td>
-                        <td>40</td>
-                    </tr>
-                    <tr>
-                        <td>کیفیا</td>
-                        <td>٢</td>
-                        <td>١</td>
-                        <td>٣</td>
-                        <td>6</td>
-                    </tr>
-                </table>
-
-                <div style="font-weight: bold; color: #0b5c75; margin: 20px 0 5px 0; text-align: right;">وەرزی دووەم</div>
-                <table>
-                    <tr>
-                        <th>بابەت</th>
-                        <th>تەقویمی</th>
-                        <th>پۆل</th>
-                        <th>کۆتایی</th>
-                        <th>کۆی گشتی</th>
-                    </tr>
-                    <tr>
-                        <td>زیندەزانی</td>
-                        <td>١٠</td>
-                        <td>٢٠</td>
-                        <td>١٠</td>
-                        <td>40</td>
-                    </tr>
-                    <tr>
-                        <td>کیفیا</td>
-                        <td>٢</td>
-                        <td>٣</td>
-                        <td>٤</td>
-                        <td>9</td>
-                    </tr>
-                </table>
-
-                <div class="total-box">
-                    تێکڕای کۆتایی ساڵ: 19
-                </div>
-
-                <button class="btn-update">🔄 نوێکردنەوە</button>
-            </div>
-            
-            <button class="btn-exit">دەرچوون</button>
-        </div>
-
-        <!-- Subjects Section -->
-        <div id="subjects" class="section">
-            <div class="card">
-                <div class="title">📚 بابەتەکانی خوێندن</div>
-                <p>لیستی بابەتەکان و پەڕووکەکان لێرە دەبن.</p>
-            </div>
-        </div>
-
-        <!-- Info Section -->
-        <div id="info" class="section">
-            <div class="card">
-                <div class="title">⚙️ زانیارییەکان</div>
-                <p>زانیاری دەربارەی قوتابی و ئامادەیی هەڵکەوتی کوڕان.</p>
-            </div>
-        </div>
-
-        <!-- About Us Section -->
-        <div id="about" class="section">
-            <div class="about-card">
-                <img src="logo.png" alt="لۆگۆ" class="about-logo">
-                <div class="about-text">
-                    ئامادەیی هەڵکەوتی کوڕان - بەشی زیندەزانی<br>
-                    دیزاین و ئامادەکردنی مامۆستا گۆران محمد احمد<br>
-                    مامۆستای زیندەزانی<br>
-                    تەلەفۆن: 07748134314 - 07501224994
-                </div>
-            </div>
-        </div>
+  <div id="grades" class="section active">
+    <div class="card">
+      <div class="title">📊 نمرەکانی خوێندکار</div>
+      <div class="muted" id="who"></div>
+      <div id="gradesBody"></div>
+      <button class="btn-update" id="refreshBtn">🔄 نوێکردنەوە</button>
     </div>
+    <button class="btn-exit" id="logoutBtn">دەرچوون</button>
+  </div>
 
-    <script>
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-    </script>
+  <div id="subjects" class="section">
+    <div class="card">
+      <div class="title">📚 بابەتەکانی خوێندن</div>
+      <div id="materials"></div>
+    </div>
+  </div>
+
+  <div id="info" class="section">
+    <div class="card">
+      <div class="title">⚙️ زانیارییەکان</div>
+      <div id="infoNotice"></div>
+      <div id="avatarBox"></div>
+      <div id="infoRows"></div>
+    </div>
+    <div class="card">
+      <div class="title">گۆڕینی زانیاری</div>
+      <label for="fName">ناوی سیانی</label>
+      <input id="fName">
+      <label for="fPhone">ژمارەی مۆبایل</label>
+      <input id="fPhone" dir="ltr" inputmode="tel">
+      <label for="fSchool">قوتابخانەی پێشوو</label>
+      <input id="fSchool">
+      <div class="error" id="saveMsg" role="status"></div>
+      <button class="btn-main" id="saveBtn">پاشەکەوتکردن</button>
+    </div>
+  </div>
+
+  <div id="about" class="section">
+    <div class="about-card">
+      <img src="logo.png" alt="لۆگۆ" class="about-logo" onerror="this.style.display='none'">
+      <div class="about-text">
+        ئامادەیی هەڵکەوتی کوڕان - بەشی زیندەزانی<br>
+        دیزاین و ئامادەکردنی مامۆستا گۆران محمد احمد<br>
+        مامۆستای زیندەزانی<br>
+        تەلەفۆن: 07748134314 - 07501224994
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// لینکی Web App ی Apps Script لێرە دابنێ (Deploy ← Web app ← Anyone)
+const API_URL = "PASTE_WEB_APP_URL_HERE";
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const has = v => v !== undefined && v !== null && v !== "" && v !== "-";
+let sess = null, data = null;
+
+function showTab(id) {
+  document.querySelectorAll(".section").forEach(s => s.classList.toggle("active", s.id === id));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === id));
+}
+document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+
+async function fetchLogin(g, u, p) {
+  if (API_URL.indexOf("PASTE") === 0) throw new Error("API_URL دانەنراوە");
+  const url = API_URL + "?action=login&grade=" + encodeURIComponent(g) + "&username=" + encodeURIComponent(u) + "&password=" + encodeURIComponent(p);
+  const r = await fetch(url);
+  return r.json();
+}
+
+async function login(g, u, p, silent) {
+  const btn = $("loginBtn");
+  btn.disabled = true; $("loginError").textContent = "";
+  try {
+    const d = await fetchLogin(g, u, p);
+    if (d.status === "success") {
+      sess = { g, u, p }; data = d;
+      localStorage.setItem("sess", JSON.stringify(sess));
+      render();
+      return true;
+    }
+    if (!silent) $("loginError").textContent = d.status === "wrong_grade"
+      ? "ئەم یوزەرە لە پۆلی هەڵبژێردراودا نییە. پۆلەکە بگۆڕە."
+      : "یوزەر یان پاسۆرد هەڵەیە. دووبارە بنووسەوە.";
+    if (silent) localStorage.removeItem("sess");
+  } catch (e) {
+    if (!silent) $("loginError").textContent = e.message === "API_URL دانەنراوە" ? e.message : "پەیوەندی نییە. ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە.";
+  } finally { btn.disabled = false; }
+  return false;
+}
+
+function seasonTable(title, a, b, c, d, t) {
+  return '<div class="sub">' + title + '</div><table><tr><th>نمرەی ١٠</th><th>نمرەی ٢٠</th><th>نمرەی ١٠</th><th>نمرەی ٦٠</th><th>کۆ (100)</th></tr><tr><td>' +
+    [a, b, c, d].map(esc).join("</td><td>") + "</td><td><b>" + esc(t) + "</b></td></tr></table>";
+}
+
+function render() {
+  $("loginView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+  const d = data;
+
+  $("who").textContent = (d.studentName || sess.u) + " | " + d.groupName;
+
+  let html = seasonTable("وەرزی یەکەم", d.s1_10a, d.s1_20, d.s1_10b, d.s1_60, d.season1) +
+             seasonTable("وەرزی دووەم", d.s2_10a, d.s2_20, d.s2_10b, d.s2_60, d.season2);
+  html += '<div class="total-box">تێکڕای خولی یەکەم: ' + esc(d.finalGrade) + " / 100</div>";
+
+  if (has(d.s1_80pct) || has(d.s2_80pct)) {
+    html += '<div class="sub">خولی دووەم</div><table><tr><th>وەرز</th><th>هەڵسەنگاندن (20)</th><th>تاقیکردنەوە (80)</th><th>ئەنجام (100)</th></tr>' +
+      "<tr><td>یەکەم</td><td>" + esc(d.s1_20pct) + "</td><td>" + esc(d.s1_80pct) + "</td><td><b>" + esc(d.s1_final_second) + "</b></td></tr>" +
+      "<tr><td>دووەم</td><td>" + esc(d.s2_20pct) + "</td><td>" + esc(d.s2_80pct) + "</td><td><b>" + esc(d.s2_final_second) + "</b></td></tr></table>";
+    if (has(d.finalGrade2)) html += '<div class="total-box">تێکڕای خولی دووەم: ' + esc(d.finalGrade2) + " / 100</div>";
+  }
+  $("gradesBody").innerHTML = html;
+
+  const mats = Array.isArray(d.materials) ? d.materials.filter(m => /^https?:\/\//.test(m.link)) : [];
+  $("materials").innerHTML = mats.length
+    ? mats.map(m => '<a class="mat" target="_blank" rel="noopener" href="' + esc(m.link) + '">' + esc(m.title) + "</a>").join("")
+    : '<div class="muted">هێشتا هیچ بابەتێک دانەنراوە.</div>';
+
+  $("avatarBox").innerHTML = /^https?:\/\//.test(d.photo || "") ? '<img class="avatar" alt="" src="' + esc(d.photo) + '">' : "";
+  const rows = [["ناو", d.studentName || "-"], ["پۆل", sess.g], ["گروپ", d.groupName], ["یوزەرنەیم", sess.u], ["مۆبایل", d.phone || "-"], ["قوتابخانەی پێشوو", d.oldSchool || "-"]];
+  $("infoRows").innerHTML = rows.map(r => '<div class="row"><span>' + r[0] + "</span><span>" + esc(r[1]) + "</span></div>").join("");
+  $("fName").value = d.studentName || ""; $("fPhone").value = d.phone || ""; $("fSchool").value = d.oldSchool || "";
+
+  if (!d.isRegistered) {
+    $("infoNotice").innerHTML = '<div class="notice">تکایە ناو و زانیارییەکانت تۆمار بکە، پاشان نمرەکانت بە ناوی خۆتەوە دەبینیت.</div>';
+    showTab("info");
+  } else { $("infoNotice").innerHTML = ""; }
+}
+
+$("loginBtn").addEventListener("click", () => {
+  const u = $("username").value.trim(), p = $("password").value.trim();
+  if (!u || !p) { $("loginError").textContent = "یوزەرنەیم و پاسۆرد بنووسە."; return; }
+  login($("grade").value, u, p, false);
+});
+["username", "password"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); }));
+
+$("refreshBtn").addEventListener("click", async () => {
+  const b = $("refreshBtn"); b.disabled = true; b.textContent = "...";
+  await login(sess.g, sess.u, sess.p, true);
+  b.disabled = false; b.textContent = "🔄 نوێکردنەوە";
+});
+
+$("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("sess"); sess = null; data = null;
+  $("password").value = "";
+  $("appView").classList.add("hidden"); $("loginView").classList.remove("hidden");
+  showTab("grades");
+});
+
+$("saveBtn").addEventListener("click", async () => {
+  const name = $("fName").value.trim(), msg = $("saveMsg");
+  if (!name) { msg.className = "error"; msg.textContent = "ناو بنووسە."; return; }
+  const b = $("saveBtn"); b.disabled = true; msg.className = "error"; msg.textContent = "";
+  try {
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "updateProfile", grade: sess.g, group: data.groupName, username: sess.u, studentName: name, phone: $("fPhone").value.trim(), oldSchool: $("fSchool").value.trim() })
+    });
+    await login(sess.g, sess.u, sess.p, true);
+    msg.className = "error ok"; msg.textContent = "پاشەکەوت کرا.";
+    showTab("info");
+  } catch (e) { msg.textContent = "پاشەکەوت نەکرا. دووبارە هەوڵ بدەرەوە."; }
+  b.disabled = false;
+});
+
+// چوونەژوورەوەی خۆکار ئەگەر پێشتر چووبێتە ژوورەوە
+try {
+  const saved = JSON.parse(localStorage.getItem("sess") || "null");
+  if (saved && saved.g && saved.u && saved.p) { $("grade").value = saved.g; login(saved.g, saved.u, saved.p, true); }
+} catch (e) { localStorage.removeItem("sess"); }
+</script>
 </body>
 </html>
