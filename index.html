@@ -209,6 +209,8 @@
         <div class="notification" id="notification-text"></div>
     </div>
 
+    <div id="second-round-area"></div>
+
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="switchTab('tab-grades', this)">📊 نمرەکان</button>
         <button class="tab-btn" onclick="switchTab('tab-materials', this)">📚 بابەتەکان</button>
@@ -219,10 +221,10 @@
         <div class="card" style="margin-bottom: 0;">
             <h3>📊 نمرەکانی خوێندکار</h3>
             
-            <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم</h4>
+            <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی وەرز</th></tr>
                     <tr>
                         <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
                         <td id="s1-total" style="font-weight:bold;">-</td>
@@ -230,10 +232,10 @@
                 </table>
             </div>
 
-            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم</h4>
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی وەرز</th></tr>
                     <tr>
                         <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
                         <td id="s2-total" style="font-weight:bold;">-</td>
@@ -241,10 +243,10 @@
                 </table>
             </div>
 
-            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">خولی یەکەم</h4>
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی یەکەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>دەرئەنجام</th></tr>
+                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>ئەنجامی کۆتایی وەرز</th></tr>
                     <tr>
                         <td id="e1-eval">-</td><td id="e1-exam">-</td>
                         <td id="e1-res" style="font-weight:bold;">-</td>
@@ -252,10 +254,10 @@
                 </table>
             </div>
 
-            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">خولی دووەم</h4>
+            <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>دەرئەنجام</th></tr>
+                    <tr><th>٢٠٪</th><th>٨٠٪</th><th>ئەنجامی کۆتایی وەرز</th></tr>
                     <tr>
                         <td id="e2-eval">-</td><td id="e2-exam">-</td>
                         <td id="e2-res" style="font-weight:bold;">-</td>
@@ -520,6 +522,7 @@
         setGradeWithCheck("e2-res", data.e2_res, 100);
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
+        buildSecondRoundNotice(data);
         
         if(data.notification && data.notification !== "") {
             document.getElementById("notification-area").classList.remove("hidden");
@@ -539,6 +542,33 @@
         } else {
             materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
         }
+    }
+
+    function buildSecondRoundNotice(data) {
+        const box = document.getElementById("second-round-area");
+        const seasons = [
+            { name: "وەرزی یەکەم", a: data.s1_10a, b: data.s1_20, c: data.s1_10b, d: data.s1_60, total: data.season1, res: data.e1_res },
+            { name: "وەرزی دووەم", a: data.s2_10a, b: data.s2_20, c: data.s2_10b, d: data.s2_60, total: data.season2, res: data.e2_res }
+        ];
+        let html = "";
+        seasons.forEach(s => {
+            // تەنها کاتێک نمرەی هەر چوار بەشەکە نووسرابێت
+            const parts = [s.a, s.b, s.c, s.d].map(parseFloat);
+            if (parts.some(isNaN)) return;
+            const total = parseFloat(s.total);
+            if (isNaN(total) || total >= 50) return;
+
+            const res = parseFloat(s.res);
+            if (!isNaN(res) && res >= 50) return; // لە خولی دووەم سەرکەوتووە
+
+            const need = Number((50 - (parts[0] + parts[2])).toFixed(1)); // ٥٠ - (١٠ + ١٠)
+            if (!isNaN(res)) {
+                html += `<div class="notification">⚠️ ئەنجامی خولی دووەمی ${s.name} (${res}) هێشتا لە ٥٠ کەمترە.</div>`;
+            } else {
+                html += `<div class="notification">⚠️ ئاگادارکردنەوە: بەپێی تاقیکردنەوەی ${s.name}، کۆی نمرەکانت (${total}) لە ٥٠ کەمترە، بۆیە خولی دووەمت هەیە. لە تاقیکردنەوەی خولی دووەمی ${s.name} پێویستە لانیکەم <u>${need}</u> نمرە لە ٨٠ بهێنیت بۆ ئەوەی ببیتە ٥٠، بۆیە هەوڵ بدە ئەو نمرەیە و زیاتر بهێنیت.</div>`;
+            }
+        });
+        box.innerHTML = html;
     }
 
     function switchTab(tabId, btn) {
