@@ -27,7 +27,7 @@
         }
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 900px;
             background: #f4f8fb;
             min-height: 100vh;
             display: flex;
@@ -37,6 +37,41 @@
             box-shadow: 0 0 25px rgba(0,0,0,0.15);
             position: relative;
             padding-bottom: 50px;
+        }
+        /* Top Profile Card */
+        .profile-header {
+            background: #fff;
+            width: 100%;
+            border-radius: 20px;
+            padding: 15px 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-info {
+            text-align: right;
+        }
+        .profile-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0b5c75;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .profile-school {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+        .profile-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #0b5c75;
         }
         /* Navigation Tabs */
         .tabs {
@@ -58,7 +93,7 @@
             font-weight: bold;
             color: #0b5c75;
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 8px 15px;
             border-radius: 12px;
             transition: 0.3s;
         }
@@ -106,7 +141,7 @@
         }
         th, td {
             border: 1px solid #e1f0f5;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             font-size: 14px;
         }
@@ -148,13 +183,13 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        /* About Tab Card (The highlighted block moved here) */
+        /* About Tab Card */
         .about-card {
             background: #0b5c75;
             color: white;
             width: 100%;
             border-radius: 20px;
-            padding: 25px;
+            padding: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
             display: flex;
@@ -162,20 +197,32 @@
             align-items: center;
         }
         .about-logo {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
             margin-bottom: 15px;
         }
         .about-text {
-            font-size: 14px;
-            line-height: 1.8;
+            font-size: 15px;
+            line-height: 1.9;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- Top Profile Card -->
+        <div class="profile-header">
+            <div class="profile-info">
+                <div class="profile-name">
+                    محمد عومەر 
+                    <span style="font-size: 14px;">⭐</span>
+                </div>
+                <div class="profile-school">ئامادەیی هەڵکەوتی کوڕان</div>
+            </div>
+            <img src="Logo.png" alt="پڕۆفایل" class="profile-avatar">
+        </div>
+
         <!-- Navigation Tabs -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('grades', this)">نمرەکان</button>
@@ -189,7 +236,7 @@
             <div class="card">
                 <div class="title">📊 نمرەکانی خوێندکار</div>
                 
-                <div style="font-weight: bold; color: #0b5c75; margin-bottom: 5px;">وەرزی یەکەم</div>
+                <div style="font-weight: bold; color: #0b5c75; margin-bottom: 5px; text-align: right;">وەرزی یەکەم</div>
                 <table>
                     <tr>
                         <th>بابەت</th>
@@ -214,7 +261,7 @@
                     </tr>
                 </table>
 
-                <div style="font-weight: bold; color: #0b5c75; margin: 15px 0 5px 0;">وەرزی دووەم</div>
+                <div style="font-weight: bold; color: #0b5c75; margin: 20px 0 5px 0; text-align: right;">وەرزی دووەم</div>
                 <table>
                     <tr>
                         <th>بابەت</th>
@@ -265,7 +312,7 @@
             </div>
         </div>
 
-        <!-- About Us Section (The requested highlighted block) -->
+        <!-- About Us Section -->
         <div id="about" class="section">
             <div class="about-card">
                 <img src="logo.png" alt="لۆگۆ" class="about-logo">
