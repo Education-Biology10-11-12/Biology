@@ -721,19 +721,19 @@
             const total = parseFloat(s.total);
             if (isNaN(total)) return;
             if (total >= 50) { // لە خولی یەکەم دەرچووە
-                html += `<div class="notification pass">✅ بەپێی تاقیکردنەوەی ${s.name}، کۆی نمرەکانت (${toKu(total)})یە، بۆیە دەرچووە.</div>`;
+                html += `<div class="notification pass">✅ بەپێی تاقیکردنەوەی ${s.name}، کۆی نمرەکانت (${toKu(total)})یە (دەرچووە).</div>`;
                 return;
             }
 
             const res = parseFloat(s.res);
             if (!isNaN(res) && res >= 50) { // لە خولی دووەم دەرچووە
-                html += `<div class="notification pass">✅ ئەنجامی خولی دووەمی ${s.name} (${toKu(res)})یە، بۆیە دەرچووە.</div>`;
+                html += `<div class="notification pass">✅ ئەنجامی خولی دووەمی ${s.name} (${toKu(res)})یە (دەرچووە).</div>`;
                 return;
             }
 
             const need = Number((50 - (parts[0] + parts[2])).toFixed(1)); // ٥٠ - (١٠ + ١٠)
             if (!isNaN(res)) {
-                html += `<div class="notification">❌ ئەنجامی خولی دووەمی ${s.name} (${toKu(res)})یە و لە ٥٠ کەمترە، بۆیە دەرنەچووە.</div>`;
+                html += `<div class="notification">❌ ئەنجامی خولی دووەمی ${s.name} (${toKu(res)})یە و لە ٥٠ کەمترە (دەرنەچووە).</div>`;
             } else {
                 html += `<div class="notification">⚠️ ئاگادارکردنەوە: بەپێی تاقیکردنەوەی ${s.name}، کۆی نمرەکانت (${toKu(total)})یە لە ٥٠ کەمترە، بۆیە خولی دووەمت هەیە. لە تاقیکردنەوەی خولی دووەمی ${s.name} پێویستە لانیکەم <u>${toKu(need)}</u> نمرە لە ٨٠ بهێنیت بۆ ئەوەی ببیتە ٥٠، بۆیە هەوڵ بدە ئەو نمرەیە و زیاتر بهێنیت.</div>`;
             }
