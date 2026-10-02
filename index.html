@@ -107,8 +107,8 @@
             font-weight: bold;
         }
         
-        .tabs-nav { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 15px; background: #e2e8f0; padding: 5px; border-radius: 14px; }
-        .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 13px; font-weight: bold; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
+        .tabs-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px; margin-bottom: 15px; background: #e2e8f0; padding: 5px; border-radius: 14px; }
+        .tab-btn { flex: 1; min-width: 75px; padding: 7px 4px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 11px; font-weight: bold; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; text-align: center; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
 
         .tab-content { display: none; }
@@ -136,9 +136,10 @@
         .material-link { padding: 6px 14px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; }
         .notification { background: #fee2e2; color: #b91c1c; padding: 10px 12px; border-radius: 12px; margin-bottom: 12px; font-weight: bold; border-right: 4px solid var(--danger); font-size: 12px; }
         
-        .system-footer { margin-top: 15px; margin-bottom: 10px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 520px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-        .footer-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 4px; }
-        .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; opacity: 0.95; }
+        /* تابی دەربارەی من */
+        .about-box { text-align: center; padding: 15px; background: linear-gradient(135deg, #0f766e 0%, #0284c7 100%); color: white; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .about-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 8px; }
+        .about-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; opacity: 0.95; }
 
         #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; }
@@ -213,7 +214,7 @@
 
 <div class="container hidden" id="dashboard-section">
     
-    <!-- بەشی سەرەوەی پرۆفایل کە دەبێت هەمیشە و لەسەرەتاوە دیار بێت -->
+    <!-- بەشی سەرەوەی پرۆفایل کە هەمیشە دیارە -->
     <div class="profile-header">
         <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
         <div>
@@ -223,18 +224,19 @@
         </div>
     </div>
 
-    <!-- تابەکان کە دەبێت لەگەڵ پرۆفایلدا لەسەرەوە جێگیر بن -->
+    <!-- تابەکان (زیادبوونی تابی دەربارەی من) -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
         <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
-        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️️ زانیارییەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-about')">ℹ️ دەربارەی من</button>
     </div>
 
     <div id="notification-area" class="hidden">
         <div class="notification" id="notification-text"></div>
     </div>
 
-    <!-- ناوەڕۆکی تابەکان -->
+    <!-- ناوەڕۆکی تابی نمرەکان -->
     <div id="tab-grades" class="tab-content active">
         <div class="card" style="margin-bottom: 0;">
             <h3>📊 نمرەکانی خوێندکار</h3>
@@ -293,6 +295,7 @@
         </div>
     </div>
 
+    <!-- ناوەڕۆکی تابی بابەتەکان -->
     <div id="tab-materials" class="tab-content">
         <div class="card" style="margin-bottom: 0;">
             <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
@@ -300,6 +303,7 @@
         </div>
     </div>
 
+    <!-- ناوەڕۆکی تابی زانیارییەکان -->
     <div id="tab-settings" class="tab-content">
         <div class="card" style="margin-bottom: 0;">
             <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
@@ -317,17 +321,20 @@
             <p id="update-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
         </div>
     </div>
+
+    <!-- ناوەڕۆکی تابی نوێ: دەربارەی من (زانیاری مامۆستا) -->
+    <div id="tab-about" class="tab-content">
+        <div class="about-box">
+            <img src="logo.png" alt="لۆگۆ" class="about-logo">
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px;">ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</div>
+            <div style="font-size: 12px; margin-bottom: 4px;">دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
+            <div style="font-size: 11px; opacity: 0.9; margin-bottom: 4px;">مامۆستای زیندەزانی (10،11،12)</div>
+            <div class="about-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
+            <div style="margin-top: 8px; direction: ltr; font-weight: bold; font-size: 13px;">07748134314 - 07501224994</div>
+        </div>
+    </div>
     
     <button class="btn-logout" onclick="logout()">دەرچوون</button>
-</div>
-
-<div class="system-footer hidden" id="footer-section">
-    <img src="logo.png" alt="لۆگۆ" class="footer-logo">
-    <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
-    <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
-    <div style="font-size: 11px; opacity: 0.9; margin: 2px 0;">مامۆستای زیندەزانی (10،11،12)</div>
-    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
-    <div style="margin-top: 4px; direction: ltr; font-weight: bold;">07748134314 - 07501224994</div>
 </div>
 
 <div id="crop-modal" class="hidden">
@@ -513,7 +520,6 @@
         document.getElementById("login-section").classList.add("hidden");
         document.getElementById("register-section").classList.add("hidden");
         document.getElementById("dashboard-section").classList.remove("hidden");
-        document.getElementById("footer-section").classList.remove("hidden");
         
         let groupDisplay = data.groupName ? " - " + data.groupName : "";
         document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
@@ -770,7 +776,6 @@
         finalCroppedImage = "";
         
         document.getElementById("dashboard-section").classList.add("hidden");
-        document.getElementById("footer-section").classList.add("hidden");
         document.getElementById("register-section").classList.add("hidden");
         document.getElementById("login-section").classList.remove("hidden");
         
