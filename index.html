@@ -270,6 +270,7 @@
                 </table>
             </div>
 
+            <div id="round2-s1" class="hidden">
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی یەکەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
@@ -280,7 +281,9 @@
                     </tr>
                 </table>
             </div>
+            </div>
 
+            <div id="round2-s2" class="hidden">
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
@@ -290,6 +293,7 @@
                         <td id="e2-res" style="font-weight:bold;">-</td>
                     </tr>
                 </table>
+            </div>
             </div>
 
             <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
@@ -549,6 +553,7 @@
         setGradeWithCheck("e2-res", data.e2_res, 100);
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
+        updateRound2Tables(data);
         buildSecondRoundNotice(data);
         updateScrollHint();
         
@@ -570,6 +575,21 @@
         } else {
             materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
         }
+    }
+
+    // خشتەی خولی دووەم تەنها بۆ ئەو وەرزانە پیشان دەدرێت کە خوێندکار خولی دووەمی هەیە
+    function updateRound2Tables(data) {
+        const defs = [
+            { id: "round2-s1", a: data.s1_10a, b: data.s1_20, c: data.s1_10b, d: data.s1_60, total: data.season1, exam: data.e1_exam, res: data.e1_res },
+            { id: "round2-s2", a: data.s2_10a, b: data.s2_20, c: data.s2_10b, d: data.s2_60, total: data.season2, exam: data.e2_exam, res: data.e2_res }
+        ];
+        defs.forEach(s => {
+            const parts = [s.a, s.b, s.c, s.d].map(parseFloat);
+            const total = parseFloat(s.total);
+            const failed = !parts.some(isNaN) && !isNaN(total) && total < 50;
+            const hasData = [s.exam, s.res].some(v => v !== "-" && v !== "" && v !== null && v !== undefined);
+            document.getElementById(s.id).classList.toggle("hidden", !(failed || hasData));
+        });
     }
 
     function buildSecondRoundNotice(data) {
