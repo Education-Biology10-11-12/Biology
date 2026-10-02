@@ -3,260 +3,781 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ئامادەیی هەڵکەوتی کوڕان - پۆلی ١٠، ١١، ١٢</title>
+    <title id="app-title">بەخێربێن</title>
+    
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="GoranFontRegular-Regular.ttf">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
         @font-face {
             font-family: 'GoranFont';
             src: url('GoranFontRegular-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
         }
-        * {
-            box-sizing: border-box;
-            font-family: 'GoranFont', sans-serif;
+
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-gradient: linear-gradient(135deg, #0f766e 0%, #0284c7 100%);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
-        body {
+
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            background-color: #0b5c75;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
         }
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: #f4f8fb;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            position: relative;
-            padding-bottom: 80px;
+
+        body { 
+            font-family: 'GoranFont', Tahoma, sans-serif; 
+            background: var(--bg-gradient); 
+            background-attachment: fixed; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            padding: 15px 10px; 
+            color: var(--text-main); 
+            box-sizing: border-box;
+            overflow-y: auto; 
+            overflow-x: hidden;
         }
-        /* Navigation Tabs */
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            background: #fff;
-            padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+
+        .container { 
+            width: 100%; 
+            max-width: 520px; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            box-sizing: border-box; 
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin: 15px auto; 
         }
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                padding: 25px;
+            }
+        }
+
+        .header-logo { text-align: center; margin-bottom: 10px; }
+        .header-logo img { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.15); object-fit: cover; border: 3px solid var(--primary); }
+        
+        h2 { text-align: center; margin-top: 0; font-weight: 700; margin-bottom: 5px; color: var(--primary); font-size: 20px; }
+        .subtitle-box { text-align: center; color: var(--text-muted); margin-bottom: 15px; font-size: 13px; line-height: 1.4; }
+        .subtitle-box .grade-sub { font-weight: bold; color: var(--primary); }
+        .subtitle-box .school-sub { color: var(--text-main); font-weight: bold; }
+
+        input, select, button { width: 100%; padding: 11px; margin: 6px 0; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; font-family: 'GoranFont', Tahoma, sans-serif; background: rgba(255,255,255,0.8); transition: all 0.3s ease; }
+        select { font-family: 'GoranFont', Tahoma, sans-serif; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); background: #ffffff; }
+        
+        .input-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+            background: #fef2f2 !important;
+        }
+
+        button { background: linear-gradient(to right, #0284c7, #0f766e); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 12px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); border-radius: 12px; padding: 12px; }
+        button:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35); }
+        button.btn-logout { background: linear-gradient(to right, var(--danger), #dc2626); margin-top: 15px; margin-bottom: 0; }
+        button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
+        button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 8px; font-size: 13px; padding: 8px; }
+        
+        .hidden { display: none !important; }
+        
+        .failed-grade {
+            color: var(--danger) !important;
+            text-decoration: underline;
             font-weight: bold;
-            color: #0b5c75;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 12px;
-            transition: 0.3s;
         }
-        .tab-btn.active {
-            background: #e1f0f5;
-            color: #0b5c75;
-        }
-        /* Content Sections */
-        .section {
-            display: none;
-            width: 100%;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .section.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        
+        .tabs-nav { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 15px; background: #e2e8f0; padding: 5px; border-radius: 14px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; font-family: 'GoranFont', Tahoma, sans-serif; font-size: 13px; font-weight: bold; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.3s; margin: 0; box-shadow: none; }
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Card Styles */
-        .card {
-            background: #fff;
-            width: 100%;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0b5c75;
-            margin-bottom: 15px;
-        }
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #e1f0f5;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-        th {
-            background-color: #f4f8fb;
-            color: #0b5c75;
-        }
-        .total-box {
-            background: #e1f0f5;
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #d9534f;
-            margin-top: 15px;
-        }
-        /* Buttons */
-        .btn-update {
-            background: #f0ad4e;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-exit {
-            background: #d9534f;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        /* Footer Logo */
-        .footer-logo {
-            margin-top: 20px;
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-        }
+
+        .card { background: rgba(248, 250, 252, 0.7); border: 1px solid #e2e8f0; padding: 15px; border-radius: 15px; margin-bottom: 12px; }
+        .card h3 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px; color: #0f766e; font-size: 16px; }
+
+        .table-responsive { overflow-x: auto; margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; min-width: 450px; border-collapse: separate; border-spacing: 0; border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        th, td { padding: 8px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 12px; white-space: nowrap; }
+        th { background-color: #e0f2fe; color: var(--primary); }
+        td:not(:last-child), th:not(:last-child) { border-left: 1px solid #e2e8f0; }
+        tr:last-child td { border-bottom: none; }
+        
+        .profile-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; background: rgba(224, 242, 254, 0.7); border-radius: 15px; border: 1px solid rgba(2, 132, 199, 0.2); }
+        .profile-img { width: 65px; height: 65px; min-width: 65px; min-height: 65px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: #e2e8f0; }
+        
+        .material-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .material-link { padding: 6px 14px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 10px 12px; border-radius: 12px; margin-bottom: 12px; font-weight: bold; border-right: 4px solid var(--danger); font-size: 12px; }
+        
+        .system-footer { margin-top: 15px; margin-bottom: 10px; text-align: center; padding: 15px; color: #ffffff; font-size: 11px; line-height: 1.6; width: 100%; max-width: 520px; box-sizing: border-box; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .footer-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); margin-bottom: 4px; }
+        .footer-single-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; opacity: 0.95; }
+
+        #crop-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .crop-container-box { width: 90%; max-width: 400px; background: white; padding: 20px; border-radius: 20px; }
+        .img-container { width: 100%; height: 350px; overflow: hidden; margin-bottom: 15px; background: #eee; border-radius: 12px; }
+        .img-container img { max-width: 100%; }
+        .crop-btns { display: flex; justify-content: space-between; gap: 10px; }
+        .crop-btns button { margin: 0; }
+        .field-label { display:block; margin-top: 10px; margin-bottom: 4px; font-size: 13px; color: var(--text-main); font-weight:bold; text-align: right; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Navigation Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('grades', this)">نمرەکان</button>
-            <button class="tab-btn" onclick="switchTab('subjects', this)">بابەتەکان</button>
-            <button class="tab-btn" onclick="switchTab('info', this)">زانیارییەکان</button>
-        </div>
+<div class="container" id="login-section">
+    <div class="header-logo">
+        <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
+    </div>
+    
+    <h2>داتابەیسی خوێندکاران</h2>
+    <div class="subtitle-box">
+        <div class="grade-sub">زیندەزانی (10،11،12)ی زانستی</div>
+        <div class="school-sub">ئامادەیی هەڵکەوتی کوڕان</div>
+        <div class="teacher-sub">مامۆستای زیندەزانی: گۆران محمد احمد</div>
+    </div>
+    
+    <select id="grade-level">
+        <option value="10">پۆلی ١٠ی زانستی</option>
+        <option value="11">پۆلی ١١ی زانستی</option>
+        <option value="12">پۆلی ١٢ی زانستی</option>
+    </select>
 
-        <!-- Grades Section -->
-        <div id="grades" class="section active">
-            <div class="card">
-                <div class="title">📊 نمرەکانی خوێندکار</div>
-                
-                <div style="font-weight: bold; color: #0b5c75; margin-bottom: 5px;">وەرزی یەکەم</div>
-                <table>
-                    <tr>
-                        <th>بابەت</th>
-                        <th>تەقویمی</th>
-                        <th>پۆل</th>
-                        <th>کۆتایی</th>
-                    </tr>
-                    <tr>
-                        <td>زیندەزانی</td>
-                        <td>١٠</td>
-                        <td>٢٠</td>
-                        <td>١٠</td>
-                    </tr>
-                    <tr>
-                        <td>کیفیا</td>
-                        <td>٢</td>
-                        <td>١</td>
-                        <td>٣</td>
-                    </tr>
-                </table>
+    <input type="text" id="username" placeholder="یوزەر نەیم">
+    <input type="password" id="password" placeholder="پاسۆرد">
+    
+    <button onclick="login()">چوونەژوورەوە</button>
+    <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
+</div>
 
-                <div style="font-weight: bold; color: #0b5c75; margin: 15px 0 5px 0;">وەرزی دووەم</div>
-                <table>
-                    <tr>
-                        <th>بابەت</th>
-                        <th>تەقویمی</th>
-                        <th>پۆل</th>
-                        <th>کۆتایی</th>
-                    </tr>
-                    <tr>
-                        <td>زیندەزانی</td>
-                        <td>١٠</td>
-                        <td>٢٠</td>
-                        <td>١٠</td>
-                    </tr>
-                    <tr>
-                        <td>کیفیا</td>
-                        <td>٢</td>
-                        <td>٣</td>
-                        <td>٤</td>
-                    </tr>
-                </table>
-
-                <div class="total-box">
-                    تێکڕای کۆتایی ساڵ: 19
-                </div>
-
-                <button class="btn-update">🔄 نوێکردنەوە</button>
-            </div>
-            
-            <button class="btn-exit">دەرچوون</button>
-        </div>
-
-        <!-- Subjects Section -->
-        <div id="subjects" class="section">
-            <div class="card">
-                <div class="title">📚 بابەتەکانی خوێندن</div>
-                <p>لیستی بابەتەکان و پەڕووکەکان لێرە دەبن.</p>
-            </div>
-        </div>
-
-        <!-- Info Section -->
-        <div id="info" class="section">
-            <div class="card">
-                <div class="title">⚙️ زانیارییەکان</div>
-                <p>زانیاری دەربارەی قوتابی و ئامادەیی هەڵکەوتی کوڕان.</p>
-            </div>
-        </div>
-
-        <!-- Footer Logo (ڕووت و بێ هیچ پێشگرێکی هەڵە) -->
-        <img src="logo.png" alt="لۆگۆ" class="footer-logo">
+<div class="container hidden" id="register-section">
+    <h2>تۆمارکردنی زانیاری سەرەتایی</h2>
+    <p style="text-align: center; color: var(--text-muted); font-size: 13px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
+    
+    <div style="text-align: center; margin-bottom: 12px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <script>
-        function switchTab(tabId, btn) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            // Show target section and activate button
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
+    <label class="field-label">هەڵبژاردنی وێنە:</label>
+    <input type="file" id="reg-input-photo" accept="image/*" capture="user">
+
+    <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
+    <input type="text" id="reg-fullname" placeholder="بۆ نموونە: ئاکام عومەر ئەحمەد">
+    
+    <label class="field-label">گرووپی پۆلەکەت:</label>
+    <select id="reg-group">
+        <option value="Group A">Group A</option>
+        <option value="Group B">Group B</option>
+        <option value="Group C">Group C</option>
+        <option value="Group D">Group D</option>
+        <option value="Group E">Group E</option>
+        <option value="Group F">Group F</option>
+        <option value="Group G">Group G</option>
+    </select>
+
+    <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+    <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+
+    <label class="field-label">ژمارەی مۆبایل:</label>
+    <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
+
+    <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
+    <p id="reg-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-top:8px;"></p>
+</div>
+
+<div class="container hidden" id="dashboard-section">
+    
+    <!-- بەشی سەرەوەی پرۆفایل کە دەبێت هەمیشە و لەسەرەتاوە دیار بێت -->
+    <div class="profile-header">
+        <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+        <div>
+            <h2 style="margin: 0; text-align: right; color: var(--primary); font-size: 18px;"><span id="student-name"></span> 👋</h2>
+            <p style="margin: 2px 0 0 0; color: var(--text-main); font-weight: bold; font-size: 12px;">ئامادەیی هەڵکەوتی کوڕان</p>
+            <p style="margin: 2px 0 0 0; color: var(--text-muted); font-size: 11px;" id="student-grade-display"></p>
+        </div>
+    </div>
+
+    <!-- تابەکان کە دەبێت لەگەڵ پرۆفایلدا لەسەرەوە جێگیر بن -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab-grades')">📊 نمرەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-materials')">📚 بابەتەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings')">⚙️ زانیارییەکان</button>
+    </div>
+
+    <div id="notification-area" class="hidden">
+        <div class="notification" id="notification-text"></div>
+    </div>
+
+    <!-- ناوەڕۆکی تابەکان -->
+    <div id="tab-grades" class="tab-content active">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📊 نمرەکانی خوێندکار</h3>
+            
+            <h4 style="margin-bottom: 4px; color: var(--primary); font-size: 13px;">وەرزی یەکەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s1-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                        <th id="th-s1-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s1-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
+                    <tr>
+                        <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
+                        <td id="s1-total" style="font-weight:bold;">-</td>
+                        <td id="s1-20pct" class="hidden">-</td>
+                        <td id="s1-80pct" class="hidden">-</td>
+                        <td id="s1-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="s1-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی یەکەم بکەیت.
+            </div>
+
+            <h4 style="margin-bottom: 4px; margin-top: 12px; color: var(--primary); font-size: 13px;">وەرزی دووەم</h4>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>کۆی گشتی</th>
+                        <th id="th-s2-20" class="hidden">هەڵسەنگاندن (20%)</th>
+                        <th id="th-s2-80" class="hidden">خولی دووەم (80%)</th>
+                        <th id="th-s2-final" class="hidden">ئەنجامی خولی دووەم</th>
+                    </tr>
+                    <tr>
+                        <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
+                        <td id="s2-total" style="font-weight:bold;">-</td>
+                        <td id="s2-20pct" class="hidden">-</td>
+                        <td id="s2-80pct" class="hidden">-</td>
+                        <td id="s2-second" class="hidden" style="color:var(--danger); font-weight:bold;">-</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="s2-second-notice" class="hidden" style="margin-top: 5px; font-size: 11px; color: var(--danger); font-weight: bold;">
+                ⚠️ ئاگاداری: پێویستە بەشداری خولی دووەمی وەرزی دووەم بکەیت.
+            </div>
+
+            <div style="background: #e0f2fe; padding: 10px; border-radius: 10px; margin-top: 12px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 14px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
+                <span id="final-total" style="font-size: 18px; font-weight: bold;">-</span>
+            </div>
+
+            <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
+            <p id="refresh-msg" style="text-align:center; font-size:12px; margin:4px 0 0 0; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <div id="tab-materials" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>📚 بابەتەکان و ڤیدیۆکان</h3>
+            <div id="materials-list"></div>
+        </div>
+    </div>
+
+    <div id="tab-settings" class="tab-content">
+        <div class="card" style="margin-bottom: 0;">
+            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+            
+            <label class="field-label">ناوی قوتابخانەی پێشووی پۆلی ٩:</label>
+            <input type="text" id="input-oldschool" placeholder="ناوی قوتابخانەی پێشوو">
+
+            <label class="field-label">ژمارەی مۆبایل:</label>
+            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+            <input type="file" id="input-photo" accept="image/*" capture="user">
+            
+            <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
+            <p id="update-msg" style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
+        </div>
+    </div>
+    
+    <button class="btn-logout" onclick="logout()">دەرچوون</button>
+</div>
+
+<div class="system-footer hidden" id="footer-section">
+    <img src="logo.png" alt="لۆگۆ" class="footer-logo">
+    <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
+    <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
+    <div style="font-size: 11px; opacity: 0.9; margin: 2px 0;">مامۆستای زیندەزانی (10،11،12)</div>
+    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
+    <div style="margin-top: 4px; direction: ltr; font-weight: bold;">07748134314 - 07501224994</div>
+</div>
+
+<div id="crop-modal" class="hidden">
+    <div class="crop-container-box">
+        <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
+        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە</p>
+        <div class="img-container">
+            <img id="image-to-crop" src="">
+        </div>
+        <div class="crop-btns">
+            <button onclick="cancelCrop()" style="background: var(--danger); width: 48%;">پاشگەزبوونەوە</button>
+            <button onclick="applyCrop()" style="background: var(--success); width: 48%;">پەسەندکردن</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2NpkFu_mH9wY8C_1RGhblpFHCre6kMyJne6YckMEVRA2BKdXQJRmM3XL98X0Epbf0/exec";
+    
+    let currentUsername = "";
+    let currentGrade = "";
+    let currentPassword = "";
+    let correctGroup = "";
+    let cropper = null;
+    let finalCroppedImage = "";
+    let isRegisterPhoto = false;
+    let autoRefreshTimer = null;
+
+    window.onload = function() {
+        checkOnlineStatus();
+        window.addEventListener('online', checkOnlineStatus);
+        window.addEventListener('offline', checkOnlineStatus);
+
+        const savedData = localStorage.getItem("student_session");
+        const savedPass = localStorage.getItem("student_pass");
+        
+        if(savedData && savedPass) {
+            const data = JSON.parse(savedData);
+            currentUsername = data.username;
+            currentGrade = data.grade;
+            currentPassword = savedPass;
+            correctGroup = data.groupName || "";
+            renderDashboard(data);
+            refreshDataSilent();
+            startAutoRefresh();
         }
-    </script>
+
+        document.getElementById("username").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { login(); }
+        });
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { login(); }
+        });
+    };
+
+    function checkOnlineStatus() {
+        if (!navigator.onLine) {
+            document.title = "تکایە هێڵی ئینتەرنێت بەکاربهێنە";
+        } else {
+            document.title = "بەخێربێن";
+        }
+    }
+
+    function login() {
+        currentGrade = document.getElementById("grade-level").value;
+        currentUsername = document.getElementById("username").value.trim();
+        const pass = document.getElementById("password").value.trim();
+        const statusMsg = document.getElementById("status-msg");
+        
+        if(!currentUsername || !pass) {
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "تکایە یوزەرنەیم و پاسۆرد پڕبکەرەوە";
+            return;
+        }
+
+        statusMsg.style.color = "var(--primary)";
+        statusMsg.innerText = "چاوەڕێ بکە...";
+
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                currentPassword = pass;
+                correctGroup = data.groupName || "";
+                
+                if(data.groupName) {
+                    const groupSelect = document.getElementById("reg-group");
+                    for (let i = 0; i < groupSelect.options.length; i++) {
+                        if (groupSelect.options[i].text.trim() === data.groupName.trim()) {
+                            groupSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (!data.isRegistered) {
+                    document.getElementById("login-section").classList.add("hidden");
+                    document.getElementById("register-section").classList.remove("hidden");
+                } else {
+                    localStorage.setItem("student_session", JSON.stringify(data));
+                    localStorage.setItem("student_pass", pass);
+                    renderDashboard(data);
+                    startAutoRefresh();
+                }
+            } else if(data.status === "wrong_grade") {
+                statusMsg.style.color = "var(--danger)";
+                statusMsg.innerText = "تکایە پۆلی خۆت هەڵبژێرە";
+            } else {
+                statusMsg.style.color = "var(--danger)";
+                statusMsg.innerText = "یوزەرنەیم یان پاسۆرد هەڵەیە!";
+            }
+        })
+        .catch(err => {
+            statusMsg.style.color = "var(--danger)";
+            statusMsg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
+        });
+    }
+
+    function refreshData() {
+        const msg = document.getElementById("refresh-msg");
+        msg.style.color = "var(--primary)";
+        msg.innerText = "دەگەڕێت بەدوای گۆڕانکارییەکاندا...";
+
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                correctGroup = data.groupName || "";
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+                msg.style.color = "var(--success)";
+                msg.innerText = "سەرکەوتوبوو";
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
+            }
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
+        });
+    }
+
+    function refreshDataSilent() {
+        if(!currentPassword) return;
+        fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(currentPassword))
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                data.grade = currentGrade;
+                data.username = currentUsername;
+                correctGroup = data.groupName || "";
+                localStorage.setItem("student_session", JSON.stringify(data));
+                renderDashboard(data);
+            }
+        }).catch(err => {});
+    }
+
+    function startAutoRefresh() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        autoRefreshTimer = setInterval(() => {
+            refreshDataSilent();
+        }, 5000);
+    }
+
+    function setGradeWithCheck(elementId, val, maxLimit) {
+        const el = document.getElementById(elementId);
+        let num = parseFloat(val);
+        el.innerText = (val !== "" && val !== null && val !== undefined) ? val : "-";
+        
+        el.classList.remove("failed-grade");
+        if (!isNaN(num) && num < (maxLimit / 2)) {
+            el.classList.add("failed-grade");
+        }
+    }
+
+    function renderDashboard(data) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("register-section").classList.add("hidden");
+        document.getElementById("dashboard-section").classList.remove("hidden");
+        document.getElementById("footer-section").classList.remove("hidden");
+        
+        let groupDisplay = data.groupName ? " - " + data.groupName : "";
+        document.getElementById("student-grade-display").innerText = "پۆلی " + currentGrade + "ی زانستی" + groupDisplay;
+        
+        document.getElementById("student-name").innerText = data.studentName;
+        
+        document.getElementById("input-oldschool").value = data.oldSchool || "";
+        document.getElementById("input-phone").value = data.phone || "";
+        
+        if(data.photo && data.photo.trim() !== "") {
+            document.getElementById("display-photo").src = data.photo;
+        } else {
+            document.getElementById("display-photo").src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        }
+        
+        setGradeWithCheck("s1-10a", data.s1_10a, 10);
+        setGradeWithCheck("s1-20", data.s1_20, 20);
+        setGradeWithCheck("s1-10b", data.s1_10b, 10);
+        setGradeWithCheck("s1-60", data.s1_60, 60);
+        setGradeWithCheck("s1-total", data.season1, 100);
+
+        if (data.s1_final_second && data.s1_final_second.toString().trim() !== "" && data.s1_final_second.toString().trim() !== "-") {
+            document.getElementById("th-s1-20").classList.remove("hidden");
+            document.getElementById("th-s1-80").classList.remove("hidden");
+            document.getElementById("th-s1-final").classList.remove("hidden");
+            document.getElementById("s1-20pct").classList.remove("hidden");
+            document.getElementById("s1-80pct").classList.remove("hidden");
+            document.getElementById("s1-second").classList.remove("hidden");
+
+            setGradeWithCheck("s1-20pct", data.s1_20pct, 100);
+            setGradeWithCheck("s1-80pct", data.s1_80pct, 100);
+            setGradeWithCheck("s1-second", data.s1_final_second, 100);
+            document.getElementById("s1-second-notice").classList.remove("hidden");
+        } else {
+            document.getElementById("th-s1-20").classList.add("hidden");
+            document.getElementById("th-s1-80").classList.add("hidden");
+            document.getElementById("th-s1-final").classList.add("hidden");
+            document.getElementById("s1-20pct").classList.add("hidden");
+            document.getElementById("s1-80pct").classList.add("hidden");
+            document.getElementById("s1-second").classList.add("hidden");
+            document.getElementById("s1-second-notice").classList.add("hidden");
+        }
+        
+        setGradeWithCheck("s2-10a", data.s2_10a, 10);
+        setGradeWithCheck("s2-20", data.s2_20, 20);
+        setGradeWithCheck("s2-10b", data.s2_10b, 10);
+        setGradeWithCheck("s2-60", data.s2_60, 60);
+        setGradeWithCheck("s2-total", data.season2, 100);
+
+        if (data.s2_final_second && data.s2_final_second.toString().trim() !== "" && data.s2_final_second.toString().trim() !== "-") {
+            document.getElementById("th-s2-20").classList.remove("hidden");
+            document.getElementById("th-s2-80").classList.remove("hidden");
+            document.getElementById("th-s2-final").classList.remove("hidden");
+            document.getElementById("s2-20pct").classList.remove("hidden");
+            document.getElementById("s2-80pct").classList.remove("hidden");
+            document.getElementById("s2-second").classList.remove("hidden");
+
+            setGradeWithCheck("s2-20pct", data.s2_20pct, 100);
+            setGradeWithCheck("s2-80pct", data.s2_80pct, 100);
+            setGradeWithCheck("s2-second", data.s2_final_second, 100);
+            document.getElementById("s2-second-notice").classList.remove("hidden");
+        } else {
+            document.getElementById("th-s2-20").classList.add("hidden");
+            document.getElementById("th-s2-80").classList.add("hidden");
+            document.getElementById("th-s2-final").classList.add("hidden");
+            document.getElementById("s2-20pct").classList.add("hidden");
+            document.getElementById("s2-80pct").classList.add("hidden");
+            document.getElementById("s2-second").classList.add("hidden");
+            document.getElementById("s2-second-notice").classList.add("hidden");
+        }
+        
+        setGradeWithCheck("final-total", data.finalGrade, 100);
+        
+        if(data.notification && data.notification !== "") {
+            document.getElementById("notification-area").classList.remove("hidden");
+            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
+        }
+        
+        const materialsDiv = document.getElementById("materials-list");
+        materialsDiv.innerHTML = "";
+        if(data.materials && data.materials.length > 0) {
+            data.materials.forEach(mat => {
+                materialsDiv.innerHTML += `
+                <div class="material-item">
+                    <b>${mat.title}</b>
+                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
+                </div>`;
+            });
+        } else {
+            materialsDiv.innerHTML = "<p style='color:#64748b; text-align:center;'>هیچ بابەتێک بوونی نییە لە ئێستادا.</p>";
+        }
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    document.getElementById("reg-input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = true;
+        handlePhotoSelection(e);
+    });
+
+    document.getElementById("input-photo").addEventListener("change", function(e) {
+        isRegisterPhoto = false;
+        handlePhotoSelection(e);
+    });
+
+    function handlePhotoSelection(e) {
+        const files = e.target.files;
+        if(files && files.length > 0) {
+            const url = URL.createObjectURL(files[0]);
+            const image = document.getElementById("image-to-crop");
+            image.src = url;
+            document.getElementById("crop-modal").classList.remove("hidden");
+            
+            if(cropper) { cropper.destroy(); }
+            cropper = new Cropper(image, {
+                aspectRatio: 3 / 4,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+            });
+        }
+    }
+
+    function cancelCrop() {
+        document.getElementById("crop-modal").classList.add("hidden");
+        document.getElementById("reg-input-photo").value = "";
+        document.getElementById("input-photo").value = "";
+        if(cropper) { cropper.destroy(); }
+    }
+
+    function applyCrop() {
+        if(!cropper) return;
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 400
+        });
+        finalCroppedImage = canvas.toDataURL("image/jpeg", 0.85);
+        
+        document.getElementById("crop-modal").classList.add("hidden");
+        
+        if(isRegisterPhoto) {
+            document.getElementById("reg-preview-photo").src = finalCroppedImage;
+        } else {
+            document.getElementById("display-photo").src = finalCroppedImage;
+        }
+        if(cropper) { cropper.destroy(); }
+    }
+
+    function submitRegistration() {
+        const fullname = document.getElementById("reg-fullname").value.trim();
+        const group = document.getElementById("reg-group").value;
+        const oldschool = document.getElementById("reg-oldschool").value.trim();
+        const phone = document.getElementById("reg-phone").value.trim();
+        const msg = document.getElementById("reg-msg");
+
+        if(!fullname || !oldschool || !phone) {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە هەموو خانه پڕبکەرەوە";
+            return;
+        }
+
+        msg.style.color = "var(--primary)";
+        msg.innerText = "تۆمار دەکرێت، چاوەڕێ بکە...";
+
+        const payload = {
+            action: "registerProfile",
+            grade: currentGrade,
+            username: currentUsername,
+            password: currentPassword,
+            studentName: fullname,
+            group: group,
+            oldSchool: oldschool,
+            phone: phone,
+            photo: finalCroppedImage
+        };
+
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                msg.style.color = "var(--success)";
+                msg.innerText = "سەرکەوتووبوو! دەگوازرێیتەوە...";
+                setTimeout(() => {
+                    login();
+                }, 1500);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "هەڵە ڕوویدا، دووبارە هەوڵ بدەرەوە";
+            }
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
+        });
+    }
+
+    function updateProfile() {
+        const oldschool = document.getElementById("input-oldschool").value.trim();
+        const phone = document.getElementById("input-phone").value.trim();
+        const msg = document.getElementById("update-msg");
+
+        msg.style.color = "var(--primary)";
+        msg.innerText = "پاشەکەوت دەکرێت...";
+
+        const payload = {
+            action: "updateProfile",
+            grade: currentGrade,
+            username: currentUsername,
+            password: currentPassword,
+            oldSchool: oldschool,
+            phone: phone,
+            photo: finalCroppedImage
+        };
+
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                msg.style.color = "var(--success)";
+                msg.innerText = "بە سەرکەوتوویی پاشەکەوت کرا";
+                refreshData();
+                setTimeout(() => { msg.innerText = ""; }, 3000);
+            } else {
+                msg.style.color = "var(--danger)";
+                msg.innerText = "هەڵە ڕوویدا";
+            }
+        })
+        .catch(err => {
+            msg.style.color = "var(--danger)";
+            msg.innerText = "تکایە هێڵی ئینتەرنێت بەکار بهێنە";
+        });
+    }
+
+    function logout() {
+        if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+        localStorage.removeItem("student_session");
+        localStorage.removeItem("student_pass");
+        currentUsername = "";
+        currentGrade = "";
+        currentPassword = "";
+        correctGroup = "";
+        finalCroppedImage = "";
+        
+        document.getElementById("dashboard-section").classList.add("hidden");
+        document.getElementById("footer-section").classList.add("hidden");
+        document.getElementById("register-section").classList.add("hidden");
+        document.getElementById("login-section").classList.remove("hidden");
+        
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("status-msg").innerText = "";
+    }
+</script>
 </body>
 </html>
