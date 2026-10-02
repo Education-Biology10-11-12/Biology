@@ -240,6 +240,19 @@
         #ptr-indicator.dragging { transition: none; }
         #ptr-indicator.spin span { display: inline-block; animation: ptrspin 0.8s linear infinite; }
         @keyframes ptrspin { to { transform: rotate(360deg); } }
+
+        /* ===== حالەتی داشبۆرد: بێ گرادیەنت و بێ چینی زیادە ===== */
+        body.dash-mode { background: #f1f5f9; }
+        body.dash-mode #dashboard-section { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; border: none; padding: 14px 18px; }
+        body.dash-mode .card { background: transparent; border: none; padding: 0; border-radius: 0; }
+        body.dash-mode .system-footer { background: #0f766e; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; box-shadow: none; }
+        @media (max-width: 699px) {
+            body.dash-mode { padding: 0; }
+            body.dash-mode #dashboard-section { max-width: none; width: 100%; margin: 0; border-radius: 0; padding: 10px 8px; }
+            body.dash-mode .system-footer { max-width: none; width: 100%; margin: 12px 0 0; border-radius: 0; }
+            body.dash-mode table { min-width: 0; }
+            body.dash-mode th, body.dash-mode td { padding: 9px 4px; font-size: 13px; }
+        }
 </style>
 </head>
 <body>
@@ -431,6 +444,7 @@
             </div>
             </div>
             
+            <p style="font-size:12px; color: var(--text-muted); margin: 6px 0 0 0; text-align: right;">تێبینی: تەنها دەتوانیت زانیارییەکان نوێ بکەیتەوە، ناتوانرێت بسڕدرێنەوە.</p>
             <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
             <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; direction:ltr;"></p>
         </div>
@@ -463,7 +477,6 @@
 </div>
 
 <div id="viewer-modal" class="hidden">
-    <iframe id="viewer-frame" src="about:blank" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
     <button class="viewer-fab viewer-back" onclick="closeViewer()" aria-label="گەڕانەوە">→</button>
     <a id="viewer-external" class="viewer-fab viewer-ext" href="#" target="_blank" rel="noopener" aria-label="کردنەوە لە پەنجەرەی نوێ">↗</a>
 </div>
@@ -628,6 +641,7 @@
     }
 
     function renderDashboard(data) {
+        document.body.classList.add("dash-mode");
         document.getElementById("login-section").classList.add("hidden");
         document.getElementById("register-section").classList.add("hidden");
         document.getElementById("dashboard-section").classList.remove("hidden");
@@ -779,23 +793,37 @@
         return url;
     }
 
+    // iframe هەر جارە تازە دروست دەکرێت و لە کاتی داخستن لادەبرێت،
+    // بۆ ئەوەی هیچ مێژوویەکی زیادە (history) نەکەوێتە ناو دوگمەی باکەوە
     function openMaterial(title, url) {
+        const modal = document.getElementById("viewer-modal");
+        const old = document.getElementById("viewer-frame");
+        if (old) old.remove();
+
         document.getElementById("viewer-external").href = url;
-        document.getElementById("viewer-frame").src = embedUrl(url);
-        document.getElementById("viewer-modal").classList.remove("hidden");
+
+        const f = document.createElement("iframe");
+        f.id = "viewer-frame";
+        f.setAttribute("allow", "autoplay; fullscreen; encrypted-media");
+        f.setAttribute("allowfullscreen", "");
+        f.src = embedUrl(url);
+        modal.insertBefore(f, modal.firstChild);
+
+        modal.classList.remove("hidden");
         document.body.style.overflow = "hidden";
         history.pushState({ view: "viewer" }, "");
     }
 
     function closeViewerUI() {
+        const f = document.getElementById("viewer-frame");
+        if (f) f.remove(); // وەستاندنی ڤیدیۆ و سڕینەوەی مێژووی ناوخۆی iframe
         document.getElementById("viewer-modal").classList.add("hidden");
-        document.getElementById("viewer-frame").src = "about:blank"; // وەستاندنی ڤیدیۆ
         document.body.style.overflow = "";
     }
 
     function closeViewer() {
+        closeViewerUI(); // یەکسەر دایدەخات، بێ گوێدانە مێژووی iframe
         if (history.state && history.state.view === "viewer") history.back();
-        else closeViewerUI();
     }
 
     document.getElementById("materials-list").addEventListener("click", function(e) {
@@ -1056,23 +1084,36 @@
     }
 
     function updateProfile() {
-        const phone = document.getElementById("input-phone").value.trim();
-        const oldSchool = document.getElementById("input-oldschool").value.trim();
+        const phoneEl = document.getElementById("input-phone");
+        const schoolEl = document.getElementById("input-oldschool");
+        const phone = phoneEl.value.trim();
+        const oldSchool = schoolEl.value.trim();
         const btn = document.getElementById("btn-update");
         const msg = document.getElementById("update-msg");
-        
+        const saved = JSON.parse(localStorage.getItem("student_session") || "{}");
+
+        // سڕینەوەی زانیاری ڕێگەپێدراو نییە: کۆنەکە دەمێنێتەوە
+        if ((!phone && saved.phone) || (!oldSchool && saved.oldSchool)) {
+            if (!phone) phoneEl.value = saved.phone || "";
+            if (!oldSchool) schoolEl.value = saved.oldSchool || "";
+            msg.style.color = "var(--danger)";
+            msg.innerText = "ناتوانیت زانیارییەکان بسڕیتەوە، تەنها دەتوانیت نوێیان بکەیتەوە";
+            setTimeout(() => { msg.innerText = ""; }, 4000);
+            return;
+        }
+
         btn.innerText = "چاوەڕێبە...";
         btn.disabled = true;
         msg.innerText = "";
-        
+
         let payload = {
             action: "updateProfile",
             grade: currentGrade,
             group: correctGroup,
             username: currentUsername,
-            phone: phone,
-            oldSchool: oldSchool,
-            photo: finalCroppedImage
+            phone: phone || undefined,
+            oldSchool: oldSchool || undefined,
+            photo: finalCroppedImage || undefined
         };
 
         fetch(SCRIPT_URL, {
@@ -1086,16 +1127,14 @@
             btn.disabled = false;
             msg.style.color = "var(--success)";
             msg.innerText = "سەرکەوتوبوو";
-            
+
             const savedData = JSON.parse(localStorage.getItem("student_session") || "{}");
-            savedData.phone = payload.phone;
-            savedData.oldSchool = payload.oldSchool;
-            if(finalCroppedImage) {
-                savedData.photo = finalCroppedImage;
-            }
+            if (phone) savedData.phone = phone;
+            if (oldSchool) savedData.oldSchool = oldSchool;
+            if (finalCroppedImage) savedData.photo = finalCroppedImage;
             localStorage.setItem("student_session", JSON.stringify(savedData));
-            document.getElementById("student-oldschool-display").innerText = oldSchool ? "🏫 قوتابخانەی پۆلی ٩: " + toKu(oldSchool) : "";
-            finalCroppedImage = ""; 
+            if (oldSchool) document.getElementById("student-oldschool-display").innerText = "🏫 قوتابخانەی پۆلی ٩: " + toKu(oldSchool);
+            finalCroppedImage = "";
             setTimeout(() => { msg.innerText = ""; }, 3000);
         })
         .catch(err => {
