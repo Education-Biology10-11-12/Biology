@@ -216,6 +216,15 @@
             #dashboard-section:not(.hidden) { display: block; max-height: none; }
             #dashboard-section > .tab-content.active { overflow-y: visible; }
         }
+
+        /* ===== بینەری ناوخۆیی بۆ PDF و ڤیدیۆ ===== */
+        #viewer-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1100; background: #0f172a; display: flex; flex-direction: column; }
+        .viewer-bar { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #0f766e; color: #fff; flex-shrink: 0; }
+        .viewer-bar button { width: auto; margin: 0; padding: 8px 16px; font-size: 14px; box-shadow: none; background: rgba(255,255,255,0.2); }
+        .viewer-bar button:hover { transform: none; box-shadow: none; }
+        #viewer-title { flex: 1; font-weight: bold; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .viewer-bar a { color: #fff; font-size: 12px; white-space: nowrap; text-decoration: underline; }
+        #viewer-frame { flex: 1; width: 100%; border: 0; background: #fff; }
 </style>
 </head>
 <body>
@@ -438,6 +447,15 @@
     </div>
 </div>
 
+<div id="viewer-modal" class="hidden">
+    <div class="viewer-bar">
+        <button onclick="closeViewer()">→ گەڕانەوە</button>
+        <span id="viewer-title"></span>
+        <a id="viewer-external" href="#" target="_blank" rel="noopener">↗ کردنەوە لە پەنجەرەی نوێ</a>
+    </div>
+    <iframe id="viewer-frame" src="about:blank" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
+</div>
+
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2NpkFu_mH9wY8C_1RGhblpFHCre6kMyJne6YckMEVRA2BKdXQJRmM3XL98X0Epbf0/exec";
     // گۆڕینی هەموو ژمارە لاتینییەکان بۆ ژمارەی کوردی (٠١٢٣٤٥٦٧٨٩)
@@ -456,6 +474,7 @@
     let autoRefreshTimer = null;
 
     window.onload = function() {
+        history.replaceState({ tab: "tab-grades" }, "");
         const savedData = localStorage.getItem("student_session");
         const savedPass = localStorage.getItem("student_pass");
         
@@ -515,6 +534,7 @@
                 if (!data.isRegistered) {
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
+                    history.pushState({ view: "register" }, "");
                 } else {
                     localStorage.setItem("student_session", JSON.stringify(data));
                     localStorage.setItem("student_pass", pass);
@@ -654,7 +674,7 @@
                 materialsDiv.innerHTML += `
                 <div class="material-item">
                     <b>${toKu(mat.title)}</b>
-                    <a href="${mat.link}" target="_blank" class="material-link">بینین</a>
+                    <a href="${mat.link}" target="_blank" rel="noopener" class="material-link" data-title="${encodeURIComponent(mat.title)}" data-link="${encodeURIComponent(mat.link)}">بینین</a>
                 </div>`;
             });
         } else {
@@ -713,14 +733,73 @@
     }
     window.addEventListener("resize", updateScrollHint);
 
-    function switchTab(tabId, btn) {
+    let currentTab = "tab-grades";
+    function switchTab(tabId, btn, fromHistory) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        
+
         document.getElementById(tabId).classList.add('active');
+        if (!btn) btn = document.querySelector('.tab-btn[onclick*="' + tabId + '"]');
         if (btn) btn.classList.add('active');
+
+        if (!fromHistory && tabId !== currentTab) history.pushState({ tab: tabId }, "");
+        currentTab = tabId;
         updateScrollHint();
     }
+
+    // گۆڕینی لینک بۆ شێوەیەک کە لەناو ئەپەکە بکرێتەوە
+    function embedUrl(url) {
+        let m;
+        if ((m = url.match(/drive\.google\.com\/file\/d\/([-\w]+)/))) return "https://drive.google.com/file/d/" + m[1] + "/preview";
+        if (/drive\.google\.com/.test(url) && (m = url.match(/[?&]id=([-\w]+)/))) return "https://drive.google.com/file/d/" + m[1] + "/preview";
+        if ((m = url.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([-\w]+)/))) return "https://docs.google.com/" + m[1] + "/d/" + m[2] + "/preview";
+        if ((m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([-\w]{11})/))) return "https://www.youtube.com/embed/" + m[1] + "?rel=0";
+        if (/\.pdf(\?|#|$)/i.test(url)) return "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(url);
+        return url;
+    }
+
+    function openMaterial(title, url) {
+        document.getElementById("viewer-title").innerText = toKu(title);
+        document.getElementById("viewer-external").href = url;
+        document.getElementById("viewer-frame").src = embedUrl(url);
+        document.getElementById("viewer-modal").classList.remove("hidden");
+        history.pushState({ view: "viewer" }, "");
+    }
+
+    function closeViewerUI() {
+        document.getElementById("viewer-modal").classList.add("hidden");
+        document.getElementById("viewer-frame").src = "about:blank"; // وەستاندنی ڤیدیۆ
+    }
+
+    function closeViewer() {
+        if (history.state && history.state.view === "viewer") history.back();
+        else closeViewerUI();
+    }
+
+    document.getElementById("materials-list").addEventListener("click", function(e) {
+        const a = e.target.closest(".material-link");
+        if (!a) return;
+        e.preventDefault();
+        openMaterial(decodeURIComponent(a.dataset.title), decodeURIComponent(a.dataset.link));
+    });
+
+    // دوگمەی باک (مۆبایل/وێبگەڕ)
+    window.addEventListener("popstate", function(e) {
+        // لە لاپەڕەی تۆمارکردن باک ڕێگەپێدراو نییە
+        if (!document.getElementById("register-section").classList.contains("hidden")) {
+            history.pushState({ view: "register" }, "");
+            return;
+        }
+        // ئەگەر PDF/ڤیدیۆ کراوەتەوە: دایبخە و بگەڕێوە بۆ لیستی بابەتەکان
+        if (!document.getElementById("viewer-modal").classList.contains("hidden")) {
+            closeViewerUI();
+            return;
+        }
+        // گەڕانەوە لە نێوان تابەکان
+        if (!document.getElementById("dashboard-section").classList.contains("hidden")) {
+            switchTab((e.state && e.state.tab) || "tab-grades", null, true);
+        }
+    });
 
     document.getElementById("reg-input-photo").addEventListener("change", function(e) {
         isRegisterPhoto = true;
