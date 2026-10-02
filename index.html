@@ -154,6 +154,35 @@
         .scroll-hint.show { display: flex; }
         .scroll-hint .arrows { display: inline-block; font-size: 18px; animation: swipe 1.4s ease-in-out infinite; }
         @keyframes swipe { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+
+        /* ===== کۆمپیوتەر: پانتر، کورتتر، سکرۆڵ ===== */
+        .grade-block h4 { margin: 10px 0 5px !important; }
+        .grades-grid { display: grid; grid-template-columns: 1fr; gap: 0 18px; }
+        @media (min-width: 900px) {
+            body { padding: 12px 10px; }
+            #dashboard-section, #footer-section { max-width: min(1250px, 96vw); }
+            .grades-grid { grid-template-columns: 1fr 1fr; }
+            .grades-grid table { min-width: 0; }
+            #tab-settings .card { max-width: 700px; margin: 0 auto !important; }
+
+            #dashboard-section:not(.hidden) {
+                display: flex; flex-direction: column;
+                margin: 0 auto; padding: 18px 25px;
+                max-height: calc(100vh - 118px);
+            }
+            #dashboard-section > * { flex-shrink: 0; }
+            #dashboard-section .profile-header { margin-bottom: 12px; }
+            #dashboard-section .tabs-nav { margin-bottom: 12px; }
+            #dashboard-section > .tab-content.active,
+            #dashboard-section > .tab-content.active { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; padding-left: 6px; }
+            #dashboard-section > .btn-logout { margin-top: 12px; padding: 9px; }
+
+            #footer-section:not(.hidden) {
+                display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+                gap: 4px 28px; margin: 12px 0 0; padding: 10px 20px; line-height: 1.5;
+            }
+            #footer-section .footer-logo { width: 40px; height: 40px; margin: 0; }
+        }
 </style>
 </head>
 <body>
@@ -248,6 +277,8 @@
             <h3>📊 نمرەکانی خوێندکار</h3>
             <div class="scroll-hint" id="scroll-hint"><span class="arrows">⇄</span> بۆ بینینی هەموو نمرەکان، خشتەکە بەرەو ڕاست و چەپ بجوڵێنە</div>
             
+            <div class="grades-grid">
+            <div class="grade-block">
             <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
@@ -258,7 +289,9 @@
                     </tr>
                 </table>
             </div>
+            </div>
 
+            <div class="grade-block">
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
@@ -269,8 +302,9 @@
                     </tr>
                 </table>
             </div>
+            </div>
 
-            <div id="round2-s1" class="hidden">
+            <div id="round2-s1" class="grade-block hidden">
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی یەکەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
@@ -283,7 +317,7 @@
             </div>
             </div>
 
-            <div id="round2-s2" class="hidden">
+            <div id="round2-s2" class="grade-block hidden">
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
@@ -293,6 +327,7 @@
                         <td id="e2-res" style="font-weight:bold;">-</td>
                     </tr>
                 </table>
+            </div>
             </div>
             </div>
 
