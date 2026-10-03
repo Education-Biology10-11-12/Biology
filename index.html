@@ -20,9 +20,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
         @font-face {
             font-family: 'GoranFont';
@@ -326,6 +323,23 @@
         html[data-theme="dark"] [style*="e0f2fe"] { background: rgba(12,74,110,0.5) !important; border-color: rgba(56,189,248,0.25) !important; }
         html[data-theme="dark"] #ptr-indicator { background: #1e293b; }
         html[data-theme="dark"] #theme-toggle { background: rgba(30,41,59,0.65); border-color: rgba(255,255,255,0.15); }
+
+        /* ===== بڕینی وێنە ===== */
+        #crop-stage { position: relative; width: min(240px, 100%); aspect-ratio: 3 / 4; margin: 0 auto 12px; overflow: hidden; background: #0f172a; border-radius: 14px; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+        #crop-stage img { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
+        #crop-zoom { padding: 0; margin: 4px 0 8px; height: 28px; border: none; background: transparent; box-shadow: none; }
+
+        /* ===== خشتەی نمرەکان: شوشەیی (Glass) ===== */
+        .table-responsive { border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.22)); backdrop-filter: blur(14px) saturate(165%); -webkit-backdrop-filter: blur(14px) saturate(165%); border: 1px solid rgba(255,255,255,0.75); box-shadow: 0 8px 24px rgba(2,132,199,0.13), inset 0 1px 0 rgba(255,255,255,0.85); }
+        .table-responsive table { background: transparent; border: none; border-radius: 0; }
+        .table-responsive th { background-color: rgba(2,132,199,0.13); }
+        .table-responsive th, .table-responsive td { border-color: rgba(148,163,184,0.28); }
+        html[data-theme="dark"] .table-responsive { background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.14); box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12); }
+        html[data-theme="dark"] .table-responsive table { background: transparent; border: none; }
+        html[data-theme="dark"] .table-responsive th { background-color: rgba(56,189,248,0.14); color: #7dd3fc; }
+        html[data-theme="dark"] .table-responsive th, html[data-theme="dark"] .table-responsive td { border-color: rgba(255,255,255,0.10); }
+
+        html[data-theme="dark"] body.dash-mode .card { background: transparent; border: none; }
 </style>
 </head>
 <body>
@@ -363,11 +377,11 @@
     <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
     
     <div style="text-align: center; margin-bottom: 15px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <label class="field-label">هەڵبژاردنی وێنە:</label>
-    <input type="file" id="reg-input-photo" accept="image/*">
+    <label class="field-label">گرتنی وێنە بە کامێرا:</label>
+    <input type="file" id="reg-input-photo" accept="image/*" capture="user">
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
     <input type="text" id="reg-fullname" placeholder="بۆ نموونە: ئاکام عومەر ئەحمەد">
@@ -390,13 +404,14 @@
 
     <button class="btn-save" onclick="submitRegistration()">تۆمارکردن و بینینی نمرەکان</button>
     <p id="reg-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-top:10px;"></p>
+    <p style="text-align:center; margin: 14px 0 0 0;"><a href="#" onclick="leaveRegistration(); return false;" style="font-size:13px; color: var(--text-muted);">ئەکاونتەکەم هەڵەیە، دەرچوون</a></p>
 </div>
 
 <div class="container hidden" id="dashboard-section">
     
     <div class="profile-header">
         <div class="profile-id">
-        <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+        <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.onerror=null;this.src=DEFAULT_PHOTO">
         <div class="profile-main">
             <h2><span id="student-name"></span> 👋</h2>
             <p>ئامادەیی هەڵکەوتی کوڕان</p>
@@ -515,8 +530,8 @@
             </div>
             
             <div class="settings-field field-wide">
-            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
-            <input type="file" id="input-photo" accept="image/*">
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل (بە کامێرا):</label>
+            <input type="file" id="input-photo" accept="image/*" capture="user">
             </div>
             </div>
             
@@ -541,10 +556,9 @@
 <div id="crop-modal" class="hidden">
     <div class="crop-container-box">
         <h3 style="text-align: center; margin-top:0;">بڕینی وێنە</h3>
-        <p style="font-size:13px; text-align:center; color:var(--text-muted);">تکایە وێنەکە ڕێکبخە</p>
-        <div class="img-container">
-            <img id="image-to-crop" src="">
-        </div>
+        <p style="font-size:13px; text-align:center; color:var(--text-muted);">وێنەکە بجوڵێنە و بە لایدەرەکە گەورەی بکە</p>
+        <div id="crop-stage"><img id="image-to-crop" alt="" draggable="false"></div>
+        <input type="range" id="crop-zoom" min="1" max="4" step="0.01" value="1" aria-label="گەورەکردن">
         <div class="crop-btns">
             <button onclick="cancelCrop()" style="background: var(--danger); width: 48%;">پاشگەزبوونەوە</button>
             <button onclick="applyCrop()" style="background: var(--success); width: 48%;">پەسەندکردن</button>
@@ -565,7 +579,7 @@
     function toKu(v) {
         return String(v).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
     }
-    const DEFAULT_PHOTO = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    const DEFAULT_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E";
     
     let currentUsername = "";
     let currentGrade = "";
@@ -623,6 +637,8 @@
             startAutoRefresh();
         }
 
+        if (!(savedData && savedPass)) restoreRegistration();
+
         document.getElementById("username").addEventListener("keypress", function(event) {
             if (event.key === "Enter") { login(); }
         });
@@ -669,9 +685,14 @@
                     document.getElementById("login-section").classList.add("hidden");
                     document.getElementById("register-section").classList.remove("hidden");
                     history.pushState({ view: "register" }, "");
+                    // بیرخستنەوە: ئەگەر مۆبایل ڕۆتەیت کرا و لاپەڕە دووبارە بووەوە، نەگەڕێتەوە بۆ لۆگین
+                    localStorage.setItem("reg_pending", JSON.stringify({ grade: currentGrade, username: currentUsername, pass: pass, group: correctGroup }));
+                    localStorage.removeItem("reg_draft");
                 } else {
                     localStorage.setItem("student_session", JSON.stringify(data));
                     localStorage.setItem("student_pass", pass);
+                    localStorage.removeItem("reg_pending");
+                    localStorage.removeItem("reg_draft");
                     renderDashboard(data);
                     startAutoRefresh();
                 }
@@ -1048,62 +1069,115 @@
         if (isRegisterPhoto) {
             document.getElementById("reg-preview-photo").src = dataUrl;
             document.getElementById("reg-preview-photo").classList.remove("input-error");
+            saveRegDraft();
         } else {
             document.getElementById("display-photo").src = dataUrl;
         }
     }
 
-    // ئەگەر Cropper کارینەکرد: خۆکارانە ناوەڕاستی وێنەکە دەبڕێت (٣:٤)
-    function autoCropFallback(img) {
-        const ratio = 3 / 4;
-        const sw = img.naturalWidth, sh = img.naturalHeight;
-        let cw = sw, ch = sw / ratio;
-        if (ch > sh) { ch = sh; cw = sh * ratio; }
-        const canvas = document.createElement("canvas");
-        canvas.width = 150; canvas.height = 200;
-        canvas.getContext("2d").drawImage(img, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, 150, 200);
-        setCroppedResult(canvas.toDataURL("image/jpeg", 0.5));
+    // ===== بڕینی وێنە (بێ کتێبخانەی دەرەکی): جوڵاندن + گەورەکردن =====
+    const CROP = { x: 0, y: 0, base: 1, z: 1, nw: 0, nh: 0, sw: 0, sh: 0, url: "" };
+
+    function cropRender() {
+        const s = CROP.base * CROP.z;
+        CROP.x = Math.min(0, Math.max(CROP.sw - CROP.nw * s, CROP.x));
+        CROP.y = Math.min(0, Math.max(CROP.sh - CROP.nh * s, CROP.y));
+        document.getElementById("image-to-crop").style.transform = "translate(" + CROP.x + "px," + CROP.y + "px) scale(" + s + ")";
+        document.getElementById("crop-zoom").value = CROP.z;
     }
-
-    function handlePhotoSelection(e) {
-        const files = e.target.files;
-        if (!files || files.length === 0) return;
-
-        if (cropper) { cropper.destroy(); cropper = null; }
-        const image = document.getElementById("image-to-crop");
-
-        image.onload = function() {
-            image.onload = null; image.onerror = null;
-            if (typeof Cropper === "undefined") { autoCropFallback(image); return; }
-            document.getElementById("crop-modal").classList.remove("hidden");
-            try {
-                cropper = new Cropper(image, { aspectRatio: 3 / 4, viewMode: 1, dragMode: 'move', autoCropArea: 1 });
-            } catch (err) {
-                document.getElementById("crop-modal").classList.add("hidden");
-                autoCropFallback(image);
-            }
-        };
-        image.onerror = function() {
-            image.onload = null; image.onerror = null;
-            alert("نەتوانرا وێنەکە بکرێتەوە، تکایە وێنەیەکی تر هەڵبژێرە");
-        };
-        image.src = URL.createObjectURL(files[0]);
+    function cropZoomAt(newZ, cx, cy) {
+        newZ = Math.min(4, Math.max(1, newZ));
+        const k = (CROP.base * newZ) / (CROP.base * CROP.z);
+        CROP.x = cx - (cx - CROP.x) * k;
+        CROP.y = cy - (cy - CROP.y) * k;
+        CROP.z = newZ;
+        cropRender();
     }
-
-    function cancelCrop() {
+    function cropInit(img) {
+        const stage = document.getElementById("crop-stage");
+        CROP.sw = stage.clientWidth; CROP.sh = stage.clientHeight;
+        CROP.nw = img.naturalWidth; CROP.nh = img.naturalHeight;
+        img.style.width = CROP.nw + "px"; img.style.height = CROP.nh + "px";
+        CROP.base = Math.max(CROP.sw / CROP.nw, CROP.sh / CROP.nh);
+        CROP.z = 1;
+        CROP.x = (CROP.sw - CROP.nw * CROP.base) / 2;
+        CROP.y = (CROP.sh - CROP.nh * CROP.base) / 2;
+        cropRender();
+    }
+    function closeCropModal() {
         document.getElementById("crop-modal").classList.add("hidden");
+        if (CROP.url) { URL.revokeObjectURL(CROP.url); CROP.url = ""; }
         document.getElementById("reg-input-photo").value = "";
         document.getElementById("input-photo").value = "";
-        finalCroppedImage = "";
-        if(cropper) { cropper.destroy(); cropper = null; }
     }
 
+    (function() {
+        const stage = document.getElementById("crop-stage");
+        const pts = new Map();
+        let lastDist = 0;
+        stage.addEventListener("pointerdown", function(e) {
+            try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+            pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+            lastDist = 0;
+        });
+        stage.addEventListener("pointermove", function(e) {
+            if (!pts.has(e.pointerId)) return;
+            const prev = pts.get(e.pointerId), cur = { x: e.clientX, y: e.clientY };
+            pts.set(e.pointerId, cur);
+            if (pts.size === 1) {
+                CROP.x += cur.x - prev.x; CROP.y += cur.y - prev.y;
+                cropRender();
+            } else if (pts.size === 2) {
+                const v = Array.from(pts.values());
+                const dist = Math.hypot(v[0].x - v[1].x, v[0].y - v[1].y);
+                const r = stage.getBoundingClientRect();
+                if (lastDist) cropZoomAt(CROP.z * dist / lastDist, (v[0].x + v[1].x) / 2 - r.left, (v[0].y + v[1].y) / 2 - r.top);
+                lastDist = dist;
+            }
+        });
+        const end = function(e) { pts.delete(e.pointerId); lastDist = 0; };
+        stage.addEventListener("pointerup", end);
+        stage.addEventListener("pointercancel", end);
+        stage.addEventListener("wheel", function(e) {
+            e.preventDefault();
+            const r = stage.getBoundingClientRect();
+            cropZoomAt(CROP.z * (e.deltaY < 0 ? 1.1 : 1 / 1.1), e.clientX - r.left, e.clientY - r.top);
+        }, { passive: false });
+        document.getElementById("crop-zoom").addEventListener("input", function() {
+            cropZoomAt(parseFloat(this.value), CROP.sw / 2, CROP.sh / 2);
+        });
+    })();
+
+    function handlePhotoSelection(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const img = document.getElementById("image-to-crop");
+        if (CROP.url) URL.revokeObjectURL(CROP.url);
+        CROP.url = URL.createObjectURL(file);
+        img.onload = function() {
+            img.onload = null; img.onerror = null;
+            document.getElementById("crop-modal").classList.remove("hidden");
+            cropInit(img);
+        };
+        img.onerror = function() {
+            img.onload = null; img.onerror = null;
+            closeCropModal();
+            alert("نەتوانرا وێنەکە بکرێتەوە، تکایە وێنەیەکی تر هەڵبژێرە");
+        };
+        img.src = CROP.url;
+    }
+
+    function cancelCrop() { closeCropModal(); }
+
     function applyCrop() {
-        if(!cropper) return;
-        const canvas = cropper.getCroppedCanvas({ width: 150, height: 200 });
-        setCroppedResult(canvas.toDataURL("image/jpeg", 0.5));
-        document.getElementById("crop-modal").classList.add("hidden");
-        if(cropper) { cropper.destroy(); cropper = null; }
+        const img = document.getElementById("image-to-crop");
+        if (!img.naturalWidth) return;
+        const s = CROP.base * CROP.z;
+        const canvas = document.createElement("canvas");
+        canvas.width = 150; canvas.height = 200;
+        canvas.getContext("2d").drawImage(img, -CROP.x / s, -CROP.y / s, CROP.sw / s, CROP.sh / s, 0, 0, 150, 200);
+        setCroppedResult(canvas.toDataURL("image/jpeg", 0.6));
+        closeCropModal();
     }
 
     // ===== ناوی سیانی: تەنها پیتی کوردی =====
@@ -1121,6 +1195,55 @@
             setTimeout(() => { if (m.innerText === "تەنها پیتی کوردی ڕێگەپێدراوە") m.innerText = ""; }, 2500);
         }
     });
+
+    // ===== پاراستنی پڕکردنەوەی زانیاری (ڕۆتەیت/دووبارەبوونەوەی لاپەڕە) =====
+    function saveRegDraft() {
+        if (!localStorage.getItem("reg_pending")) return;
+        try {
+            localStorage.setItem("reg_draft", JSON.stringify({
+                fullname: document.getElementById("reg-fullname").value,
+                phone: document.getElementById("reg-phone").value,
+                oldSchool: document.getElementById("reg-oldschool").value,
+                photo: finalCroppedImage || ""
+            }));
+        } catch (e) {}
+    }
+    ["reg-fullname", "reg-phone", "reg-oldschool"].forEach(function(id) {
+        document.getElementById(id).addEventListener("input", saveRegDraft);
+    });
+
+    function restoreRegistration() {
+        let pend = null;
+        try { pend = JSON.parse(localStorage.getItem("reg_pending") || "null"); } catch (e) {}
+        if (!pend || !pend.username) return false;
+
+        currentGrade = pend.grade; currentUsername = pend.username;
+        currentPassword = pend.pass; correctGroup = pend.group || "";
+
+        const sel = document.getElementById("reg-group");
+        for (let i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].text.trim() === correctGroup.trim()) { sel.selectedIndex = i; break; }
+        }
+        let d = {};
+        try { d = JSON.parse(localStorage.getItem("reg_draft") || "{}"); } catch (e) {}
+        if (d.fullname) document.getElementById("reg-fullname").value = d.fullname;
+        if (d.phone) document.getElementById("reg-phone").value = d.phone;
+        if (d.oldSchool) document.getElementById("reg-oldschool").value = d.oldSchool;
+        if (d.photo) {
+            finalCroppedImage = d.photo;
+            document.getElementById("reg-preview-photo").src = d.photo;
+        }
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("register-section").classList.remove("hidden");
+        history.pushState({ view: "register" }, "");
+        return true;
+    }
+
+    function leaveRegistration() {
+        localStorage.removeItem("reg_pending");
+        localStorage.removeItem("reg_draft");
+        window.location.reload();
+    }
 
     function submitRegistration() {
         const photoImg = document.getElementById("reg-preview-photo");
@@ -1212,7 +1335,7 @@
     }
 
     function loginAfterRegister(group, fullname, phone, oldSchool, photo) {
-        const pass = document.getElementById("password").value.trim();
+        const pass = currentPassword || document.getElementById("password").value.trim();
         fetch(SCRIPT_URL + "?action=login&grade=" + currentGrade + "&username=" + encodeURIComponent(currentUsername) + "&password=" + encodeURIComponent(pass))
         .then(res => res.json())
         .then(data => {
@@ -1228,6 +1351,8 @@
             currentPassword = pass;
             localStorage.setItem("student_session", JSON.stringify(data));
             localStorage.setItem("student_pass", pass);
+            localStorage.removeItem("reg_pending");
+            localStorage.removeItem("reg_draft");
             renderDashboard(data);
             startAutoRefresh();
         });
@@ -1299,6 +1424,8 @@
         if (autoRefreshTimer) clearInterval(autoRefreshTimer);
         localStorage.removeItem("student_session");
         localStorage.removeItem("student_pass");
+        localStorage.removeItem("reg_pending");
+        localStorage.removeItem("reg_draft");
         window.location.reload();
     }
 </script>
