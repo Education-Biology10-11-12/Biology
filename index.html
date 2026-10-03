@@ -10,7 +10,8 @@
         (function() {
             try {
                 var m = localStorage.getItem("theme_mode") || "auto";
-                var dark = m === "dark" || (m === "auto" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+                var h = new Date().getHours();
+                var dark = m === "dark" || (m === "auto" && (h < 6 || h >= 18));
                 document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
             } catch (e) {}
         })();
@@ -798,7 +799,8 @@
     // ===== دۆخی شەو / ڕۆژ: خۆکار (بەپێی مۆبایل) یان دەستی =====
     function applyTheme() {
         const mode = localStorage.getItem("theme_mode") || "auto";
-        const dark = mode === "dark" || (mode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        const h = new Date().getHours();
+        const dark = mode === "dark" || (mode === "auto" && (h < 6 || h >= 18));
         document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
         const meta = document.querySelector('meta[name="theme-color"]');
         if (meta) meta.setAttribute("content", dark ? "#0f172a" : "#0284c7");
@@ -813,17 +815,15 @@
         localStorage.setItem("theme_mode", next);
         applyTheme();
         const t = document.getElementById("theme-toast");
-        t.innerText = next === "auto" ? "🌓 خۆکار (بەپێی مۆبایل)" : (next === "dark" ? "🌙 دۆخی شەو" : "☀️ دۆخی ڕۆژ");
+        t.innerText = next === "auto" ? "🌓 خۆکار (ڕۆژ = ڕۆژ، شەو = شەو)" : (next === "dark" ? "🌙 دۆخی شەو" : "☀️ دۆخی ڕۆژ");
         t.classList.add("show");
         clearTimeout(themeToastTimer);
         themeToastTimer = setTimeout(() => t.classList.remove("show"), 1800);
     }
-    (function() {
-        const mq = window.matchMedia("(prefers-color-scheme: dark)");
-        const onChange = () => { if ((localStorage.getItem("theme_mode") || "auto") === "auto") applyTheme(); };
-        if (mq.addEventListener) mq.addEventListener("change", onChange);
-        else if (mq.addListener) mq.addListener(onChange);
-    })();
+    // لە دۆخی خۆکار، هەر خولەکێک کاتژمێر دەپشکنێت و ڕۆژ/شەو دەگۆڕێت
+    setInterval(function() {
+        if ((localStorage.getItem("theme_mode") || "auto") === "auto") applyTheme();
+    }, 60000);
     applyTheme();
 
     window.onload = function() {
