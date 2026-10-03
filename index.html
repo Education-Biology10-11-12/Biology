@@ -230,8 +230,6 @@
 
         /* مۆبایل: دوگمەی گەڕانەوە گەورەتر و ئاسانتر بۆ پەنجە */
         #viewer-modal { height: 100%; height: 100dvh; }
-        @media (max-width: 699px) {
-        }
 
         .notification.pass { background: #dcfce7; color: #166534; border-right-color: var(--success); }
 
@@ -485,6 +483,54 @@
             border-color: rgba(255,255,255,0.14) !important;
             box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
         }
+
+        /* ===== هەڵبژاردنی وێنە: دوگمە و نووسینی کوردی ===== */
+        .file-hidden { position: absolute !important; width: 1px !important; height: 1px !important; opacity: 0; overflow: hidden; pointer-events: none; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+        .file-picker { display: flex; align-items: center; gap: 10px; margin: 8px 0; padding: 6px; border: 1px solid #cbd5e1; border-radius: 14px; background: rgba(255,255,255,0.8); }
+        .file-btn { flex: none; padding: 9px 18px; border-radius: 10px; background: linear-gradient(to right, #0284c7, #0f766e); color: #fff; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .file-name { flex: 1; min-width: 0; font-size: 13px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        html[data-theme="dark"] .file-picker { background: rgba(30,41,59,0.85); border-color: #475569; }
+        #register-section .file-picker { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.45); }
+
+        /* ===== دۆخی ڕۆژ: تێکست تاریک بێت لەسەر باکگراوندی ڕوون ===== */
+        html[data-theme="light"] #login-section,
+        html[data-theme="light"] #register-section {
+            --text-main: #0f172a; --text-muted: #334155;
+            --primary: #075985; --danger: #b91c1c; --success: #047857;
+            background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.52));
+            border-color: rgba(255,255,255,0.85);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.9);
+            color: #0f172a;
+        }
+        html[data-theme="light"] #login-section h2,
+        html[data-theme="light"] #register-section h2 { color: #075985; text-shadow: none; }
+        html[data-theme="light"] #login-section .subtitle-box { color: #334155; }
+        html[data-theme="light"] #login-section .subtitle-box .grade-sub { color: #075985; }
+        html[data-theme="light"] #login-section .subtitle-box .school-sub,
+        html[data-theme="light"] #login-section .subtitle-box .teacher-sub { color: #0f172a; }
+        html[data-theme="light"] #login-section .header-logo img { border-color: #0284c7; }
+        html[data-theme="light"] #register-section > p:not(#reg-msg) { color: #334155 !important; }
+        html[data-theme="light"] #register-section a { color: #075985 !important; }
+        html[data-theme="light"] #register-section .field-label { color: #0f172a; }
+        html[data-theme="light"] #register-section #reg-preview-photo { border-color: #0284c7 !important; }
+        html[data-theme="light"] #login-section input,
+        html[data-theme="light"] #login-section select,
+        html[data-theme="light"] #register-section input,
+        html[data-theme="light"] #register-section select {
+            background: rgba(255,255,255,0.65); border: 1px solid rgba(15,23,42,0.3); color: #0f172a;
+        }
+        html[data-theme="light"] #login-section input:focus,
+        html[data-theme="light"] #login-section select:focus,
+        html[data-theme="light"] #register-section input:focus,
+        html[data-theme="light"] #register-section select:focus {
+            background: #fff; border-color: #0284c7; box-shadow: 0 0 0 4px rgba(2,132,199,0.2);
+        }
+        html[data-theme="light"] #login-section ::placeholder,
+        html[data-theme="light"] #register-section ::placeholder { color: rgba(15,23,42,0.55); }
+        html[data-theme="light"] #register-section .file-picker { background: rgba(255,255,255,0.65); border-color: rgba(15,23,42,0.3); }
+        html[data-theme="light"] #register-section .input-error { background: rgba(254,202,202,0.7) !important; border-color: #b91c1c !important; }
+        html[data-theme="light"] #status-msg:not(:empty),
+        html[data-theme="light"] #reg-msg:not(:empty) { background: rgba(255,255,255,0.9); }
 </style>
 </head>
 <body>
@@ -525,8 +571,12 @@
         <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <label class="field-label">گرتنی وێنە بە کامێرا:</label>
-    <input type="file" id="reg-input-photo" accept="image/*" capture="user">
+    <label class="field-label">وێنەی خوێندکار:</label>
+    <div class="file-picker">
+        <label for="reg-input-photo" class="file-btn">وێنەی کەسی</label>
+        <span class="file-name" id="reg-file-name">هیچ وێنەیەکت هەڵنەبژاردووە</span>
+        <input type="file" id="reg-input-photo" accept="image/*" capture="user" class="file-hidden">
+    </div>
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە):</label>
     <input type="text" id="reg-fullname" placeholder="بۆ نموونە: ئاکام عومەر ئەحمەد">
@@ -675,8 +725,12 @@
             </div>
             
             <div class="settings-field field-wide">
-            <label class="field-label">گۆڕینی وێنەی پرۆفایل (بە کامێرا):</label>
-            <input type="file" id="input-photo" accept="image/*" capture="user">
+            <label class="field-label">گۆڕینی وێنەی پرۆفایل:</label>
+            <div class="file-picker">
+                <label for="input-photo" class="file-btn">وێنەی کەسی</label>
+                <span class="file-name" id="file-name">هیچ وێنەیەکت هەڵنەبژاردووە</span>
+                <input type="file" id="input-photo" accept="image/*" capture="user" class="file-hidden">
+            </div>
             </div>
             </div>
             
@@ -734,6 +788,12 @@
     let finalCroppedImage = "";
     let isRegisterPhoto = false;
     let autoRefreshTimer = null;
+    const NO_FILE_TXT = "هیچ وێنەیەکت هەڵنەبژاردووە";
+    const FILE_OK_TXT = "وێنەکە هەڵبژێردرا ✓";
+    function setFileLabel(id, txt) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = txt;
+    }
 
     // ===== دۆخی شەو / ڕۆژ: خۆکار (بەپێی مۆبایل) یان دەستی =====
     function applyTheme() {
@@ -1220,7 +1280,7 @@
         }
     }
 
-    // ===== بڕینی وێنە (وێنەی خوێندکار): جوڵاندن + گەورەکردن =====
+    // ===== بڕینی وێنە (بێ کتێبخانەی دەرەکی): جوڵاندن + گەورەکردن =====
     const CROP = { x: 0, y: 0, base: 1, z: 1, nw: 0, nh: 0, sw: 0, sh: 0, url: "" };
 
     function cropRender() {
@@ -1312,7 +1372,10 @@
         img.src = CROP.url;
     }
 
-    function cancelCrop() { closeCropModal(); }
+    function cancelCrop() {
+        closeCropModal();
+        setFileLabel(isRegisterPhoto ? "reg-file-name" : "file-name", finalCroppedImage ? FILE_OK_TXT : NO_FILE_TXT);
+    }
 
     function applyCrop() {
         const img = document.getElementById("image-to-crop");
@@ -1322,6 +1385,7 @@
         canvas.width = 150; canvas.height = 200;
         canvas.getContext("2d").drawImage(img, -CROP.x / s, -CROP.y / s, CROP.sw / s, CROP.sh / s, 0, 0, 150, 200);
         setCroppedResult(canvas.toDataURL("image/jpeg", 0.6));
+        setFileLabel(isRegisterPhoto ? "reg-file-name" : "file-name", FILE_OK_TXT);
         closeCropModal();
     }
 
@@ -1376,6 +1440,7 @@
         if (d.oldSchool) document.getElementById("reg-oldschool").value = d.oldSchool;
         if (d.photo) {
             finalCroppedImage = d.photo;
+            setFileLabel("reg-file-name", FILE_OK_TXT);
             document.getElementById("reg-preview-photo").src = d.photo;
         }
         document.getElementById("login-section").classList.add("hidden");
@@ -1555,6 +1620,7 @@
             localStorage.setItem("student_session", JSON.stringify(savedData));
             if (oldSchool) document.getElementById("student-oldschool-display").innerText = "🏫 قوتابخانەی پۆلی ٩: " + toKu(oldSchool);
             finalCroppedImage = "";
+            setFileLabel("file-name", NO_FILE_TXT);
             setTimeout(() => { msg.innerText = ""; }, 3000);
         })
         .catch(err => {
