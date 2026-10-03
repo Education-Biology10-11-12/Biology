@@ -1,56 +1,62 @@
 <!-- ============================================================
-  ١) لە <head> دا، جێگەی ئەو دوو مێتایەی ئێستا (viewport و apple-mobile-web-app-*) بگرێتەوە:
+  ١) لە <head> دا: ئەم هێڵانە لابە
+     <meta name="viewport" ...>
+     <link rel="manifest" ...>
+     <meta name="mobile-web-app-capable" ...>
+     <meta name="apple-mobile-web-app-capable" ...>
+     <meta name="apple-mobile-web-app-status-bar-style" ...>
+  و ئەمەیان لە جێگەیان دابنێ (<meta name="theme-color"> وەک خۆی بمێنێت):
 ============================================================ -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="زیندەزانی هەڵکەوت">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <!-- ============================================================
-  ٢) لە ناو <style> دا زیادی بکە (بۆ ئایۆس کە شاشەکە دەچێتە ژێر ستاتس‌بار):
+  ٢) لە کۆتایی <style> (دوای دوایین ڕێسای CSS و پێش </style>) دایبنێ:
 ============================================================ -->
-<style>
-  body { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); }
+/* ===== دۆخی ئەپ (دابەزێنراو): ئایفۆن دەچێتە ژێر ستاتس‌بار ===== */
+@media (display-mode: standalone) {
+  body { padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
   body.dash-mode { padding-top: env(safe-area-inset-top, 0px); }
-
-  #install-banner { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 1300; display: none; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: rgba(15,23,42,0.92); color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); max-width: 520px; margin: 0 auto; font-family: 'GoranFont', Tahoma, sans-serif; direction: rtl; }
-  #install-banner.show { display: flex; }
-  #install-banner img { width: 44px; height: 44px; border-radius: 12px; flex: none; }
-  #install-banner .ib-text { flex: 1; font-size: 13px; line-height: 1.6; }
-  #install-banner .ib-text b { font-size: 14px; }
-  #install-banner button { width: auto; margin: 0; padding: 9px 14px; font-size: 13px; border-radius: 12px; }
-  #install-banner .ib-close { background: transparent; box-shadow: none; padding: 6px 8px; font-size: 18px; color: #cbd5e1; }
-</style>
+}
+/* ===== بانەری دابەزاندن ===== */
+#install-banner { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 1300; display: none; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: rgba(15,23,42,0.92); color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); max-width: 520px; margin: 0 auto; font-family: 'GoranFont', Tahoma, sans-serif; }
+#install-banner.show { display: flex; }
+#install-banner img { width: 44px; height: 44px; border-radius: 12px; flex: none; }
+#install-banner .ib-text { flex: 1; font-size: 13px; line-height: 1.6; text-align: right; }
+#install-banner .ib-text b { font-size: 14px; }
+#install-banner button { width: auto; margin: 0; padding: 9px 14px; font-size: 13px; border-radius: 12px; }
+#install-banner button:hover { transform: none; }
+#install-banner .ib-close { background: transparent; box-shadow: none; padding: 6px 8px; font-size: 18px; color: #cbd5e1; }
 
 <!-- ============================================================
-  ٣) لە <body> دا، تەنیشت <div id="ptr-indicator"> زیادی بکە:
+  ٣) لە <body> دا، دەقاودەق دوای <div id="ptr-indicator"><span>↻</span></div> دایبنێ:
 ============================================================ -->
 <div id="install-banner" role="dialog" aria-live="polite">
   <img src="icon-192.png" alt="">
   <div class="ib-text" id="ib-text"></div>
-  <button id="ib-action" class="ib-btn" type="button"></button>
+  <button id="ib-action" type="button"></button>
   <button id="ib-close" class="ib-close" type="button" aria-label="داخستن">✕</button>
 </div>
 
 <!-- ============================================================
-  ٤) لە کۆتایی <script> ەکە (پێش </script>ی کۆتایی) زیادی بکە:
+  ٤) لە کۆتایی <script>، دوای function logout() {...} و پێش </script>ی کۆتایی دایبنێ:
 ============================================================ -->
-<script>
+// ===== PWA: Service Worker + بانەری دابەزاندن (ئایۆس، ئەندرۆید، کۆمپیوتەر) =====
 (function () {
-  // ----- تۆمارکردنی Service Worker -----
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     });
   }
 
-  // ----- بانەری دابەزاندن -----
   var standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
-  if (standalone) return; // پێشتر دایبەزاندووە
+  if (standalone) return;
 
   var banner = document.getElementById("install-banner");
   var txt = document.getElementById("ib-text");
@@ -62,7 +68,7 @@
   function recentlyDismissed() {
     try {
       var t = parseInt(localStorage.getItem(KEY) || "0", 10);
-      return t && (Date.now() - t) < 3 * 24 * 3600 * 1000; // ٣ ڕۆژ
+      return t && (Date.now() - t) < 3 * 24 * 3600 * 1000;
     } catch (e) { return false; }
   }
   function hide(remember) {
@@ -73,6 +79,7 @@
 
   var ua = navigator.userAgent;
   var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isAndroid = /android/i.test(ua);
 
   // ئەندرۆید / کرۆم / ئێدج / کۆمپیوتەر
   window.addEventListener("beforeinstallprompt", function (e) {
@@ -90,7 +97,7 @@
   });
   window.addEventListener("appinstalled", function () { hide(false); });
 
-  // ئایۆس (سەفاری): دابەزاندنی ئۆتۆماتیک نییە، ڕێنمایی پیشان دەدرێت
+  // ئایۆس: ڕێنمایی
   if (isIOS && !recentlyDismissed()) {
     var inSafari = /safari/i.test(ua) && !/crios|fxios|edgios|opios/i.test(ua);
     txt.innerHTML = "<b>دابەزاندنی ئەپ لەسەر ئایفۆن</b><br>" +
@@ -101,5 +108,15 @@
     act.onclick = function () { hide(true); };
     setTimeout(function () { banner.classList.add("show"); }, 2500);
   }
+
+  // ئەندرۆید: ئەگەر براوسەرەکە ڕووداوی دابەزاندنی نەنارد
+  if (isAndroid && !recentlyDismissed()) {
+    setTimeout(function () {
+      if (deferred || banner.classList.contains("show")) return;
+      txt.innerHTML = "<b>دابەزاندنی ئەپ</b><br>مێنیوی <b>⋮</b> بکەرەوە، پاشان <b>Install app</b> یان <b>Add to Home screen</b> هەڵبژێرە";
+      act.innerText = "تێگەیشتم";
+      act.onclick = function () { hide(true); };
+      banner.classList.add("show");
+    }, 4000);
+  }
 })();
-</script>
