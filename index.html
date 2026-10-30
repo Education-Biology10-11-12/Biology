@@ -559,7 +559,6 @@ html[data-theme="dark"] #aiOut,html[data-theme="dark"] .ai-q,html[data-theme="da
 .grade-tabs .gt{margin:0;padding:11px 2px;font-size:14px;background:transparent;color:var(--text-main);box-shadow:none;border-radius:12px}
 .grade-tabs .gt:hover{transform:none;box-shadow:none}
 .grade-tabs .gt.active{background:linear-gradient(to right,#0284c7,#0f766e);color:#fff;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-#dashboard-section .tabs-nav{display:none!important}
 #taskbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:850;justify-content:space-around;gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.78);backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);border-top:1px solid rgba(148,163,184,.4);box-shadow:0 -6px 20px rgba(0,0,0,.12)}
 body.dash-mode #taskbar{display:flex}
 body.dash-mode{padding-bottom:84px}
@@ -694,9 +693,9 @@ body.guest-mode [data-only="student"]{display:none!important}
 
     <div class="tabs-nav">
         <button class="tab-btn" onclick="switchTab('tab-materials', this)">📚 بابەتەکان</button>
-        <button class="tab-btn active" onclick="switchTab('tab-grades', this)">📊 نمرەکان</button>
+        <button class="tab-btn active" data-only="student" onclick="switchTab('tab-grades', this)">📊 نمرەکان</button>
         <button class="tab-btn" onclick="switchTab('tab-ai', this)">🤖 مامۆستاکەم بە Ai</button>
-        <button class="tab-btn" onclick="switchTab('tab-settings', this)">⚙ زانیارییەکان</button>
+        <button class="tab-btn" data-only="student" onclick="switchTab('tab-settings', this)">⚙ زانیارییەکان</button>
     </div>
 
     <div id="tab-grades" class="tab-content active" data-only="student">
