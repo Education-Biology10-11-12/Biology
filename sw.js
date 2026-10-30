@@ -1,4 +1,4 @@
-const CACHE = 'zindazani-v1';
+const CACHE = 'zindazani-v2';
 const ASSETS = ['./', './index.html', './manifest.json', './logo.png',
   './GoranFontRegular-Regular.ttf', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
@@ -22,7 +22,7 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  // داواکارییەکانی Google Script و هەر شتێکی دەرەکی: هەرگیز کاش نەکرێن (نمرەکان هەمیشە نوێ بن)
+  // داواکارییە دەرەکییەکان (Google Script، Firebase...) هەرگیز کاش نەکرێن
   if (url.origin !== location.origin) return;
 
   if (req.mode === 'navigate') {
