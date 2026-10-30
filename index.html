@@ -595,6 +595,32 @@ html[data-theme="dark"] .set-card{background:rgba(30,41,59,.55)}
 .stat-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .stat-chips div{padding:8px;border-radius:12px;background:rgba(148,163,184,.18);text-align:center;font-size:13px;color:var(--text-muted)}
 .stat-chips b{display:block;margin-top:2px;font-size:17px;color:var(--text-main)}
+
+/* تابەکان لەگەڵ شتەکانی تر سکرۆڵ دەبن */
+.tabs-nav{position:static!important}
+@media (min-width:900px){#dashboard-section:not(.hidden){display:block!important;max-height:none!important}#dashboard-section>.tab-content.active{overflow:visible!important}}
+body:not(.guest-mode) [data-only="guest"]{display:none!important}
+/* چارتی ئاستی خوێندکار */
+.stat-card{margin:0 0 16px;padding:14px;border-radius:18px;border:1px solid rgba(148,163,184,.35);background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(224,242,254,.35));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+html[data-theme="dark"] .stat-card{background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(56,189,248,.08))}
+.stat-top{display:flex;align-items:center;gap:16px}
+.ring{position:relative;width:118px;height:118px;flex:none}
+.ring svg{width:100%;height:100%;display:block}
+.r-track,.r-prog{fill:none;stroke-width:11;stroke-linecap:round}
+.r-track{stroke:rgba(148,163,184,.28)}
+.r-prog{stroke:url(#rg);transition:stroke-dashoffset .9s ease}
+.r-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25}
+.r-txt b{font-size:22px;color:var(--text-main)}
+.r-txt small{font-size:11px;color:var(--text-muted)}
+.stat-side{flex:1;min-width:0}
+.g-level{font-weight:bold;font-size:16px;color:var(--primary);margin-bottom:8px}
+.bar-row{display:grid;grid-template-columns:78px 1fr 46px;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin:6px 0}
+.bar-row b{color:var(--text-main);font-size:12px;text-align:left}
+.bar{height:8px;border-radius:99px;background:rgba(148,163,184,.28);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(to right,#0284c7,#10b981);transition:width .8s ease}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:12px;padding-top:10px;border-top:1px dashed rgba(148,163,184,.4)}
+@media (max-width:420px){.stat-top{flex-direction:column;align-items:stretch}.ring{margin:0 auto}}
+.vbadge svg{width:22px;height:22px;vertical-align:-3px}
 body.guest-mode [data-only="student"]{display:none!important}
 @media (min-width:900px){#dashboard-section:not(.hidden){max-height:calc(100vh - 190px)!important}}
 </style>
@@ -691,7 +717,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         <div class="profile-id">
         <img src="" id="display-photo" class="profile-img" alt="وێنەی خوێندکار" onerror="this.onerror=null;if(typeof DEFAULT_PHOTO!=='undefined')this.src=DEFAULT_PHOTO">
         <div class="profile-main">
-            <h2><span id="student-name"></span> 👋</h2>
+            <h2><span id="student-name"></span> <span id="verify-badge" class="vbadge">👋</span></h2>
             <p>ئامادەیی هەڵکەوتی کوڕان</p>
             <div id="student-cred" class="cred-line"></div>
         </div>
@@ -729,6 +755,24 @@ body.guest-mode [data-only="student"]{display:none!important}
     <div id="tab-grades" class="tab-content active" data-only="student">
         <div class="card" style="margin-bottom: 0;">
             <h3>📊 نمرەکانی خوێندکار</h3>
+            <div class="stat-card" id="stats-card">
+                <div class="stat-top">
+                    <div class="ring">
+                        <svg viewBox="0 0 120 120" aria-hidden="true">
+                            <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0284c7"/><stop offset="1" stop-color="#10b981"/></linearGradient></defs>
+                            <circle class="r-track" cx="60" cy="60" r="50"/>
+                            <circle id="r-prog" class="r-prog" cx="60" cy="60" r="50" transform="rotate(-90 60 60)" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+                        </svg>
+                        <div class="r-txt"><b id="g-pct">-</b><small>تێکڕای ساڵ</small></div>
+                    </div>
+                    <div class="stat-side">
+                        <div id="g-level" class="g-level">هێشتا نمرە نییە</div>
+                        <div class="bar-row"><span>وەرزی یەکەم</span><div class="bar"><i id="b-s1"></i></div><b id="st-s1">-</b></div>
+                        <div class="bar-row"><span>وەرزی دووەم</span><div class="bar"><i id="b-s2"></i></div><b id="st-s2">-</b></div>
+                    </div>
+                </div>
+                <div class="comp-grid" id="comp-grid"></div>
+            </div>
             <div class="scroll-hint" id="scroll-hint"><span class="arrows">⇄</span> بۆ بینینی هەموو نمرەکان، خشتەکە بەرەو ڕاست و چەپ بجوڵێنە</div>
             
             <div class="grades-grid">
@@ -806,22 +850,12 @@ body.guest-mode [data-only="student"]{display:none!important}
         <div class="card" style="margin-bottom: 0;">
             <h3>⚙️ ڕێکخستن</h3>
 
-            <div class="set-card" id="stats-card" data-only="student">
-                <h4 class="set-h">📈 ئامار و ئاستی خوێندکار</h4>
-                <div class="gauge-wrap">
-                    <svg viewBox="0 0 200 112" class="gauge" aria-hidden="true">
-                        <g transform="translate(200,0) scale(-1,1)">
-                            <path d="M20,100 A80,80 0 0 1 180,100" class="g-track"/>
-                            <path id="g-prog" d="M20,100 A80,80 0 0 1 180,100" class="g-prog" stroke-dasharray="251.33" stroke-dashoffset="251.33"/>
-                        </g>
-                        <text id="g-pct" x="100" y="92" text-anchor="middle" class="g-pct">-</text>
-                    </svg>
-                    <div id="g-level" class="g-level">هێشتا نمرە نییە</div>
-                </div>
-                <div class="stat-chips">
-                    <div><span>وەرزی یەکەم</span><b id="st-s1">-</b></div>
-                    <div><span>وەرزی دووەم</span><b id="st-s2">-</b></div>
-                </div>
+            <div class="set-card" id="guest-upgrade" data-only="guest">
+                <h4 class="set-h">🔑 یوزەر و پاسۆردت وەرگرتووە؟</h4>
+                <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px;line-height:1.7">ئەگەر خوێندکاری و یوزەر و پاسۆردت وەرگرتووە، لێرە بینووسە بۆ ئەوەی لە میوانەوە ببیتە ئەکاونتی خوێندکار و نمرەکانت ببینیت.</p>
+                <input type="text" id="gu-user" placeholder="یوزەر نەیم" autocomplete="off">
+                <input type="password" id="gu-pass" placeholder="پاسۆرد" autocomplete="off">
+                <button type="button" class="btn-save" onclick="guestToStudent()">گۆڕین بۆ ئەکاونتی خوێندکار</button>
             </div>
 
             <div class="set-card">
@@ -1403,6 +1437,7 @@ body.guest-mode [data-only="student"]{display:none!important}
     }
 
     function renderDashboard(data) {
+        document.body.classList.remove("guest-mode");
         document.body.classList.add("dash-mode");
         document.getElementById("login-section").classList.add("hidden");
         document.getElementById("register-section").classList.add("hidden");
@@ -1415,6 +1450,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         document.getElementById("student-oldschool-display").innerText = data.oldSchool ? "🏫 قوتابخانەی پۆلی ٩: " + toKu(data.oldSchool) : "";
         
         document.getElementById("student-name").innerText = data.studentName;
+        if (window.updateBadge) window.updateBadge(data);
 
         // یوزەرنەیم + دوو ژمارەی کۆتایی پاسۆرد (وەک بیرخستنەوە)
         const credBox = document.getElementById("student-cred");
@@ -1955,6 +1991,7 @@ body.guest-mode [data-only="student"]{display:none!important}
             msg.innerText = "تکایە ناوی قوتابخانەی پۆلی ٩ بنووسە";
             return;
         }
+        { const bad = window.schoolBad(oldSchool); if (bad) { oldSchoolInput.classList.add("input-error"); msg.style.color = "var(--danger)"; msg.innerText = bad; return; } }
 
         if (saveBtn) {
             saveBtn.disabled = true;
@@ -2100,6 +2137,7 @@ body.guest-mode [data-only="student"]{display:none!important}
             return;
         }
 
+        { const bad = oldSchool && window.schoolBad(oldSchool); if (bad) { schoolEl.classList.add("input-error"); msg.style.color = "var(--danger)"; msg.innerText = bad; return; } }
         btn.innerText = "چاوەڕێبە...";
         btn.disabled = true;
         msg.innerText = "";
@@ -2472,6 +2510,7 @@ function render(s){
   $('student-grade-display').innerText='👤 میوان - پۆلی '+toKu(s.grade)+'ی زانستی';
   $('student-oldschool-display').innerText='';$('student-cred').innerHTML='';
   $('display-photo').src=s.photo||DEFAULT_PHOTO;
+  if(window.updateBadge)window.updateBadge(null);
   switchTab('tab-materials',null,true);
   loadMats(s.grade);
 }
@@ -2521,19 +2560,48 @@ window.restoreGuest=function(){
   if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){if((localStorage.getItem("theme_mode")||"auto")==="auto")applyTheme();});
   function num(v){var n=parseFloat(v);return isNaN(n)?null:n;}
   function lvl(p){return p>=90?"نایاب 🌟":p>=80?"زۆر باش 👏":p>=70?"باش 👍":p>=60?"مامناوەند":p>=50?"تێپەڕ":"پێویستی بە هەوڵی زیاتر هەیە";}
+  var K=[["s1_10a",10,"وەرزی ١ · ١٠"],["s1_20",20,"وەرزی ١ · ٢٠"],["s1_10b",10,"وەرزی ١ · ١٠"],["s1_60",60,"وەرزی ١ · ٦٠"],["s2_10a",10,"وەرزی ٢ · ١٠"],["s2_20",20,"وەرزی ٢ · ٢٠"],["s2_10b",10,"وەرزی ٢ · ١٠"],["s2_60",60,"وەرزی ٢ · ٦٠"]];
+  function calc(d,keys){var e=0,m=0;keys.forEach(function(k){var n=num(d[k[0]]);if(n!==null){e+=n;m+=k[1];}});return m?e/m*100:null;}
+  var f=function(x){return x===null?"-":toKu(Math.round(x*10)/10)+"٪";};
   window.updateStats=function(d){
-    var s1=num(d.season1),s2=num(d.season2),t=num(d.finalGrade);
-    if(t===null){var a=[s1,s2].filter(function(x){return x!==null;});if(a.length)t=a.reduce(function(x,y){return x+y;},0)/a.length;}
-    var prog=document.getElementById("g-prog"),pct=document.getElementById("g-pct"),lv=document.getElementById("g-level");
-    if(!prog)return;
-    var f=function(x){return x===null?"-":toKu(Math.round(x*10)/10)+"٪";};
-    document.getElementById("st-s1").textContent=f(s1);
-    document.getElementById("st-s2").textContent=f(s2);
-    if(t===null){prog.setAttribute("stroke-dashoffset","251.33");pct.textContent="-";lv.textContent="هێشتا نمرە نییە";return;}
-    var c=Math.max(0,Math.min(100,t));
-    prog.setAttribute("stroke-dashoffset",(251.33*(1-c/100)).toFixed(2));
-    prog.style.stroke=c>=80?"#10b981":c>=50?"#f59e0b":"#ef4444";
-    pct.textContent=f(t);lv.textContent=lvl(c);
+    var all=calc(d,K),a=calc(d,K.slice(0,4)),b=calc(d,K.slice(4));
+    var prog=document.getElementById("r-prog");if(!prog)return;
+    document.getElementById("st-s1").textContent=f(a);document.getElementById("st-s2").textContent=f(b);
+    document.getElementById("b-s1").style.width=(a===null?0:Math.min(100,a))+"%";
+    document.getElementById("b-s2").style.width=(b===null?0:Math.min(100,b))+"%";
+    var pct=document.getElementById("g-pct"),lv=document.getElementById("g-level");
+    if(all===null){prog.setAttribute("stroke-dashoffset","314.16");pct.textContent="-";lv.textContent="هێشتا نمرە نییە";}
+    else{var c=Math.max(0,Math.min(100,all));prog.setAttribute("stroke-dashoffset",(314.16*(1-c/100)).toFixed(2));prog.style.stroke=c<50?"#ef4444":"";pct.textContent=f(all);lv.textContent=lvl(c);}
+    document.getElementById("comp-grid").innerHTML=K.map(function(k){var n=num(d[k[0]]),p=n===null?0:Math.min(100,n/k[1]*100);
+      return '<div class="bar-row" style="grid-template-columns:70px 1fr 40px"><span>'+k[2]+'</span><div class="bar"><i style="width:'+p+'%"></i></div><b>'+(n===null?"-":toKu(n))+'</b></div>';}).join("");
+  };
+  var KU_TXT=/^[\p{Script=Arabic}\u200c\u200d0-9\u0660-\u0669\s\-.]+$/u;
+  window.schoolBad=function(v){
+    v=String(v||"").trim();if(!v)return "";
+    if(!KU_TXT.test(v))return "ناوی قوتابخانەی پۆلی ٩ تەنها بە پیتی کوردی بنووسە";
+    var n=v.replace(/[\u200c\u200d]/g,"").replace(/ە/g,"ه").replace(/ك/g,"ک").replace(/[يى]/g,"ی");
+    if(/ئاماده|ههڵکهوت|هڵکهوت/.test(n))return "ئامادەیی هەڵکەوت ئامادەییە، ناوی قوتابخانەی پۆلی ٩ی بنەڕەتی بنووسە";
+    return "";
+  };
+  var SEAL='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1d9bf0" d="M12 1.5l2.6 1.9 3.2-.1 1 3 2.6 1.9-1 3 1 3-2.6 1.9-1 3-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3L2.6 15.8l1-3-1-3 2.6-1.9 1-3 3.2.1z"/><path d="M8 12.2l2.8 2.8 5.6-5.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  window.updateBadge=function(d){
+    var el=document.getElementById("verify-badge");if(!el)return;
+    var ok=false;
+    if(d){var w=String(d.studentName||"").trim().split(/\s+/).filter(Boolean),sc=String(d.oldSchool||"").trim();
+      ok=w.length>=3&&/^[\p{Script=Arabic}\u200c\u200d\s]+$/u.test(w.join(" "))&&sc!==""&&!window.schoolBad(sc)&&String(d.photo||"").trim()!=="";}
+    el.innerHTML=ok?SEAL:"👋";el.title=ok?"ئەکاونتی ڤێریفاید":"";
+  };
+  window.guestToStudent=function(){
+    var g=function(i){return document.getElementById(i);};
+    var u=g("gu-user").value.trim(),p=g("gu-pass").value.trim();
+    if(!u||!p){alert("تکایە یوزەرنەیم و پاسۆرد بنووسە");return;}
+    var gr=currentGrade||g("grade-level").value;
+    localStorage.removeItem("guest_session");localStorage.removeItem("guest_materials");
+    document.body.classList.remove("guest-mode","dash-mode");
+    g("dashboard-section").classList.add("hidden");g("login-section").classList.remove("hidden");
+    window.setGradeTab(gr);g("username").value=u;g("password").value=p;
+    switchTab("tab-grades",null,true);
+    window.login();
   };
   try{var d=JSON.parse(localStorage.getItem("student_session")||"null");if(d)window.updateStats(d);}catch(e){}
   applyTheme();
