@@ -559,14 +559,22 @@ html[data-theme="dark"] #aiOut,html[data-theme="dark"] .ai-q,html[data-theme="da
 .grade-tabs .gt{margin:0;padding:11px 2px;font-size:14px;background:transparent;color:var(--text-main);box-shadow:none;border-radius:12px}
 .grade-tabs .gt:hover{transform:none;box-shadow:none}
 .grade-tabs .gt.active{background:linear-gradient(to right,#0284c7,#0f766e);color:#fff;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-#taskbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:850;justify-content:space-around;gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.78);backdrop-filter:blur(16px) saturate(170%);-webkit-backdrop-filter:blur(16px) saturate(170%);border-top:1px solid rgba(148,163,184,.4);box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+body.dash-mode{padding-bottom:104px}
+
+/* تاسکباری کێرڤی */
+:root{--nav-bg:#ffffff;--nav-line:rgba(15,23,42,.12);--ring:#e8f0f7}
+html[data-theme="dark"]{--nav-bg:#111c2b;--nav-line:rgba(255,255,255,.14);--ring:#0b1220}
+#taskbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:850;padding:24px 6px calc(8px + env(safe-area-inset-bottom,0px))}
 body.dash-mode #taskbar{display:flex}
-body.dash-mode{padding-bottom:84px}
-html[data-theme="dark"] #taskbar{background:rgba(15,23,42,.88);border-top-color:rgba(255,255,255,.12)}
-.tb-btn{flex:1;max-width:130px;margin:0;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:22px;line-height:1.2;background:transparent;color:var(--text-muted);box-shadow:none;border-radius:14px}
-.tb-btn small{font-size:11px;font-family:inherit}
+#navBg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;filter:drop-shadow(0 -4px 10px rgba(0,0,0,.14))}
+#navPath{fill:var(--nav-bg);stroke:var(--nav-line);stroke-width:1}
+.tb-btn{position:relative;z-index:1;flex:1;width:auto;margin:0;background:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--text-muted);padding:4px 0;min-height:46px;cursor:pointer;font-family:inherit}
 .tb-btn:hover{transform:none;box-shadow:none}
-.tb-btn.active{background:rgba(2,132,199,.15);color:var(--primary)}
+.tb-btn .ico{display:grid;place-items:center;width:30px;height:30px;transition:.25s}
+.tb-btn svg.i{width:22px;height:22px;transition:.25s}
+.tb-btn.active{color:var(--primary)}
+.tb-btn.active .ico{position:relative;top:-18px;margin:-13px 0;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#0284c7,#0f766e);color:#fff;box-shadow:0 0 0 6px var(--ring),0 6px 14px rgba(0,0,0,.28)}
+.tb-btn.active svg.i{width:25px;height:25px}
 body.guest-mode [data-only="student"]{display:none!important}
 @media (min-width:900px){#dashboard-section:not(.hidden){max-height:calc(100vh - 190px)!important}}
 </style>
@@ -862,10 +870,11 @@ body.guest-mode [data-only="student"]{display:none!important}
 </div>
 
 <nav id="taskbar">
-    <button type="button" class="tb-btn" data-tab="tab-materials" onclick="switchTab('tab-materials')"><span>📚</span><small>بابەتەکان</small></button>
-    <button type="button" class="tb-btn active" data-tab="tab-grades" data-only="student" onclick="switchTab('tab-grades')"><span>📊</span><small>نمرەکان</small></button>
-    <button type="button" class="tb-btn" data-tab="tab-ai" onclick="switchTab('tab-ai')"><span>🤖</span><small>Ai</small></button>
-    <button type="button" class="tb-btn" data-tab="tab-settings" data-only="student" onclick="switchTab('tab-settings')"><span>⚙</span><small>زانیاری</small></button>
+  <svg id="navBg"><path id="navPath"/></svg>
+  <button type="button" class="tb-btn" data-tab="tab-materials" onclick="switchTab('tab-materials')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M8 7h7"/></svg></span>بابەتەکان</button>
+  <button type="button" class="tb-btn active" data-tab="tab-grades" data-only="student" onclick="switchTab('tab-grades')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg></span>نمرەکان</button>
+  <button type="button" class="tb-btn" data-tab="tab-ai" onclick="switchTab('tab-ai')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 14.5 9.5 21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg></span>AI</button>
+  <button type="button" class="tb-btn" data-tab="tab-settings" data-only="student" onclick="switchTab('tab-settings')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>زانیاری</button>
 </nav>
 
 <div id="aiCam" class="hidden">
@@ -1060,7 +1069,7 @@ body.guest-mode [data-only="student"]{display:none!important}
 </script>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2NpkFu_mH9wY8C_1RGhblpFHCre6kMyJne6YckMEVRA2BKdXQJRmM3XL98X0Epbf0/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM4gsA3hlTvUsgiICzRvQg7_no9_jbQK61iI8AfQ4XERF8s5o_FaK1VejPrCcXZI6d/exec";
     
     function toKu(v) {
         return String(v).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
@@ -1499,6 +1508,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         if (!fromHistory && tabId !== currentTab) history.pushState({ tab: tabId }, "");
         currentTab = tabId;
         document.querySelectorAll('.tb-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+        if (window.navGo) window.navGo();
         updateScrollHint();
     }
 
@@ -2419,6 +2429,35 @@ window.restoreGuest=function(){
   try{const s=JSON.parse(localStorage.getItem('guest_session')||'null');if(s&&s.grade){render(s);return true;}}catch(e){}
   return false;
 };
+})();
+</script>
+<script>
+(function(){
+  const nav=document.getElementById('taskbar'),svg=document.getElementById('navBg'),path=document.getElementById('navPath');
+  let cur=null,raf;
+  const target=()=>{const b=nav.querySelector('.tb-btn.active');if(!b||b.offsetWidth===0)return null;
+    const r=b.getBoundingClientRect(),n=nav.getBoundingClientRect();return r.left-n.left+r.width/2;};
+  function draw(x){
+    const W=nav.offsetWidth,H=nav.offsetHeight,T=16,D=40,R=22,hw=62;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+    const L=x-hw,Rt=x+hw,lo=L>=R,ro=W-Rt>=R,s0=lo?0:-200;
+    const a=lo?'M0,'+(T+R)+' Q0,'+T+' '+R+','+T+' H'+L:'M-200,'+H+' V'+T+' H'+L;
+    const z=ro?'H'+(W-R)+' Q'+W+','+T+' '+W+','+(T+R)+' V'+H+' H'+s0+' Z':'H'+(W+200)+' V'+H+' H'+s0+' Z';
+    path.setAttribute('d',a+' C'+(x-34)+','+T+' '+(x-38)+','+(T+D)+' '+x+','+(T+D)+' C'+(x+38)+','+(T+D)+' '+(x+34)+','+T+' '+Rt+','+T+' '+z);
+  }
+  function go(){
+    if(!nav.offsetWidth)return;
+    const t=target();if(t===null)return;
+    cancelAnimationFrame(raf);
+    if(cur===null){cur=t;draw(cur);return;}
+    (function step(){cur+=(t-cur)*.22;draw(cur);
+      if(Math.abs(t-cur)>.5)raf=requestAnimationFrame(step);else{cur=t;draw(cur);}})();
+  }
+  window.navGo=go;
+  addEventListener('resize',()=>{cur=null;go();});
+  if(window.ResizeObserver)new ResizeObserver(()=>{cur=null;go();}).observe(nav);
+  new MutationObserver(()=>{cur=null;go();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  go();setTimeout(go,300);
 })();
 </script>
 </body>
