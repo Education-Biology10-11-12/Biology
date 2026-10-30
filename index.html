@@ -23,7 +23,7 @@
             try {
                 var m = localStorage.getItem("theme_mode") || "auto";
                 var h = new Date().getHours();
-                var dark = m === "dark" || (m === "auto" && (h < 6 || h >= 18));
+                var dark = m === "dark" || (m !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
                 document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
             } catch (e) {}
         })();
@@ -575,6 +575,26 @@ body.dash-mode #taskbar{display:flex}
 .tb-btn.active{color:var(--primary)}
 .tb-btn.active .ico{position:relative;top:-18px;margin:-13px 0;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#0284c7,#0f766e);color:#fff;box-shadow:0 0 0 6px var(--ring),0 6px 14px rgba(0,0,0,.28)}
 .tb-btn.active svg.i{width:25px;height:25px}
+
+/* ڕێکخستن: کارد، دۆخی شاشە، چارتی کێرڤ */
+body.dash-mode #theme-toggle{display:none}
+.set-card{margin:0 0 16px;padding:14px;border-radius:16px;border:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.5)}
+html[data-theme="dark"] .set-card{background:rgba(30,41,59,.55)}
+.set-h{margin:0 0 10px;color:var(--primary);font-size:15px}
+.theme-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.theme-opt{margin:0;padding:10px 4px;font-size:14px;background:rgba(148,163,184,.22);color:var(--text-main);box-shadow:none}
+.theme-opt:hover{transform:none;box-shadow:none}
+.theme-opt.active{background:linear-gradient(to right,#0284c7,#0f766e);color:#fff}
+.gauge-wrap{text-align:center}
+.gauge{width:100%;max-width:260px;height:auto}
+.g-track,.g-prog{fill:none;stroke-width:16;stroke-linecap:round}
+.g-track{stroke:rgba(148,163,184,.3)}
+.g-prog{stroke:#10b981;transition:stroke-dashoffset .9s ease,stroke .3s}
+.g-pct{font-size:30px;font-weight:700;fill:var(--text-main);font-family:inherit}
+.g-level{margin-top:-6px;font-weight:bold;font-size:15px;color:var(--primary)}
+.stat-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.stat-chips div{padding:8px;border-radius:12px;background:rgba(148,163,184,.18);text-align:center;font-size:13px;color:var(--text-muted)}
+.stat-chips b{display:block;margin-top:2px;font-size:17px;color:var(--text-main)}
 body.guest-mode [data-only="student"]{display:none!important}
 @media (min-width:900px){#dashboard-section:not(.hidden){max-height:calc(100vh - 190px)!important}}
 </style>
@@ -703,7 +723,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         <button class="tab-btn" onclick="switchTab('tab-materials', this)">📚 بابەتەکان</button>
         <button class="tab-btn active" data-only="student" onclick="switchTab('tab-grades', this)">📊 نمرەکان</button>
         <button class="tab-btn" onclick="switchTab('tab-ai', this)">🤖 مامۆستاکەم بە Ai</button>
-        <button class="tab-btn" data-only="student" onclick="switchTab('tab-settings', this)">⚙ زانیارییەکان</button>
+        <button class="tab-btn" onclick="switchTab('tab-settings', this)">⚙ ڕێکخستن</button>
     </div>
 
     <div id="tab-grades" class="tab-content active" data-only="student">
@@ -782,9 +802,39 @@ body.guest-mode [data-only="student"]{display:none!important}
         </div>
     </div>
 
-    <div id="tab-settings" class="tab-content" data-only="student">
+    <div id="tab-settings" class="tab-content">
         <div class="card" style="margin-bottom: 0;">
-            <h3>⚙️ نوێکردنەوەی زانیارییەکان</h3>
+            <h3>⚙️ ڕێکخستن</h3>
+
+            <div class="set-card" id="stats-card" data-only="student">
+                <h4 class="set-h">📈 ئامار و ئاستی خوێندکار</h4>
+                <div class="gauge-wrap">
+                    <svg viewBox="0 0 200 112" class="gauge" aria-hidden="true">
+                        <g transform="translate(200,0) scale(-1,1)">
+                            <path d="M20,100 A80,80 0 0 1 180,100" class="g-track"/>
+                            <path id="g-prog" d="M20,100 A80,80 0 0 1 180,100" class="g-prog" stroke-dasharray="251.33" stroke-dashoffset="251.33"/>
+                        </g>
+                        <text id="g-pct" x="100" y="92" text-anchor="middle" class="g-pct">-</text>
+                    </svg>
+                    <div id="g-level" class="g-level">هێشتا نمرە نییە</div>
+                </div>
+                <div class="stat-chips">
+                    <div><span>وەرزی یەکەم</span><b id="st-s1">-</b></div>
+                    <div><span>وەرزی دووەم</span><b id="st-s2">-</b></div>
+                </div>
+            </div>
+
+            <div class="set-card">
+                <h4 class="set-h">🎨 دۆخی شاشە</h4>
+                <div class="theme-seg">
+                    <button type="button" class="theme-opt" data-m="auto" onclick="setThemeMode('auto')">🌓 سیستەم</button>
+                    <button type="button" class="theme-opt" data-m="light" onclick="setThemeMode('light')">☀️ ڕۆژ</button>
+                    <button type="button" class="theme-opt" data-m="dark" onclick="setThemeMode('dark')">🌙 شەو</button>
+                </div>
+            </div>
+
+            <div id="profile-block" data-only="student">
+            <h4 class="set-h">🧾 زانیارییەکانی خوێندکار</h4>
 
             <div id="profile-locked-banner" class="locked-banner hidden">
                 🔒 زانیارییەکانت پێشتر نوێکراونەتەوە و جێگیر کراون. چیتر ناتوانیت دەستکارییان بکەیت و تەنها دەتوانیت بینەریان بیت.
@@ -837,6 +887,16 @@ body.guest-mode [data-only="student"]{display:none!important}
                 </button>
             </div>
             </div>
+            </div>
+            <button class="btn-logout" onclick="logout()" style="margin-top:20px;">🚪 دەرچوون</button>
+            <div class="system-footer hidden" id="footer-section">
+    <img src="logo.png" alt="لۆگۆ" class="footer-logo">
+    <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
+    <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
+    <div style="font-size: 13px; opacity: 0.9; margin: 4px 0;">مامۆستای زیندەزانی (١٠،١١،١٢)</div>
+    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
+    <div style="margin-top: 8px; direction: ltr; font-weight: bold;">٠٧٧٤٨١٣٤٣١٤ - ٠٧٥٠١٢٢٤٩٩٤</div>
+</div>
         </div>
     </div>
     
@@ -857,24 +917,17 @@ body.guest-mode [data-only="student"]{display:none!important}
 </div>
 
 
-    <button class="btn-logout" onclick="logout()" style="margin-top: 25px;">دەرچوون</button>
+    
 </div>
 
-<div class="system-footer hidden" id="footer-section">
-    <img src="logo.png" alt="لۆگۆ" class="footer-logo">
-    <div><strong>ئامادەیی هەڵکەوتی کوڕان - داتابەیسی زیندەزانی</strong></div>
-    <div>دیزاین و ئامادەکردنی: مامۆستا گۆران محمد احمد</div>
-    <div style="font-size: 13px; opacity: 0.9; margin: 4px 0;">مامۆستای زیندەزانی (١٠،١١،١٢)</div>
-    <div class="footer-single-line">خاوەنی بڕوانامەی CCNA نێودەوڵەتی لەبواری نێتۆرک</div>
-    <div style="margin-top: 8px; direction: ltr; font-weight: bold;">٠٧٧٤٨١٣٤٣١٤ - ٠٧٥٠١٢٢٤٩٩٤</div>
-</div>
+
 
 <nav id="taskbar">
   <svg id="navBg"><path id="navPath"/></svg>
   <button type="button" class="tb-btn" data-tab="tab-materials" onclick="switchTab('tab-materials')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M8 7h7"/></svg></span>بابەتەکان</button>
   <button type="button" class="tb-btn active" data-tab="tab-grades" data-only="student" onclick="switchTab('tab-grades')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg></span>نمرەکان</button>
   <button type="button" class="tb-btn" data-tab="tab-ai" onclick="switchTab('tab-ai')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 14.5 9.5 21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg></span>AI</button>
-  <button type="button" class="tb-btn" data-tab="tab-settings" data-only="student" onclick="switchTab('tab-settings')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>زانیاری</button>
+  <button type="button" class="tb-btn" data-tab="tab-settings" onclick="switchTab('tab-settings')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>ڕێکخستن</button>
 </nav>
 
 <div id="aiCam" class="hidden">
@@ -1129,12 +1182,13 @@ body.guest-mode [data-only="student"]{display:none!important}
     function applyTheme() {
         const mode = localStorage.getItem("theme_mode") || "auto";
         const h = new Date().getHours();
-        const dark = mode === "dark" || (mode === "auto" && (h < 6 || h >= 18));
+        const dark = mode === "dark" || (mode !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
         document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
         const meta = document.querySelector('meta[name="theme-color"]');
         if (meta) meta.setAttribute("content", dark ? "#0f172a" : "#0284c7");
         const btn = document.getElementById("theme-toggle");
         if (btn) btn.innerText = mode === "auto" ? "🌓" : (mode === "dark" ? "🌙" : "☀️");
+        document.querySelectorAll(".theme-opt").forEach(function(b){ b.classList.toggle("active", b.dataset.m === mode); });
     }
     let themeToastTimer = null;
     function cycleTheme() {
@@ -1144,7 +1198,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         localStorage.setItem("theme_mode", next);
         applyTheme();
         const t = document.getElementById("theme-toast");
-        t.innerText = next === "auto" ? "🌓 خۆکار (ڕۆژ = ڕۆژ، شەو = شەو)" : (next === "dark" ? "🌙 دۆخی شەو" : "☀️ دۆخی ڕۆژ");
+        t.innerText = next === "auto" ? "🌓 وەک سیستەم" : (next === "dark" ? "🌙 دۆخی شەو" : "☀️ دۆخی ڕۆژ");
         t.classList.add("show");
         clearTimeout(themeToastTimer);
         themeToastTimer = setTimeout(() => t.classList.remove("show"), 1800);
@@ -1416,6 +1470,7 @@ body.guest-mode [data-only="student"]{display:none!important}
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
         updateRound2Tables(data);
+        if (window.updateStats) window.updateStats(data);
         buildSecondRoundNotice(data);
         refreshLinkBanner();
         updateScrollHint();
@@ -2458,6 +2513,30 @@ window.restoreGuest=function(){
   if(window.ResizeObserver)new ResizeObserver(()=>{cur=null;go();}).observe(nav);
   new MutationObserver(()=>{cur=null;go();}).observe(document.body,{attributes:true,attributeFilter:['class']});
   go();setTimeout(go,300);
+})();
+</script>
+<script>
+(function(){
+  window.setThemeMode=function(m){localStorage.setItem("theme_mode",m);applyTheme();};
+  if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){if((localStorage.getItem("theme_mode")||"auto")==="auto")applyTheme();});
+  function num(v){var n=parseFloat(v);return isNaN(n)?null:n;}
+  function lvl(p){return p>=90?"نایاب 🌟":p>=80?"زۆر باش 👏":p>=70?"باش 👍":p>=60?"مامناوەند":p>=50?"تێپەڕ":"پێویستی بە هەوڵی زیاتر هەیە";}
+  window.updateStats=function(d){
+    var s1=num(d.season1),s2=num(d.season2),t=num(d.finalGrade);
+    if(t===null){var a=[s1,s2].filter(function(x){return x!==null;});if(a.length)t=a.reduce(function(x,y){return x+y;},0)/a.length;}
+    var prog=document.getElementById("g-prog"),pct=document.getElementById("g-pct"),lv=document.getElementById("g-level");
+    if(!prog)return;
+    var f=function(x){return x===null?"-":toKu(Math.round(x*10)/10)+"٪";};
+    document.getElementById("st-s1").textContent=f(s1);
+    document.getElementById("st-s2").textContent=f(s2);
+    if(t===null){prog.setAttribute("stroke-dashoffset","251.33");pct.textContent="-";lv.textContent="هێشتا نمرە نییە";return;}
+    var c=Math.max(0,Math.min(100,t));
+    prog.setAttribute("stroke-dashoffset",(251.33*(1-c/100)).toFixed(2));
+    prog.style.stroke=c>=80?"#10b981":c>=50?"#f59e0b":"#ef4444";
+    pct.textContent=f(t);lv.textContent=lvl(c);
+  };
+  try{var d=JSON.parse(localStorage.getItem("student_session")||"null");if(d)window.updateStats(d);}catch(e){}
+  applyTheme();
 })();
 </script>
 </body>
