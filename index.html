@@ -53,6 +53,7 @@
         }
 
         /* شاردنەوەی هەموو شتێکی گووگڵ لەناو ئەپی مۆبایل */
+        html.no-google #google-login-btn,
         html.no-google #google-link-inside-btn,
         html.no-google #google-link-block,
         html.no-google #link-banner { display: none !important; }
@@ -558,7 +559,7 @@ html[data-theme="dark"] #aiOut,html[data-theme="dark"] .ai-q,html[data-theme="da
 .grade-tabs .gt{margin:0;padding:11px 2px;font-size:14px;background:transparent;color:var(--text-main);box-shadow:none;border-radius:12px}
 .grade-tabs .gt:hover{transform:none;box-shadow:none}
 .grade-tabs .gt.active{background:linear-gradient(to right,#0284c7,#0f766e);color:#fff;box-shadow:0 4px 12px rgba(2,132,199,.3)}
-body.dash-mode{padding-bottom:92px}
+body.dash-mode{padding-bottom:104px}
 
 /* تاسکباری کێرڤی */
 :root{--nav-bg:#ffffff;--nav-line:rgba(15,23,42,.12);--ring:#e8f0f7}
@@ -567,7 +568,7 @@ html[data-theme="dark"]{--nav-bg:#111c2b;--nav-line:rgba(255,255,255,.14);--ring
 body.dash-mode #taskbar{display:flex}
 #navBg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;filter:drop-shadow(0 -4px 10px rgba(0,0,0,.14))}
 #navPath{fill:var(--nav-bg);stroke:var(--nav-line);stroke-width:1}
-.tb-btn{position:relative;z-index:1;flex:1;width:auto;margin:0;background:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--text-muted);padding:4px 0;min-height:38px;cursor:pointer;font-family:inherit}
+.tb-btn{position:relative;z-index:1;flex:1;width:auto;margin:0;background:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--text-muted);padding:4px 0;min-height:46px;cursor:pointer;font-family:inherit}
 .tb-btn:hover{transform:none;box-shadow:none}
 .tb-btn .ico{display:grid;place-items:center;width:30px;height:30px;transition:.25s}
 .tb-btn svg.i{width:22px;height:22px;transition:.25s}
@@ -620,27 +621,33 @@ html[data-theme="dark"] .stat-card{background:linear-gradient(135deg,rgba(255,25
 .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:12px;padding-top:10px;border-top:1px dashed rgba(148,163,184,.4)}
 @media (max-width:420px){.stat-top{flex-direction:column;align-items:stretch}.ring{margin:0 auto}}
 .vbadge svg{width:22px;height:22px;vertical-align:-3px}
-
-/* ئیفێکتی تاچی بازنەیی */
-.tb-btn{-webkit-tap-highlight-color:transparent;outline:none;user-select:none}
-.tb-btn .ico{border-radius:50%}
-.tb-btn:active .ico{background:rgba(2,132,199,.2)}
-.tb-btn.active:active .ico{filter:brightness(.92)}
-.comp-grid{grid-template-columns:1fr 1fr;gap:10px 14px}
-.comp .c-top{display:flex;justify-content:space-between;gap:6px;font-size:12px;color:var(--text-muted);margin-bottom:4px}
-.comp .c-top b{color:var(--text-main);white-space:nowrap}
-#exit-toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);padding:10px 16px;border-radius:14px;background:rgba(15,23,42,.92);color:#fff;font-size:13px;z-index:2000;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap}
-#exit-toast.show{opacity:1}
-body.guest-mode #aiMat,body.guest-mode #aiPage,body.guest-mode #aiMatBtn{display:none!important}
-#reg-preview-photo{cursor:pointer}
 body.guest-mode [data-only="student"]{display:none!important}
 @media (min-width:900px){#dashboard-section:not(.hidden){max-height:calc(100vh - 190px)!important}}
+
+/* ===== چاکسازییەکانی نوێ ===== */
+/* تاسکبار: بێ نووسین، بچووکتر */
+body.dash-mode{padding-bottom:84px}
+#taskbar{padding:20px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tb-btn{min-height:40px;gap:0;padding:4px 0;-webkit-tap-highlight-color:transparent;outline:none;user-select:none;-webkit-user-select:none}
+.tb-btn:focus,.tb-btn:focus-visible{outline:none}
+.tb-btn:active:not(.active) .ico{background:rgba(2,132,199,.2);border-radius:50%}
+.tb-btn.active .ico{top:-16px;margin:-12px 0}
+.tab-btn,.theme-opt,.gt,#theme-toggle{-webkit-tap-highlight-color:transparent}
+/* بەجی ڤێریفاید: بازنەی ڕێک */
+.vbadge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;vertical-align:middle;line-height:1}
+.vbadge svg{display:block;width:22px;height:22px;vertical-align:baseline}
+#reg-preview-photo{cursor:pointer}
+/* نامەی دەرچوون */
+#exit-toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:10px 18px;border-radius:14px;background:rgba(15,23,42,.9);color:#fff;font-size:13px;z-index:2000;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+#exit-toast.show{opacity:1}
+#aiPage{margin-top:8px}
 </style>
 </head>
 <body>
 
 <button id="theme-toggle" onclick="cycleTheme()" aria-label="دۆخی شەو و ڕۆژ">🌓</button>
 <div id="theme-toast"></div>
+<div id="exit-toast"></div>
 
 <div class="container" id="login-section">
     <div class="header-logo">
@@ -675,8 +682,9 @@ body.guest-mode [data-only="student"]{display:none!important}
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
         </svg>
-        چوونە ژوورەوە بە جیمەیڵ
+        چوونەژوورەوە بە جیمەیڵ (Google)
     </button>
+
     <p id="status-msg" style="text-align:center; font-weight:bold;"></p>
     <p id="debug-msg" style="text-align:center; font-size:11px; color:#94a3b8; direction:ltr; word-break:break-all; margin-top:4px;"></p>
 </div>
@@ -686,10 +694,10 @@ body.guest-mode [data-only="student"]{display:none!important}
     <p style="text-align: center; color: var(--text-muted); font-size: 14px;">تکایە زانیارییەکانت بەپێی ناسنامە پڕبکەرەوە (بۆ بینینی نمرەکان ئەمە مەرجە):</p>
     
     <div style="text-align: center; margin-bottom: 15px;">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E" id="reg-preview-photo" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E" id="reg-preview-photo" onclick="document.getElementById('reg-input-photo').click()" title="کلیک بکە بۆ گرتنی وێنە" style="width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <label class="field-label">وێنەی خوێندکار:</label>
+    <label class="field-label">وێنەی خوێندکار (کلیک لەسەر وێنەکە بکە یان دوگمەکە):</label>
     <div class="file-picker">
         <label for="reg-input-photo" class="file-btn">وێنەی کەسی</label>
         <span class="file-name" id="reg-file-name">هیچ وێنەیەکت هەڵنەبژاردووە</span>
@@ -950,7 +958,9 @@ body.guest-mode [data-only="student"]{display:none!important}
     <textarea id="aiText" placeholder="بابەتەکە لێرە بنووسە یان کۆپی بکە، یان بە کامێرا سکانی بکە..."></textarea>
     <div class="ai-row"><button id="aiScan" type="button">📷 سکانکردن</button><button id="aiGal" type="button">🖼 وێنە لە گەلەری</button></div>
     <div class="ai-row"><button id="aiPdfBtn" type="button">📄 PDF</button><button id="aiKeyBtn" type="button">🔑 کلیلی AI</button></div>
-    <select id="aiMat" class="hidden"></select><input type="number" id="aiPage" class="hidden" min="1" inputmode="numeric" placeholder="ژمارەی ئەو لاپەڕەیەی دەتەوێت بیخوێنیتەوە"><button id="aiMatBtn" type="button" class="hidden">📖 خوێندنەوەی لاپەڕەی بابەت</button>
+    <select id="aiMat" class="hidden"></select>
+    <input type="number" id="aiPage" min="1" inputmode="numeric" class="hidden" placeholder="ژمارەی ئەو لاپەڕەیەی دەتەوێت بیخوێنیتەوە (بۆ نموونە ٥)">
+    <button id="aiMatBtn" type="button" class="hidden">📖 خوێندنەوەی لاپەڕەی بابەت</button>
     <div class="ai-row"><button id="aiExp" type="button" class="btn-save">📘 ڕوونکردنەوە</button><button id="aiQuiz" type="button">📝 تاقیکردنەوە</button></div>
     <div class="ai-row"><button id="aiMail" type="button">📧 ئیمەیڵ</button><button id="aiShareBtn" type="button">📲 مۆبایل</button><button id="aiCopy" type="button">📋 کۆپی</button></div>
     <button id="aiClear" type="button" class="btn-logout">🗑 سڕینەوەی بابەت و نمرەکان</button>
@@ -969,7 +979,7 @@ body.guest-mode [data-only="student"]{display:none!important}
 <nav id="taskbar">
   <svg id="navBg"><path id="navPath"/></svg>
   <button type="button" class="tb-btn" data-tab="tab-materials" aria-label="بابەتەکان" onclick="switchTab('tab-materials')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M8 7h7"/></svg></span></button>
-  <button type="button" class="tb-btn active" data-tab="tab-grades" aria-label="نمرەکان" data-only="student" onclick="switchTab('tab-grades')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg></span></button>
+  <button type="button" class="tb-btn active" data-tab="tab-grades" data-only="student" aria-label="نمرەکان" onclick="switchTab('tab-grades')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10M12 21V4M19 21v-7"/></svg></span></button>
   <button type="button" class="tb-btn" data-tab="tab-ai" aria-label="مامۆستاکەم بە Ai" onclick="switchTab('tab-ai')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 14.5 9.5 21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg></span></button>
   <button type="button" class="tb-btn" data-tab="tab-settings" aria-label="ڕێکخستن" onclick="switchTab('tab-settings')"><span class="ico"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span></button>
 </nav>
@@ -1253,7 +1263,10 @@ body.guest-mode [data-only="student"]{display:none!important}
     applyTheme();
 
     window.onload = function() {
-                const savedData = localStorage.getItem("student_session");
+        // خاڵی بنەڕەت (root) بۆ دەرچوون بە سێ جار باک، پاشان تابی سەرەکی
+        history.replaceState({ root: true }, "");
+        history.pushState({ tab: "tab-grades" }, "");
+        const savedData = localStorage.getItem("student_session");
         const savedPass = localStorage.getItem("student_pass");
         
         if(savedData && savedPass) {
@@ -1517,7 +1530,6 @@ body.guest-mode [data-only="student"]{display:none!important}
         updateRound2Tables(data);
         if (window.updateStats) window.updateStats(data);
         buildSecondRoundNotice(data);
-        if (window.ensureGuard) window.ensureGuard();
         refreshLinkBanner();
         updateScrollHint();
         
@@ -1598,7 +1610,12 @@ body.guest-mode [data-only="student"]{display:none!important}
     window.addEventListener("resize", updateScrollHint);
 
     let currentTab = "tab-grades";
+    function defaultTab() {
+        return document.body.classList.contains("guest-mode") ? "tab-materials" : "tab-grades";
+    }
     function switchTab(tabId, btn, fromHistory) {
+        // میوان بەشی نمرەکانی نییە
+        if (tabId === "tab-grades" && document.body.classList.contains("guest-mode")) { tabId = "tab-materials"; btn = null; }
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -1613,17 +1630,4 @@ body.guest-mode [data-only="student"]{display:none!important}
         updateScrollHint();
     }
 
-    function embedUrl(url) {
-        let m;
-        if ((m = url.match(/drive\.google\.com\/file\/d\/([-\w]+)/))) return "https://drive.google.com/file/d/" + m[1] + "/preview";
-        if (/drive\.google\.com/.test(url) && (m = url.match(/[?&]id=([-\w]+)/))) return "https://drive.google.com/file/d/" + m[1] + "/preview";
-        if ((m = url.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([-\w]+)/))) return "https://docs.google.com/" + m[1] + "/d/" + m[2] + "/preview";
-        if ((m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([-\w]{11})/))) return "https://www.youtube.com/embed/" + m[1] + "?rel=0";
-        if (/\.pdf(\?|#|$)/i.test(url)) return "https://docs.google.com/viewer?embedded=true&url=" + encodeURIComponent(url);
-        return url;
-    }
-
-    function openMaterial(title, url) {
-        const modal = document.getElementById("viewer-modal");
-        const old = document.getElementById("viewer-frame");
-        if 
+    fun
