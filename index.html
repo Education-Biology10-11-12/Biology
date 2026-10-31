@@ -851,9 +851,14 @@ body.dash-mode{padding-bottom:84px}
             </div>
             </div>
 
-            <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
-                <span style="font-size: 16px; font-weight: bold; margin-left: 6px;">تێکڕای کۆتایی ساڵ</span>
-                <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
+            <div class="grade-block" style="margin-top: 15px;">
+                <h4 style="margin-bottom: 5px; color: var(--primary);">تێکڕای کۆتایی ساڵ</h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr><th>ئەنجامی کۆتایی ساڵ</th></tr>
+                        <tr><td id="final-total" style="font-weight:bold;">-</td></tr>
+                    </table>
+                </div>
             </div>
 
             <button class="btn-refresh" onclick="refreshData()">🔄 نوێکردنەوە</button>
@@ -2557,7 +2562,7 @@ $('aiMatBtn').onclick=async function(){
   if(!id){msg('ئەم بابەتە لینکی Google Drive ی نییە، PDFەکە لە "📄 PDF" باری بکە','var(--danger)');return;}
   busy(this,true);msg('⏳ بابەتەکە دەهێنرێت...');
   let d=null;
-  try{d=await (await fetch(SCRIPT_URL+'?action=getPdf&id='+id)).json();}catch(e){}
+  try{d=await (await fetch(SCRIPT_URL+'?action=getPdf&id='+id+'&grade='+encodeURIComponent(currentGrade)+'&username='+encodeURIComponent(currentUsername)+'&password='+encodeURIComponent(currentPassword))).json();}catch(e){}
   if(d&&d.status==='success'&&d.data)await extract(d.data,'application/pdf',page);
   else msg('نەتوانرا بابەتەکە بهێنرێت. PDFەکە دابەزێنە و لە "📄 PDF" باری بکە','var(--danger)');
   busy(this,false);
@@ -2588,7 +2593,7 @@ function render(s){
   $('student-grade-display').innerText='👤 میوان - پۆلی '+toKu(s.grade)+'ی زانستی';
   $('student-oldschool-display').innerText='';$('student-cred').innerHTML='';
   $('display-photo').src=s.photo||DEFAULT_PHOTO;
-  if(window.updateBadge)window.updateBadge(null);
+  if(window.updateBadge)window.updateBadge("guest");
   switchTab('tab-materials',null,true);
   loadMats(s.grade);
 }
@@ -2678,6 +2683,7 @@ window.restoreGuest=function(){
   var SEAL='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path d="M7.4 12.4l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   window.updateBadge=function(d){
     var el=document.getElementById("verify-badge");if(!el)return;
+    if(d==="guest"){el.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#8b95a5"/><path d="M7.4 12.4l3.2 3.2 6-6.4" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';el.title="میوان";return;}
     var ok=false;
     if(d){var w=String(d.studentName||"").trim().split(/\s+/).filter(Boolean),sc=String(d.oldSchool||"").trim();
       ok=w.length>=3&&/^[\p{Script=Arabic}\u200c\u200d\s]+$/u.test(w.join(" "))&&sc!==""&&!window.schoolBad(sc)&&String(d.photo||"").trim()!=="";}
