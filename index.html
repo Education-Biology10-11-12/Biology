@@ -851,8 +851,8 @@ body.dash-mode{padding-bottom:84px}
             </div>
             </div>
 
-            <div id="final-box" style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
-                <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ </span>
+            <div style="background: #e0f2fe; padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 16px; font-weight: bold;">تێکڕای کۆتایی ساڵ: </span>
                 <span id="final-total" style="font-size: 22px; font-weight: bold;">-</span>
             </div>
 
@@ -994,7 +994,7 @@ body.dash-mode{padding-bottom:84px}
   <div id="aiBar">
     <button id="aiX" type="button">✕</button>
     <button id="aiBack" type="button" class="cr">↺</button>
-    <button id="aiRot" type="button" class="cr">⟳</button>
+    <button id="aiRot" type="button">⟳</button>
     <button id="aiShot" type="button" class="lv"></button>
     <label class="cr"><input type="checkbox" id="aiEnhC" checked> جوانکردن</label>
     <button id="aiOk" type="button" class="cr">✓</button>
@@ -1542,9 +1542,6 @@ body.dash-mode{padding-bottom:84px}
         setGradeWithCheck("e2-res", data.e2_res, 100);
         
         setGradeWithCheck("final-total", data.finalGrade, 100);
-        { const ft = document.getElementById("final-total"), fb = document.getElementById("final-box");
-          if (ft && ft.innerText.trim() === "-") ft.innerText = "";
-          if (fb) fb.classList.toggle("hidden", !(ft && ft.innerText.trim())); }
         updateRound2Tables(data);
         if (window.updateStats) window.updateStats(data);
         buildSecondRoundNotice(data);
