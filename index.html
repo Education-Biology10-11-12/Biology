@@ -947,7 +947,7 @@ body.dash-mode{padding-bottom:84px}
             <div id="google-link-block">
             <hr style="margin: 25px 0 15px; border: 0; border-top: 1px solid #cbd5e1;">
             <div style="text-align: center;">
-                <h4 style="margin: 0 0 8px 0; color: var(--primary);">🔗 بەستنەوە بە جیمەیڵ (Google Account)</h4>
+                <h4 id="link-title" style="margin: 0 0 8px 0; color: var(--primary);">🔗 بەستنەوە بە جیمەیڵ (Google Account)</h4>
                 <p id="linked-email-display" style="font-size: 13px; color: var(--text-muted); margin: 0 0 10px 0;">ئەم ئەکاونتە بە هیچ جیمەیڵێک نەبەستراوەتەوە</p>
                 <button class="btn-google" id="google-link-inside-btn" type="button" style="margin-top: 0;">
                     <svg viewBox="0 0 24 24">
@@ -1454,7 +1454,26 @@ body.dash-mode{padding-bottom:84px}
         }
     }
 
+    function refreshLinkStatus() {
+        const em = localStorage.getItem("g_linked");
+        const t = document.getElementById("link-title"), d = document.getElementById("linked-email-display"), btn = document.getElementById("google-link-inside-btn");
+        if (!t || !d || !btn) return;
+        if (em) {
+            t.innerText = "✅ ئەکاونتەکەت بە جیمەیڵ بەستراوەتەوە";
+            d.innerText = "✔ " + em + " — وەک بەڵگە کۆنێکت کراوە";
+            d.style.color = "var(--success)"; d.style.fontWeight = "bold"; d.style.direction = "ltr";
+            btn.classList.add("hidden");
+        } else {
+            t.innerText = "🔗 بەستنەوە بە جیمەیڵ (Google Account)";
+            d.innerText = "⚠️ ئەم ئەکاونتە هێشتا بە هیچ جیمەیڵێک نەبەستراوەتەوە. تکایە کۆنێکتی بکە بۆ ئەوەی یوزەر و پاسۆرد و داتاکانت بپارێزرێن.";
+            d.style.color = "var(--warning)"; d.style.fontWeight = "bold"; d.style.direction = "";
+            btn.classList.remove("hidden");
+        }
+    }
+    window.refreshLinkStatus = refreshLinkStatus;
+
     function refreshLinkBanner() {
+        refreshLinkStatus();
         const b = document.getElementById("link-banner");
         if (!b) return;
         const inside = !document.getElementById("dashboard-section").classList.contains("hidden");
