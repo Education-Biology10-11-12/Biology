@@ -18,6 +18,10 @@
         })();
     </script>
     <script>
+        window.addEventListener("error", function(e){ try{ var d=document.getElementById("debug-msg"); if(d) d.textContent="JS: "+(e.message||"")+" @"+(e.lineno||"")+":"+(e.colno||""); }catch(x){} });
+        window.addEventListener("unhandledrejection", function(e){ try{ var d=document.getElementById("debug-msg"); if(d) d.textContent="PROMISE: "+((e.reason&&e.reason.message)||e.reason||""); }catch(x){} });
+    </script>
+    <script>
         // دانانی دۆخی شەو/ڕۆژ پێش نیشاندانی لاپەڕە (بۆ ئەوەی بریسکە نەکات)
         (function() {
             try {
@@ -1058,7 +1062,11 @@ body.dash-mode{padding-bottom:84px}
         };
         async function googleUser() {
             if (window.NATIVE_G) {
-                return new Promise((resolve, reject) => { nativeWait = { resolve, reject }; Android.googleSignIn(); });
+                return new Promise((resolve, reject) => {
+                    const tm = setTimeout(() => { nativeWait = null; reject(new Error("گووگڵ وەڵامی نەدایەوە، بە یوزەرنەیم و پاسۆرد بچۆ ژوورەوە")); }, 45000);
+                    nativeWait = { resolve: v => { clearTimeout(tm); resolve(v); }, reject: e => { clearTimeout(tm); reject(e); } };
+                    try { Android.googleSignIn(); } catch (e) { clearTimeout(tm); nativeWait = null; reject(e); }
+                });
             }
             return (await signInWithPopup(auth, provider)).user;
         }
@@ -1291,6 +1299,13 @@ body.dash-mode{padding-bottom:84px}
     };
 
     window.login = function() {
+        try { return window._login(); } catch (e) {
+            const s = document.getElementById("status-msg");
+            if (s) { s.style.color = "var(--danger)"; s.innerText = "هەڵە: " + (e && e.message ? e.message : e); }
+            const b = document.querySelector('#login-section button[onclick="login()"]'); if (b) b.disabled = false;
+        }
+    };
+    window._login = function() {
         currentGrade = document.getElementById("grade-level").value;
         currentUsername = document.getElementById("username").value.trim();
         const pass = document.getElementById("password").value.trim();
@@ -1604,30 +1619,4 @@ body.dash-mode{padding-bottom:84px}
         const hint = document.getElementById("scroll-hint");
         if (!hint) return;
         const need = Array.from(document.querySelectorAll("#tab-grades .table-responsive"))
-            .some(t => t.scrollWidth > t.clientWidth + 2);
-        hint.classList.toggle("show", need);
-    }
-    window.addEventListener("resize", updateScrollHint);
-
-    let currentTab = "tab-grades";
-    function defaultTab() {
-        return document.body.classList.contains("guest-mode") ? "tab-materials" : "tab-grades";
-    }
-    function switchTab(tabId, btn, fromHistory) {
-        // میوان بەشی نمرەکانی نییە
-        if (tabId === "tab-grades" && document.body.classList.contains("guest-mode")) { tabId = "tab-materials"; btn = null; }
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-        document.getElementById(tabId).classList.add('active');
-        if (!btn) btn = document.querySelector('.tab-btn[onclick*="' + tabId + '"]');
-        if (btn) btn.classList.add('active');
-
-        if (!fromHistory && tabId !== currentTab) history.pushState({ tab: tabId }, "");
-        currentTab = tabId;
-        document.querySelectorAll('.tb-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
-        if (window.navGo) window.navGo();
-        updateScrollHint();
-    }
-
-    fun
+            .some(t => t.scrollWidth > t.clientWid
