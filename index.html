@@ -2767,6 +2767,13 @@ window.restoreGuest=function(){
   function refresh(){
     var b=$("push-btn");if(!b)return;
     // لە ناو ئەپی ئەندرۆید ئاگادارکردنەوە بە FCM ی ناتیڤ دەکرێت، بۆیە ئەم کارتە دەشارینەوە
+    if(window.Android&&typeof Android.enableNotifications==="function"){
+      var on=false;try{on=Android.notificationsEnabled();}catch(e){}
+      b.style.display="";b.disabled=false;
+      b.textContent=on?"✅ چالاکە (نوێکردنەوە)":"🔔 چالاککردنی ئاگادارکردنەوە";
+      msg(on?"ئاگادارکردنەوە لەم ئەپەدا چالاکە.":"ئاگادارکردنەوە چالاک بکە بۆ ئەوەی نۆتیفیکەیشنەکان بگەنە مۆبایلەکەت.");
+      return;
+    }
     if(window.Android){var pc=$("push-card");if(pc)pc.style.display="none";return;}
     if(!("serviceWorker" in navigator)||!("Notification" in window)||!("PushManager" in window)){
       b.style.display="none";
@@ -2777,6 +2784,11 @@ window.restoreGuest=function(){
   }
   window.enablePush=async function(){
     var b=$("push-btn");
+    if(window.Android&&typeof Android.enableNotifications==="function"){
+      try{Android.enableNotifications();}catch(e){}
+      setTimeout(refresh,1500);setTimeout(refresh,5000);
+      return;
+    }
     try{
       if(VAPID.length<80){msg("VAPID key دانەنراوە.");return;}
       b.disabled=true;
