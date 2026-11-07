@@ -1207,7 +1207,7 @@ body.dash-mode{padding-bottom:84px}
 </script>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJdiuGm7H7fR7HkAr31XI6wUHtNqe1hWRuY0OgXzpuqO1ihAtCUH7mU02biHU_koLk/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM4gsA3hlTvUsgiICzRvQg7_no9_jbQK61iI8AfQ4XERF8s5o_FaK1VejPrCcXZI6d/exec";
     
     function toKu(v) {
         return String(v).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
@@ -2766,6 +2766,8 @@ window.restoreGuest=function(){
   }
   function refresh(){
     var b=$("push-btn");if(!b)return;
+    // لە ناو ئەپی ئەندرۆید ئاگادارکردنەوە بە FCM ی ناتیڤ دەکرێت، بۆیە ئەم کارتە دەشارینەوە
+    if(window.Android){var pc=$("push-card");if(pc)pc.style.display="none";return;}
     if(!("serviceWorker" in navigator)||!("Notification" in window)||!("PushManager" in window)){
       b.style.display="none";
       var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
