@@ -822,7 +822,7 @@ body.dash-mode{padding-bottom:150px!important}
             <h4 style="margin-bottom: 5px; color: var(--primary);">وەرزی یەکەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی خولی یەکەم</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی خولی یەکەم <small style="font-weight:normal;opacity:.85">(لە ١٠٠)</small></th></tr>
                     <tr>
                         <td id="s1-10a">-</td><td id="s1-20">-</td><td id="s1-10b">-</td><td id="s1-60">-</td>
                         <td id="s1-total" style="font-weight:bold;">-</td>
@@ -835,7 +835,7 @@ body.dash-mode{padding-bottom:150px!important}
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی یەکەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی خولی یەکەم</th></tr>
+                    <tr><th>١٠</th><th>٢٠</th><th>١٠</th><th>٦٠</th><th>ئەنجامی کۆتایی خولی یەکەم <small style="font-weight:normal;opacity:.85">(لە ١٠٠)</small></th></tr>
                     <tr>
                         <td id="s2-10a">-</td><td id="s2-20">-</td><td id="s2-10b">-</td><td id="s2-60">-</td>
                         <td id="s2-total" style="font-weight:bold;">-</td>
@@ -848,7 +848,7 @@ body.dash-mode{padding-bottom:150px!important}
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی یەکەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>هەڵسەنگاندن (٢٠٪)</th><th>خولی دووەم (٨٠٪)</th><th>ئەنجامی کۆتایی خولی دووەم</th></tr>
+                    <tr><th>هەڵسەنگاندن (٢٠٪)</th><th>خولی دووەم (٨٠٪)</th><th>ئەنجامی کۆتایی خولی دووەم <small style="font-weight:normal;opacity:.85">(لە ١٠٠)</small></th></tr>
                     <tr>
                         <td id="e1-eval">-</td><td id="e1-exam">-</td>
                         <td id="e1-res" style="font-weight:bold;">-</td>
@@ -861,7 +861,7 @@ body.dash-mode{padding-bottom:150px!important}
             <h4 style="margin-bottom: 5px; margin-top: 15px; color: var(--primary);">وەرزی دووەم - خولی دووەم</h4>
             <div class="table-responsive">
                 <table>
-                    <tr><th>هەڵسەنگاندن (٢٠٪)</th><th>خولی دووەم (٨٠٪)</th><th>ئەنجامی کۆتایی خولی دووەم</th></tr>
+                    <tr><th>هەڵسەنگاندن (٢٠٪)</th><th>خولی دووەم (٨٠٪)</th><th>ئەنجامی کۆتایی خولی دووەم <small style="font-weight:normal;opacity:.85">(لە ١٠٠)</small></th></tr>
                     <tr>
                         <td id="e2-eval">-</td><td id="e2-exam">-</td>
                         <td id="e2-res" style="font-weight:bold;">-</td>
@@ -875,7 +875,7 @@ body.dash-mode{padding-bottom:150px!important}
                 <h4 style="margin-bottom: 5px; color: var(--primary);">تێکڕای کۆتایی ساڵ</h4>
                 <div class="table-responsive">
                     <table>
-                        <tr><th>ئەنجامی کۆتایی ساڵ</th></tr>
+                        <tr><th>ئەنجامی کۆتایی ساڵ <small style="font-weight:normal;opacity:.85">(لە ١٠٠)</small></th></tr>
                         <tr><td id="final-total" style="font-weight:bold;">-</td></tr>
                     </table>
                 </div>
@@ -2718,10 +2718,23 @@ window.restoreGuest=function(){
     if(!box)return;
     // [ناو، کلیل، نمرەی گەورە، ڕەگەز: ev=هەڵسەنگاندن، ex=تاقیکردنەوە، گرووپ]
     var S=[
-      ["هەڵسەنگاندن","s1_10a",10,"ev","وەرزی ١"],["٢٠","s1_20",20,"ex","وەرزی ١"],["هەڵسەنگاندن","s1_10b",10,"ev","وەرزی ١"],["٦٠","s1_60",60,"ex","وەرزی ١"],
-      ["هەڵسەنگاندن","s2_10a",10,"ev","وەرزی ٢"],["٢٠","s2_20",20,"ex","وەرزی ٢"],["هەڵسەنگاندن","s2_10b",10,"ev","وەرزی ٢"],["٦٠","s2_60",60,"ex","وەرزی ٢"],
-      ["٨٠","e1_exam",80,"ex","خولی ٢","تاقیکردنەوەی خولی ٢ ی وەرزی ١"],["٨٠","e2_exam",80,"ex","خولی ٢","تاقیکردنەوەی خولی ٢ ی وەرزی ٢"]
+      ["هەڵسەنگاندن","s1_10a",10,"ev","وەرزی ١"],["٢٠","s1_20",20,"ex","وەرزی ١"],["هەڵسەنگاندن","s1_10b",10,"ev","وەرزی ١"],["٦٠","s1_60",60,"ex","وەرزی ١"],["١٠٠","season1",100,"tot","وەرزی ١","کۆی وەرزی ١"],
+      ["هەڵسەنگاندن","s2_10a",10,"ev","وەرزی ٢"],["٢٠","s2_20",20,"ex","وەرزی ٢"],["هەڵسەنگاندن","s2_10b",10,"ev","وەرزی ٢"],["٦٠","s2_60",60,"ex","وەرزی ٢"],["١٠٠","season2",100,"tot","وەرزی ٢","کۆی وەرزی ٢"],
+      ["ک١","fin1",100,"fin","کۆتایی","ئەنجامی کۆتایی وەرزی ١"],["ک٢","fin2",100,"fin","کۆتایی","ئەنجامی کۆتایی وەرزی ٢"],
+      ["٨٠","e1_exam",80,"ex","خولی ٢","تاقیکردنەوەی خولی ٢ ی وەرزی ١"],["٨٠","e2_exam",80,"ex","خولی ٢","تاقیکردنەوەی خولی ٢ ی وەرزی ٢"],
+      ["ت","finY",100,"fin","تێکڕا","تێکڕای کۆتایی ساڵ"]
     ];
+    // ئەنجامی کۆتایی هەر وەرز: وەرزی دەرچوو (یان قەرەبووکراوە بە تێکڕای ٥٠+) نمرەی خۆی، وەرزی دەرنەچوو نمرەی خولی ٢
+    var Yc=window.yearState(d);
+    d=Object.assign({},d,{
+      fin1:Yc.both?(Yc.round2&&Yc.need1?Yc.r1:Yc.s1):null,
+      fin2:Yc.both?(Yc.round2&&Yc.need2?Yc.r2:Yc.s2):null,
+      finY:Yc.final
+    });
+    // خولی دووەم تەنها بۆ ئەو خوێندکارەی هەیەتی (دەبێت بیکات، یان نمرەی هەیە)
+    var has1=(Yc.round2&&Yc.need1)||num(d.e1_exam)!==null||num(d.e1_res)!==null,
+        has2=(Yc.round2&&Yc.need2)||num(d.e2_exam)!==null||num(d.e2_res)!==null;
+    S=S.filter(function(x){return x[1]==="e1_exam"?has1:x[1]==="e2_exam"?has2:true;});
     var slots=S.map(function(x,i){var n=num(d[x[1]]);return{i:i,name:x[0],tip:x[5]||x[0],grp:x[4],kind:x[3],max:x[2],n:n,p:n===null?null:Math.max(0,Math.min(100,n/x[2]*100))};});
     var pts=slots.filter(function(x){return x.p!==null;});
     // ئاستی هەڵسەنگاندن و تاقیکردنەوە (تێکڕای سەدی خانە دانراوەکان)
@@ -2741,6 +2754,16 @@ window.restoreGuest=function(){
     function X(i){return W-R-PAD-i*step;}
     function Y(p){return T+ph*(1-p/100);}
     var g='';
+    // ڕەنگی هەر وەرز/خول: پاشبنەمایەکی نەرم و ناونیشان و ئەنگوستیلەی خاڵەکان
+    var GC={"وەرزی ١":"#0284c7","وەرزی ٢":"#8b5cf6","کۆتایی":"#10b981","خولی ٢":"#f59e0b","تێکڕا":"#ec4899"};
+    var gs0={};slots.forEach(function(x){(gs0[x.grp]=gs0[x.grp]||[]).push(x.i);});
+    Object.keys(gs0).forEach(function(k){
+      var a=gs0[k],xr=X(a[0])+step/2,xl=X(a[a.length-1])-step/2;
+      xr=Math.min(xr,W-R);xl=Math.max(xl,L);
+      g+='<rect x="'+xl+'" y="'+(T-7)+'" width="'+(xr-xl)+'" height="'+(ph+7)+'" fill="'+(GC[k]||"#64748b")+'" opacity=".11"/>';
+      g+='<rect x="'+xl+'" y="'+(T-7)+'" width="'+(xr-xl)+'" height="3" fill="'+(GC[k]||"#64748b")+'" opacity=".9"/>';
+      if(xl>L+1)g+='<line x1="'+xl+'" x2="'+xl+'" y1="'+T+'" y2="'+(T+ph)+'" stroke="'+(GC[k]||"#64748b")+'" stroke-opacity=".5" stroke-dasharray="2 3"/>';
+    });
     // بەندی ئاستەکان
     g+='<rect x="'+L+'" y="'+Y(50)+'" width="'+pw+'" height="'+(Y(0)-Y(50))+'" fill="#ef4444" opacity=".08"/>';
     [[50,"٥٠"],[60,"٦٠"],[70,"٧٠"],[80,"٨٠"],[90,"٩٠"],[100,"١٠٠"]].forEach(function(l){
@@ -2751,10 +2774,10 @@ window.restoreGuest=function(){
     var gs={};slots.forEach(function(x){(gs[x.grp]=gs[x.grp]||[]).push(x.i);});
     Object.keys(gs).forEach(function(k){
       var a=gs[k],x1=X(a[0]),x2=X(a[a.length-1]);
-      g+='<text x="'+((x1+x2)/2)+'" y="'+(H-6)+'" font-size="'+(FS+1)+'" text-anchor="middle" fill="var(--text-muted)">'+k+'</text>';
+      g+='<text x="'+((x1+x2)/2)+'" y="'+(H-6)+'" font-size="'+(FS+1)+'" font-weight="700" text-anchor="middle" fill="'+(GC[k]||"var(--text-muted)")+'">'+k+'</text>';
     });
     slots.forEach(function(x){
-      g+='<text x="'+X(x.i)+'" y="'+(H-T-22)+'" font-size="'+FS+'" text-anchor="middle" fill="var(--text-muted)">'+x.max+'</text>';
+      g+='<text x="'+X(x.i)+'" y="'+(H-T-22)+'" font-size="'+FS+'" text-anchor="middle" fill="var(--text-muted)">'+(x.kind==="fin"?x.name:x.max)+'</text>';
     });
     // کێرڤی نەرم (Catmull-Rom → Bezier)
     var P=pts.map(function(x){return[X(x.i),Y(x.p)];});
@@ -2770,10 +2793,10 @@ window.restoreGuest=function(){
     }
     pts.forEach(function(x){
       var c=x.p<50?"#ef4444":x.p<70?"#f59e0b":"#10b981";
-      g+='<circle cx="'+X(x.i)+'" cy="'+Y(x.p)+'" r="4.5" fill="'+c+'" stroke="#fff" stroke-width="1.5"><title>'+x.grp+' · '+(x.kind==="ev"?"هەڵسەنگاندن":x.tip)+': '+toKu(r1(x.n))+'/'+toKu(x.max)+' ('+fmt(x.p)+'% · '+lvl(x.p)+')</title></circle>';
+      g+='<circle cx="'+X(x.i)+'" cy="'+Y(x.p)+'" r="5" fill="'+c+'" stroke="'+(GC[x.grp]||"#fff")+'" stroke-width="2.5"><title>'+x.grp+' · '+(x.kind==="ev"?"هەڵسەنگاندن":x.tip)+': '+toKu(r1(x.n))+'/'+toKu(x.max)+' ('+fmt(x.p)+'% · '+lvl(x.p)+')</title></circle>';
     });
     box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="کێرڤی ئاستی خوێندکار" style="display:block;width:100%;height:auto">'+g+'</svg>'+
-      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.7">هەر خاڵێک ڕێژەی سەدی ئەو نمرەیە لە نمرەی گەورەی خۆیەتی. ژمارەی ژێر هەر خاڵێک نمرەی گەورەی خۆیەتی؛ ١٠ = هەڵسەنگاندن، ٢٠ و ٦٠ و ٨٠ = تاقیکردنەوەکان. هێڵی ٥٠ سنووری دەرچوونە.</div>';
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.7">هەر خاڵێک ڕێژەی سەدی ئەو نمرەیە لە نمرەی گەورەی خۆیەتی. ژمارەی ژێر هەر خاڵێک نمرەی گەورەی خۆیەتی؛ ١٠ = هەڵسەنگاندن، ٢٠ و ٦٠ و ٨٠ = تاقیکردنەوەکان، ١٠٠ = کۆی وەرز. ڕەنگی پاشبنەما: شین = وەرزی ١، مۆر = وەرزی ٢، سەوز = کۆتایی، نارنجی = خولی ٢ (تەنها بۆ ئەوەی هەیەتی)، پەمەیی = تێکڕای ساڵ. ک١ و ک٢ = ئەنجامی کۆتایی وەرزی ١ و ٢ (لەگەڵ خولی دووەم ئەگەر هەبێت)، ت = تێکڕای کۆتایی ساڵ. هێڵی ٥٠ سنووری دەرچوونە.</div>';
   };
   var _rz;addEventListener("resize",function(){clearTimeout(_rz);_rz=setTimeout(function(){if(window._curveData)try{window.drawCurve(window._curveData);}catch(e){}},150);});
   window.updateStats=function(d){
