@@ -900,7 +900,7 @@ body.dash-mode{padding-bottom:84px}
             <div class="set-card" id="push-card">
                 <h4 class="set-h">🔔 ئاگادارکردنەوە</h4>
                 <p id="push-msg" style="font-size:13px;color:var(--text-muted);margin:0 0 8px;line-height:1.7">ئاگادارکردنەوە چالاک بکە بۆ ئەوەی ژمارەی نۆتیفیکەیشنەکان لەسەر ئایکۆنی ئەپ دەربکەون.</p>
-                <button type="button" class="btn-save" id="push-btn" onclick="enablePush()">🔔 چالاککردنی ئاگادارکردنەوە</button>
+                <button type="button" class="btn-save" id="push-btn" onclick="togglePush()">🔔 چالاککردنی ئاگادارکردنەوە</button>
             </div>
 
             <div class="set-card">
@@ -1207,7 +1207,7 @@ body.dash-mode{padding-bottom:84px}
 </script>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM4gsA3hlTvUsgiICzRvQg7_no9_jbQK61iI8AfQ4XERF8s5o_FaK1VejPrCcXZI6d/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzV6KgCgSoyJH3fbl6Ri4m5GbGO8d2r1NCxsp1__dSvT2yiHMbHucqD486-kACohP9/exec";
     
     function toKu(v) {
         return String(v).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
@@ -2748,11 +2748,14 @@ window.restoreGuest=function(){
 </script>
 <script>
 (function(){
-  var VAPID="BBQTDIbMP6crfhcGGpbkEcfiAZ3hqYB18INePoeqqu_RCoc5KzKkAVrb7XCag7w52lpCprFiO_Mv_5b0TLUqOvY"; // Firebase Console ▸ Project settings ▸ Cloud Messaging ▸ Web Push certificates
+  var VAPID="BBQTDIbMP6crfhcGGpbkEcfiAZ3hqYB18INePoeqqu_RCoc5KzKkAVrb7XCag7w52lpCprFiO_Mv_5b0TLUqOvY";
   var CFG={apiKey:"AIzaSyCsMd_Un-4jBHc7nnsbF0lkwIQ_qv_D07Q",authDomain:"biology-halkawt.firebaseapp.com",projectId:"biology-halkawt",storageBucket:"biology-halkawt.firebasestorage.app",messagingSenderId:"475532110040",appId:"1:475532110040:web:b80f4c73c21232e0508fad"};
+  var V="https://www.gstatic.com/firebasejs/13.1.0/";
   var $=function(i){return document.getElementById(i);};
   var swReg=null;
   function msg(t){var m=$("push-msg");if(m)m.textContent=t;}
+  function native(){return !!(window.Android&&typeof Android.enableNotifications==="function");}
+  function who(){return {u:(typeof currentUsername!=="undefined"&&currentUsername)||"",g:(typeof currentGrade!=="undefined"&&currentGrade)||""};}
   function clearBadge(){
     try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(e){}
     try{var c=navigator.serviceWorker&&navigator.serviceWorker.controller;if(c)c.postMessage({type:"CLEAR"});}catch(e){}
@@ -2764,41 +2767,95 @@ window.restoreGuest=function(){
     addEventListener("focus",clearBadge);
     addEventListener("load",clearBadge);
   }
+  function isOn(){
+    if(native()){try{return !!Android.notificationsEnabled();}catch(e){return false;}}
+    return "Notification" in window && Notification.permission==="granted"
+      && !!localStorage.getItem("push_token") && localStorage.getItem("push_off")!=="1";
+  }
+  function setBtn(on){
+    var b=$("push-btn");if(!b)return;
+    b.style.display="";b.disabled=false;
+    b.classList.toggle("btn-save",!on);
+    b.classList.toggle("btn-logout",on);
+    b.textContent=on?"🔕 ناچالاککردنی ئاگادارکردنەوە":"🔔 چالاککردنی ئاگادارکردنەوە";
+  }
   function refresh(){
     var b=$("push-btn");if(!b)return;
+    if(native()){
+      var on=isOn();setBtn(on);
+      msg(on?"ئاگادارکردنەوە لەم ئەپەدا چالاکە.":"ئاگادارکردنەوە ناچالاکە. چالاکی بکە بۆ ئەوەی نۆتیفیکەیشنەکان بگەنە مۆبایلەکەت.");
+      return;
+    }
+    if(window.Android){var pc=$("push-card");if(pc)pc.style.display="none";return;}
     if(!("serviceWorker" in navigator)||!("Notification" in window)||!("PushManager" in window)){
       b.style.display="none";
       var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
-      msg(ios?"لە ئایفۆن: سەرەتا لە Safari دوگمەی Share ▸ Add to Home Screen بکە، پاشان ئەپەکە لە Home Screen بکەرەوە و ئەم دوگمەیە چالاک بکە.":"ئەم براوزەرە ئاگادارکردنەوە پشتگیری ناکات.");return;}
-    if(Notification.permission==="granted"){b.textContent="✅ چالاکە (نوێکردنەوەی تۆکن)";}
-    if(Notification.permission==="denied"){b.style.display="none";msg("ئاگادارکردنەوە لە ڕێکخستنی براوزەر/مۆبایلەکەت قەدەغە کراوە؛ لەوێ ڕێگەی پێ بدە.");}
+      msg(ios?"لە ئایفۆن: سەرەتا لە Safari دوگمەی Share ▸ Add to Home Screen بکە، پاشان ئەپەکە لە Home Screen بکەرەوە و ئەم دوگمەیە چالاک بکە.":"ئەم براوزەرە ئاگادارکردنەوە پشتگیری ناکات.");
+      return;
+    }
+    if(Notification.permission==="denied"){
+      b.style.display="none";
+      msg("ئاگادارکردنەوە لە ڕێکخستنی براوزەر/مۆبایلەکەت قەدەغە کراوە؛ لەوێ ڕێگەی پێ بدە.");
+      return;
+    }
+    var on2=isOn();setBtn(on2);
+    msg(on2?"ئاگادارکردنەوە چالاکە.":"ئاگادارکردنەوە ناچالاکە.");
   }
-  window.enablePush=async function(){
-    var b=$("push-btn");
+  async function messaging(){
+    var A=await import(V+"firebase-app.js"),M=await import(V+"firebase-messaging.js"),app;
+    try{app=A.getApp("push");}catch(e){app=A.initializeApp(CFG,"push");}
+    return {M:M,m:M.getMessaging(app)};
+  }
+  async function enableWeb(){
+    if(VAPID.length<80){msg("VAPID key دانەنراوە.");return;}
+    var perm=await Notification.requestPermission();
+    if(perm!=="granted"){msg("ڕێگەپێدان وەرنەگیرا.");return;}
+    var reg=swReg||await navigator.serviceWorker.register("firebase-messaging-sw.js");
+    await navigator.serviceWorker.ready;
+    var f=await messaging();
+    var tok=await f.M.getToken(f.m,{vapidKey:VAPID,serviceWorkerRegistration:reg});
+    if(!tok)throw new Error("no token");
+    var w=who();
+    localStorage.setItem("push_token",tok);
+    localStorage.removeItem("push_off");
+    await fetch(SCRIPT_URL+"?action=registerPush&token="+encodeURIComponent(tok)+"&user="+encodeURIComponent(w.u)+"&grade="+encodeURIComponent(w.g));
+    msg("✅ ئاگادارکردنەوە چالاک کرا.");
+  }
+  async function disableWeb(){
+    var tok=localStorage.getItem("push_token");
+    try{var f=await messaging();await f.M.deleteToken(f.m);}catch(e){console.error(e);}
+    if(tok){
+      var w=who();
+      try{await fetch(SCRIPT_URL+"?action=unregisterPush&token="+encodeURIComponent(tok)+"&user="+encodeURIComponent(w.u)+"&grade="+encodeURIComponent(w.g));}catch(e){}
+    }
+    localStorage.removeItem("push_token");
+    localStorage.setItem("push_off","1");
+    clearBadge();
+    msg("🔕 ئاگادارکردنەوە ناچالاک کرا.");
+  }
+  window.togglePush=async function(){
+    var b=$("push-btn"),on=isOn();
+    if(native()){
+      if(on){
+        if(typeof Android.disableNotifications==="function"){try{Android.disableNotifications();}catch(e){}}
+        else{msg("ئەم وەشانەی ئەپ ناچالاککردن پشتگیری ناکات. لە ڕێکخستنی ئەندرۆید ▸ ئەپەکان ▸ ئاگادارکردنەوەکان ناچالاکی بکە.");return;}
+      }else{try{Android.enableNotifications();}catch(e){}}
+      setTimeout(refresh,1200);setTimeout(refresh,4000);
+      return;
+    }
     try{
-      if(VAPID.length<80){msg("VAPID key دانەنراوە.");return;}
-      b.disabled=true;
-      var perm=await Notification.requestPermission();   // دەبێت لە کلیکەوە بێت (iOS)
-      if(perm!=="granted"){msg("ڕێگەپێدان وەرنەگیرا.");b.disabled=false;refresh();return;}
-      var reg=swReg||await navigator.serviceWorker.register("firebase-messaging-sw.js");
-      await navigator.serviceWorker.ready;
-      var V="https://www.gstatic.com/firebasejs/13.1.0/";
-      var A=await import(V+"firebase-app.js"),M=await import(V+"firebase-messaging.js");
-      var app;try{app=A.getApp("push");}catch(e){app=A.initializeApp(CFG,"push");}
-      var tok=await M.getToken(M.getMessaging(app),{vapidKey:VAPID,serviceWorkerRegistration:reg});
-      if(!tok)throw new Error("no token");
-      var u=(typeof currentUsername!=="undefined"&&currentUsername)||"",g=(typeof currentGrade!=="undefined"&&currentGrade)||"";
-      localStorage.setItem("push_token",tok);
-      await fetch(SCRIPT_URL+"?action=registerPush&token="+encodeURIComponent(tok)+"&user="+encodeURIComponent(u)+"&grade="+encodeURIComponent(g));
-      msg("✅ ئاگادارکردنەوە چالاک کرا.");
+      if(b)b.disabled=true;
+      msg("⏳ چاوەڕێ بکە...");
+      if(on)await disableWeb();else await enableWeb();
     }catch(e){console.error(e);msg("هەڵەیەک ڕوویدا: "+(e&&e.message||e));}
-    b.disabled=false;refresh();
+    refresh();
   };
-  // ئەگەر پێشتر ڕێگەی دابوو، تۆکن بە بێدەنگی نوێ دەکرێتەوە (پۆل/یوزەر ڕەنگە گۆڕابێت)
+  window.enablePush=window.togglePush;
   addEventListener("load",function(){refresh();setTimeout(function(){
-    if("Notification" in window&&Notification.permission==="granted"&&localStorage.getItem("push_token")&&typeof SCRIPT_URL!=="undefined"){
-      var u=(typeof currentUsername!=="undefined"&&currentUsername)||"",g=(typeof currentGrade!=="undefined"&&currentGrade)||"";
-      if(u||g)fetch(SCRIPT_URL+"?action=registerPush&token="+encodeURIComponent(localStorage.getItem("push_token"))+"&user="+encodeURIComponent(u)+"&grade="+encodeURIComponent(g)).catch(function(){});
+    if("Notification" in window&&Notification.permission==="granted"&&localStorage.getItem("push_token")
+       &&localStorage.getItem("push_off")!=="1"&&typeof SCRIPT_URL!=="undefined"){
+      var w=who();
+      if(w.u||w.g)fetch(SCRIPT_URL+"?action=registerPush&token="+encodeURIComponent(localStorage.getItem("push_token"))+"&user="+encodeURIComponent(w.u)+"&grade="+encodeURIComponent(w.g)).catch(function(){});
     }},4000);});
 })();
 </script>
