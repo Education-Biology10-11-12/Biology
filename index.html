@@ -2002,23 +2002,45 @@ body.dash-mode{padding-bottom:84px}
         setFileLabel(isRegisterPhoto ? "reg-file-name" : "file-name", finalCroppedImage ? FILE_OK_TXT : NO_FILE_TXT);
     }
 
-    // ===== نوێ: پشکنینی فەیس (وێنە دەبێت تەنها یەک فەیسی گەورەی تێدا بێت) =====
+    // ===== پشکنینی فەیس (وێنە دەبێت تەنها یەک فەیسی گەورەی تێدا بێت) =====
+    const FACE_SOURCES = [
+        { js: "face-api.min.js", model: "models/" },
+        { js: "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js", model: "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model/" },
+        { js: "https://fastly.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js", model: "https://fastly.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model/" },
+        { js: "https://gcore.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js", model: "https://gcore.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model/" }
+    ];
+
+    function loadScriptOnce(src) {
+        return new Promise(function (res, rej) {
+            const s = document.createElement("script");
+            s.src = src;
+            s.onload = res;
+            s.onerror = function () { s.remove(); rej(new Error("LOAD " + src)); };
+            document.head.appendChild(s);
+        });
+    }
+
     async function loadFaceApi() {
         if (window._faceReady) return;
-        if (!window.faceapi) {
-            await new Promise(function (res, rej) {
-                const s = document.createElement("script");
-                s.src = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js";
-                s.onload = res;
-                s.onerror = function () { rej(new Error("LOAD")); };
-                document.head.appendChild(s);
-            });
+        let lastErr = null;
+        for (const src of FACE_SOURCES) {
+            try {
+                if (!window.faceapi) await loadScriptOnce(src.js);
+                if (!window.faceapi) throw new Error("faceapi missing");
+                try { await faceapi.tf.setBackend("webgl"); } catch (e) { try { await faceapi.tf.setBackend("cpu"); } catch (e2) {} }
+                await faceapi.tf.ready();
+                await faceapi.nets.tinyFaceDetector.loadFromUri(src.model);
+                window._faceReady = true;
+                return;
+            } catch (e) {
+                lastErr = e;
+                window.faceapi = undefined;
+            }
         }
-        await faceapi.nets.tinyFaceDetector.loadFromUri("https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model/");
-        window._faceReady = true;
+        throw lastErr || new Error("FACE_UNAVAILABLE");
     }
+
     async function detectFaces(canvas) {
-        // یەکەم: دۆزەرەوەی ناوخۆیی براوزەر (ئەگەر هەبوو). ئەگەر هیچی نەدۆزییەوە، ڕێگای دووەم تاقی دەکرێتەوە
         if ("FaceDetector" in window) {
             try {
                 const f = await new FaceDetector({ fastMode: true, maxDetectedFaces: 3 }).detect(canvas);
@@ -2026,7 +2048,7 @@ body.dash-mode{padding-bottom:84px}
             } catch (e) {}
         }
         await loadFaceApi();
-        const r = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.5 }));
+        const r = await faceapi.detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.4 }));
         return r.map(function (x) { return { w: x.box.width }; });
     }
 
@@ -2053,7 +2075,9 @@ body.dash-mode{padding-bottom:84px}
             else if (faces.length > 1) problem = "لە وێنەکەدا زیاتر لە یەک کەس دیارە. تەنها وێنەی خۆت بگرە.";
             else if (faces[0].w / 300 < 0.25) problem = "فەیسەکە زۆر بچووکە. نزیکتر بەرەوە یان وێنەکە زووم بکە.";
         } catch (e) {
-            problem = "پشکنینی فەیس ئامادە نەبوو، ئینتەرنێت بپشکنە و دووبارە هەوڵ بدەرەوە.";
+            // پشکنینەرەکە بار نەبوو (کێشەی تەکنیکی): خوێندکار بلۆک ناکەین
+            console.warn("Face check unavailable, skipping:", e);
+            problem = "";
         }
 
         hint.innerText = oldTxt;
