@@ -1418,86 +1418,82 @@ button.file-btn:hover{transform:none}
         }
     };
 
+    // NOTES-V2: نۆتە تایبەتەکان لە سێرڤەرەوە (studentNotes) دێن و لە ئەپدا دەمێننەوە
     function syncAndRenderNotes(data) {
         const area = document.getElementById("notification-area");
         if (!area) return;
-
-        let list = loadSavedNotes();
-        const now = Date.now();
-
-        const serverItems = [];
-        if (Array.isArray(data && data.notifications)) {
-            data.notifications.forEach(function(item, idx) {
-                if (!item) return;
-                if (typeof item === "string" && item.trim()) {
-                    serverItems.push({
-                        id: "srv_" + item.trim(),
-                        text: item.trim(),
-                        ts: now - idx * 1000,
-                        status: "active",
-                        scope: "private"
-                    });
-                } else if (typeof item === "object" && (item.text || item.body || item.message)) {
-                    const txt = String(item.text || item.body || item.message).trim();
-                    if (txt) {
-                        const sc = item.scope === "public" || item.status === "public" ? "public" : "private";
-                        serverItems.push({
-                            id: String(item.id || ((sc === "public" ? "pub_" : "srv_") + txt)),
-                            text: txt,
-                            ts: Number(item.ts || item.time || (now - idx * 1000)),
-                            status: item.status === "pending" ? "pending" : (sc === "public" ? "public" : "active"),
-                            scope: sc
-                        });
-                    }
-                }
+        const esc = function(s) {
+            return String(s).replace(/[&<>"]/g, function(c) {
+                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
             });
+        };
+        const now = Date.now();
+        const hasServerList = !!(data && Array.isArray(data.studentNotes));
+        let list = loadSavedNotes();
+
+        // ١) نۆتی تایبەت: ئەگەر سێرڤەر لیستی ناردبوو، ئەو لیستە ڕاستییە
+        let priv = [];
+        if (hasServerList) {
+            priv = data.studentNotes.map(function(n, i) {
+                const body = String((n && (n.body || n.text)) || "").trim();
+                if (!body) return null;
+                return {
+                    id: "sn_" + String(n.id || (body + i)),
+                    sid: String(n.id || ""),
+                    title: String(n.title || "").trim(),
+                    text: body,
+                    ts: Number(n.ts) || (now - i * 1000),
+                    status: n.status === "pending" ? "pending" : "active",
+                    scope: "private"
+                };
+            }).filter(Boolean);
+        } else {
+            priv = list.filter(function(n) { return n.scope !== "public" && n.status !== "public"; });
         }
 
+        // ٢) نۆتی گشتی: ئەگەر سێرڤەر نۆتە تایبەتەکانی تێکەڵ کردبێت، لایان دەبەین
+        function cleanPublic(txt) {
+            return String(txt || "").split(/\n\s*\n/).filter(function(p) {
+                p = p.trim();
+                if (!p) return false;
+                if (hasServerList && p.indexOf("\uD83D\uDCE9") === 0) return false;   // دێڕی 📩 = نۆتی تایبەتی تێکەڵکراو
+                return true;
+            }).join("\n\n").trim();
+        }
+        let pub = [];
+        list.forEach(function(n) {
+            if (n.scope === "public" || n.status === "public") {
+                const t = cleanPublic(n.text);
+                if (t) { n.text = t; pub.push(n); }
+            }
+        });
         if (data && typeof data.notification === "string" && data.notification.trim() !== "") {
-            const pTxt = data.notification.trim();
-            if (!serverItems.some(x => x.text === pTxt)) {
-                serverItems.push({
-                    id: "pub_" + pTxt,
-                    text: pTxt,
-                    ts: Number(data.notificationTime || now),
-                    status: "public",
-                    scope: "public"
-                });
+            const t = cleanPublic(data.notification);
+            if (t && !pub.some(function(x) { return x.text === t; })) {
+                pub.push({ id: "pub_" + t, text: t, ts: Number(data.notificationTime || now), status: "public", scope: "public" });
             }
         }
+        const seenPub = {};
+        pub = pub.filter(function(x) {
+            if (seenPub[x.text]) return false;
+            seenPub[x.text] = true;
+            return true;
+        });
 
+        // ٣) ئەو نۆتیفیکەیشنەی بە کلیک کردنەوەی ئەپ هاتووە (ئەگەر لە سێرڤەر نەبوو)
         try {
             const inc = JSON.parse(sessionStorage.getItem("incoming_push_note") || "null");
             if (inc && inc.text) {
-                serverItems.push({
-                    id: "push_" + inc.text,
-                    text: inc.text,
-                    ts: inc.ts || now,
-                    status: "active",
-                    scope: "private"
-                });
+                const t = String(inc.text).trim();
+                const known = priv.concat(pub).some(function(x) { return t.indexOf(x.text) > -1; });
+                if (!known) {
+                    priv.push({ id: "push_" + t, text: t, ts: inc.ts || now, status: "active", scope: "private" });
+                }
                 sessionStorage.removeItem("incoming_push_note");
             }
         } catch (e) {}
 
-        const serverHasExplicitEmpty = data && (
-            (Array.isArray(data.notifications) && data.notifications.length === 0) ||
-            (data.notification === "" && data.notificationCleared === true)
-        );
-        if (serverHasExplicitEmpty) {
-            list = list.filter(n => !String(n.id).startsWith("srv_") && n.scope !== "public");
-        }
-
-        serverItems.forEach(function(sItem) {
-            const existing = list.find(x => x.text === sItem.text);
-            if (!existing) {
-                list.push(sItem);
-            } else {
-                if (sItem.status === "pending") existing.status = "pending";
-                if (sItem.scope) existing.scope = sItem.scope;
-            }
-        });
-
+        list = pub.concat(priv);
         list.sort(function(a, b) { return (b.ts || 0) - (a.ts || 0); });
         saveNotesList(list);
 
@@ -1512,31 +1508,33 @@ button.file-btn:hover{transform:none}
             const isPublic = n.scope === "public" || n.status === "public";
             const isPending = !isPublic && n.status === "pending";
             const timeLabel = formatNoteTime(n.ts);
+            const ttl = n.title ? esc(n.title) : "";
 
-            let badgeText = "🔔 نۆتی تایبەت";
+            let badgeText = ttl || "\uD83D\uDD14 نۆتی تایبەت";
             let cardClass = "notification";
             if (isPublic) {
-                badgeText = "📢 نۆتی گشتی";
+                badgeText = "\uD83D\uDCE2 نۆتی گشتی";
                 cardClass = "notification pass";
             } else if (isPending) {
-                badgeText = "⏳ نێردراوە بۆ ئەدمین · چاوەڕێی پەسەندکردن";
+                badgeText = "\u23F3 نێردراوە بۆ ئەدمین · چاوەڕێی پەسەندکردن" + (ttl ? " — " + ttl : "");
                 cardClass = "notification pending-review";
             }
 
-            const actionBtn = (!isPublic && !isPending)
+            const isFix = !isPublic && !isPending && /چاککردنی/.test(n.title || "");
+            const actionBtn = isFix
                 ? '<button type="button" class="note-fix-btn" onclick="goFixNote(' + i + ')">چاکم کرد · ناردن بۆ ئەدمین</button>'
                 : '';
 
             return '<div class="' + cardClass + '">' +
-                '<div>' + badgeText + ' — ' + n.text + '</div>' +
+                '<div>' + badgeText + '</div>' +
+                '<div style="white-space:pre-wrap;margin-top:4px;">' + esc(n.text) + '</div>' +
                 '<div class="note-meta">' +
-                    '<span>🕒 ' + (timeLabel || 'ئێستا') + '</span>' +
+                    '<span>\uD83D\uDD52 ' + (timeLabel || 'ئێستا') + '</span>' +
                     actionBtn +
                 '</div>' +
             '</div>';
         }).join("");
     }
-
     function goFixNote(index) {
         const list = loadSavedNotes();
         const item = list[index];
@@ -1573,7 +1571,7 @@ button.file-btn:hover{transform:none}
                 group: correctGroup,
                 username: currentUsername,
                 password: currentPassword,
-                noteId: item.id,
+                noteId: item.sid || item.id,
                 noteText: item.text
             })
         }).catch(function() {});
@@ -2848,7 +2846,7 @@ button.file-btn:hover{transform:none}
             } else {
                 const activeNotes = loadSavedNotes();
                 activeNotes.forEach(function(n, idx) {
-                    if (n.scope !== "public" && n.status !== "pending") submitNoteForAdminReview(idx);
+                    if (n.scope !== "public" && n.status !== "pending" && /چاککردنی/.test(n.title || "")) submitNoteForAdminReview(idx);
                 });
             }
 
@@ -2870,6 +2868,14 @@ button.file-btn:hover{transform:none}
             msg.innerText = "سەرکەوتوونەبوو، هێڵی ئینتەرنێت بپشکنە";
         });
     }
+
+    // NOTES-V2: کاتێک ئەپ دەگەڕێتەوە سەر شاشە (یان نۆتیفیکەیشن کلیک دەکرێت) نۆتەکان یەکسەر نوێ دەکرێنەوە
+    document.addEventListener("visibilitychange", function() {
+        if (!document.hidden && currentPassword) refreshDataSilent();
+    });
+    window.addEventListener("focus", function() {
+        if (currentPassword) refreshDataSilent();
+    });
 
     function logout() {
         localStorage.removeItem("guest_session"); localStorage.removeItem("guest_materials");
