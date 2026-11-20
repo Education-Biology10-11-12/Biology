@@ -728,10 +728,7 @@ button.file-btn:hover{transform:none}
     <label class="field-label">وێنەی ڕوخساری خۆت (دەبێت فەیسی خۆت دیار بێت):</label>
     <div class="file-picker">
         <button type="button" class="file-btn" onclick="openFaceCam('reg')">📷 گرتنی وێنە</button>
-        <label for="reg-input-gallery" class="file-btn gal">🖼 گەلەری</label>
         <span class="file-name" id="reg-file-name">هیچ وێنەیەکت هەڵنەبژاردووە</span>
-        <input type="file" id="reg-input-photo" accept="image/*" capture="user" class="file-hidden">
-        <input type="file" id="reg-input-gallery" accept="image/*" class="file-hidden">
     </div>
 
     <label class="field-label">ناوی سیانی (بەپێی ناسنامە، هەر ناوێک بە خانەیەکی جیا):</label>
@@ -969,10 +966,7 @@ button.file-btn:hover{transform:none}
             <label class="field-label">گۆڕینی وێنەی پرۆفایل (دەبێت فەیسی خۆت دیار بێت):</label>
             <div class="file-picker" id="settings-file-picker">
                 <button type="button" class="file-btn" onclick="openFaceCam('set')">📷 گرتنی وێنە</button>
-                <label for="input-gallery" class="file-btn gal">🖼 گەلەری</label>
                 <span class="file-name" id="file-name">هیچ وێنەیەکت هەڵنەبژاردووە</span>
-                <input type="file" id="input-photo" accept="image/*" capture="user" class="file-hidden">
-                <input type="file" id="input-gallery" accept="image/*" class="file-hidden">
             </div>
             </div>
 
@@ -1913,13 +1907,7 @@ button.file-btn:hover{transform:none}
         if (st.root) history.back();
     });
 
-    // هەر چوار input (کامێرای یەدەگ + گەلەری، بۆ تۆمارکردن و ڕێکخستن) دەچنە هەمان بڕین و پشکنینی فەیس
-    [["reg-input-photo", true], ["reg-input-gallery", true], ["input-photo", false], ["input-gallery", false]].forEach(function(p) {
-        document.getElementById(p[0]).addEventListener("change", function(e) {
-            isRegisterPhoto = p[1];
-            handlePhotoSelection(e);
-        });
-    });
+    // وێنە تەنها لە کامێرای ڕاستەوخۆ وەردەگیرێت (openFaceCam). گەلەری و input ی فایل لابراون
 
     function setCroppedResult(dataUrl) {
         finalCroppedImage = dataUrl;
@@ -1964,9 +1952,6 @@ button.file-btn:hover{transform:none}
     function closeCropModal() {
         document.getElementById("crop-modal").classList.add("hidden");
         if (CROP.url) { URL.revokeObjectURL(CROP.url); CROP.url = ""; }
-        ["reg-input-photo", "reg-input-gallery", "input-photo", "input-gallery"].forEach(function(id) {
-            document.getElementById(id).value = "";
-        });
     }
 
     (function() {
@@ -2007,20 +1992,19 @@ button.file-btn:hover{transform:none}
     })();
 
     // ===== نوێ: کامێرای ڕاستەوخۆ (فەیس) =====
-    // لەناو ئەپی ئەندرۆید (WebView) یان ئەگەر براوزەر getUserMedia ی نەبوو، کامێرای مۆبایل بە input ی capture دەکرێتەوە
+    // تەنها کامێرای ڕاستەوخۆ (getUserMedia)، لە براوزەر و لەناو ئەپیش. هیچ ڕێگایەک بۆ گەلەری نییە
     let faceStream = null;
     async function openFaceCam(which) {
         isRegisterPhoto = (which === "reg");
-        const inputId = isRegisterPhoto ? "reg-input-photo" : "input-photo";
-        if (window.Android || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            document.getElementById(inputId).click();
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("ئەم براوزەر/ئەپە کامێرای ڕاستەوخۆ پشتگیری ناکات. لە Chrome بیکەرەوە، یان ئەپەکە نوێ بکەرەوە.");
             return;
         }
         try {
             faceStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 1280 } }, audio: false });
         } catch (err) {
             faceStream = null;
-            alert("ڕێگەی کامێرا نەدرا یان کامێرا نەدۆزرایەوە. ڕێگە بە کامێرا بدە و دووبارە هەوڵ بدەرەوە، یان لە دوگمەی «گەلەری» وێنە هەڵبژێرە.");
+            alert("ڕێگەی کامێرا نەدرا یان کامێرا نەدۆزرایەوە. لە ڕێکخستنی مۆبایل ڕێگە بە کامێرا بدە بۆ ئەم ئەپە/براوزەرە و دووبارە هەوڵ بدەرەوە.");
             return;
         }
         const v = document.getElementById("face-vid");
