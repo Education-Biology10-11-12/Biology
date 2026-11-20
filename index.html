@@ -6,14 +6,11 @@
     <title>داتابەیسی خوێندکاران - زیندەزانی</title>
     
     <script>
-        // دۆزینەوەی ئەپی ئەندرۆید (WebView): لەوێ گووگڵ/فایەربەیس کار ناکات و دەشاردرێتەوە
         (function() {
             var ua = navigator.userAgent || "";
             var inApp = /; wv\)/i.test(ua) || (/Android/i.test(ua) && /Version\/\d+\.\d+/.test(ua) && /Chrome\//.test(ua)) || /FBAN|FBAV|Instagram|Line\//i.test(ua);
             window.IN_APP = inApp;
-            // ئەگەر ئەپی ئەندرۆید پرد (bridge)ی چوونەژوورەوەی گووگڵی هەبوو، دوگمەکان دەمێننەوە
             window.NATIVE_G = (typeof Android !== "undefined" && typeof Android.googleSignIn === "function");
-            // لەناو ئەپ بێ پردی گووگڵ (ئەپی کۆن)، گووگڵ کار ناکات و دەشاردرێتەوە
             if (inApp && !window.NATIVE_G) document.documentElement.classList.add("no-google");
         })();
     </script>
@@ -22,11 +19,9 @@
         window.addEventListener("unhandledrejection", function(e){ try{ var d=document.getElementById("debug-msg"); if(d) d.textContent="PROMISE: "+((e.reason&&e.reason.message)||e.reason||""); }catch(x){} });
     </script>
     <script>
-        // دانانی دۆخی شەو/ڕۆژ پێش نیشاندانی لاپەڕە (بۆ ئەوەی بریسکە نەکات)
         (function() {
             try {
                 var m = localStorage.getItem("theme_mode") || "dark";
-                var h = new Date().getHours();
                 var dark = m === "dark" || (m !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
                 document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
             } catch (e) {}
@@ -56,7 +51,6 @@
             --warning: #f59e0b;
         }
 
-        /* شاردنەوەی هەموو شتێکی گووگڵ لەناو ئەپی مۆبایل */
         html.no-google #google-login-btn,
         html.no-google #google-link-inside-btn,
         html.no-google #google-link-block,
@@ -114,7 +108,6 @@
         button.btn-save { background: linear-gradient(to right, var(--success), #047857); }
         button.btn-refresh { background: linear-gradient(to right, var(--warning), #d97706); margin-top: 10px; font-size: 14px; padding: 10px; }
 
-        /* دوگمەی تایبەتی گووگڵ */
         .btn-google {
             background: #ffffff !important;
             color: #374151 !important;
@@ -168,7 +161,10 @@
         
         .material-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: white; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .material-link { padding: 8px 18px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; }
-        .notification { background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 14px; margin-bottom: 20px; font-weight: bold; border-right: 5px solid var(--danger); }
+        .notification { background: #fee2e2; color: #b91c1c; padding: 14px 15px; border-radius: 14px; margin-bottom: 12px; font-weight: bold; border-right: 5px solid var(--danger); line-height: 1.7; }
+        .notification.pending-review { background: #fef3c7; color: #92400e; border-right-color: var(--warning); }
+        .note-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed rgba(0,0,0,0.12); font-size: 11.5px; font-weight: normal; opacity: 0.9; }
+        .note-fix-btn { width: auto !important; margin: 0 !important; padding: 5px 12px !important; font-size: 12px !important; border-radius: 10px !important; background: var(--primary) !important; color: #fff !important; box-shadow: none !important; }
         
         .locked-banner { background: #fef3c7; color: #92400e; padding: 12px 15px; border-radius: 14px; margin-bottom: 15px; font-weight: bold; font-size: 13px; border-right: 5px solid var(--warning); line-height: 1.6; }
         
@@ -184,6 +180,13 @@
         .crop-btns button { margin: 0; }
         .field-label { display:block; margin-top: 12px; margin-bottom: 5px; font-size: 14px; color: var(--text-main); font-weight:bold; text-align: right; }
         
+        /* پەنجەرەی ئاگاداری ناوخۆیی (بێ لینک) */
+        #app-alert { position: fixed; inset: 0; z-index: 2147483500; background: rgba(0,0,0,0.72); display: flex; align-items: center; justify-content: center; padding: 18px; }
+        .app-alert-box { width: 100%; max-width: 340px; background: #ffffff; color: #0f172a; border-radius: 20px; padding: 22px 18px 16px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.2); }
+        html[data-theme="dark"] .app-alert-box { background: #1e293b; color: #f1f5f9; border-color: #334155; }
+        .app-alert-txt { font-size: 15px; font-weight: bold; line-height: 1.8; margin: 0 0 16px; }
+        .app-alert-box button { margin: 0; padding: 10px; font-size: 15px; }
+
         .profile-main { flex: 1; min-width: 0; }
         .profile-main h2 { margin: 0; text-align: right; color: var(--primary); }
         .profile-main p { margin: 3px 0 0 0; color: var(--text-main); font-weight: bold; font-size: 14px; }
@@ -211,7 +214,6 @@
         .scroll-hint .arrows { display: inline-block; font-size: 18px; animation: swipe 1.4s ease-in-out infinite; }
         @keyframes swipe { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
 
-        /* ===== کۆمپیوتەر: پانتر، کورتتر، سکرۆڵ ===== */
         .grade-block h4 { margin: 10px 0 5px !important; }
         .grades-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 18px; }
         .grade-block { min-width: 0; max-width: 100%; }
@@ -251,7 +253,6 @@
             .profile-logo { width: 55px; height: 55px; }
         }
 
-        /* ===== پرۆفایل: لۆگۆ لە ناوەڕاست ===== */
         .profile-id { display: flex; align-items: center; gap: 15px; width: 100%; min-width: 0; }
         .profile-logo-wrap { flex: none; }
         @media (min-width: 600px), (orientation: landscape) {
@@ -269,7 +270,6 @@
             #dashboard-section > .tab-content.active { overflow-y: visible; }
         }
 
-        /* ===== بینەری ناوخۆیی بۆ PDF و ڤیدیۆ ===== */
         #viewer-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1100; background: #0f172a; display: flex; flex-direction: column; height: 100%; height: 100dvh; }
         #viewer-frame { flex: 1; width: 100%; border: 0; background: #fff; }
 
@@ -280,14 +280,12 @@
         .viewer-back { right: 12px; width: 44px; height: 44px; font-size: 22px; }
         .viewer-ext { right: 66px; top: calc(14px + env(safe-area-inset-top, 0px)); width: 36px; height: 36px; font-size: 16px; }
 
-        /* ڕیفریش بە کێشانی شاشە */
         html, body { overscroll-behavior-y: contain; }
         #ptr-indicator { position: fixed; top: 0; left: 50%; width: 42px; height: 42px; margin-left: -21px; border-radius: 50%; background: #fff; color: var(--primary); box-shadow: 0 4px 14px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; z-index: 1200; transform: translateY(-60px); opacity: 0; pointer-events: none; transition: transform 0.2s, opacity 0.2s; }
         #ptr-indicator.dragging { transition: none; }
         #ptr-indicator.spin span { display: inline-block; animation: ptrspin 0.8s linear infinite; }
         @keyframes ptrspin { to { transform: rotate(360deg); } }
 
-        /* ===== حالەتی داشبۆرد ===== */
         body.dash-mode {
             background-color: #f1f5f9;
             background-image: radial-gradient(circle at 12% 0%, rgba(15,118,110,0.32), transparent 42%), radial-gradient(circle at 92% 10%, rgba(2,132,199,0.34), transparent 40%), radial-gradient(circle at 50% 100%, rgba(15,118,110,0.24), transparent 45%);
@@ -317,13 +315,11 @@
             box-shadow: 0 4px 14px rgba(2,132,199,0.2), inset 0 1px 0 #fff;
         }
 
-        /* ===== دوگمەی دۆخی شەو/ڕۆژ ===== */
         #theme-toggle { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 10px; width: 40px; height: 40px; margin: 0; padding: 0; border-radius: 50%; font-size: 18px; line-height: 1; z-index: 900; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 4px 14px rgba(0,0,0,0.18); color: inherit; }
         #theme-toggle:hover { transform: none; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
         #theme-toast { position: fixed; top: calc(16px + env(safe-area-inset-top, 0px)); left: 58px; padding: 8px 14px; border-radius: 12px; background: rgba(15,23,42,0.88); color: #fff; font-size: 13px; z-index: 900; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
         #theme-toast.show { opacity: 1; }
 
-        /* ===== دۆخی شەو ===== */
         html[data-theme="light"] { color-scheme: light; }
         html[data-theme="dark"] { color-scheme: dark; --text-main: #e2e8f0; --text-muted: #94a3b8; --primary: #38bdf8; --bg-gradient: linear-gradient(135deg, #04302d 0%, #0a3552 100%); }
         html[data-theme="dark"] body.dash-mode {
@@ -352,6 +348,7 @@
         html[data-theme="dark"] .material-item { background: #1e293b; border-color: #334155; }
         html[data-theme="dark"] .material-link { background: #0369a1; }
         html[data-theme="dark"] .notification { background: rgba(127,29,29,0.45); color: #fecaca; }
+        html[data-theme="dark"] .notification.pending-review { background: rgba(146,64,14,0.45); color: #fde68a; }
         html[data-theme="dark"] .notification.pass { background: rgba(20,83,45,0.5); color: #bbf7d0; }
         html[data-theme="dark"] .locked-banner { background: rgba(146,64,14,0.35); color: #fde68a; border-right-color: var(--warning); }
         html[data-theme="dark"] .crop-container-box { background: #1e293b; }
@@ -362,12 +359,10 @@
         html[data-theme="dark"] #theme-toggle { background: rgba(30,41,59,0.65); border-color: rgba(255,255,255,0.15); }
         html[data-theme="dark"] .btn-google { background: #1e293b !important; color: #f1f5f9 !important; border-color: #475569 !important; }
 
-        /* ===== بڕینی وێنە ===== */
         #crop-stage { position: relative; width: min(240px, 100%); aspect-ratio: 3 / 4; margin: 0 auto 12px; overflow: hidden; background: #0f172a; border-radius: 14px; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
         #crop-stage img { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
         #crop-zoom { padding: 0; margin: 4px 0 8px; height: 28px; border: none; background: transparent; box-shadow: none; }
 
-        /* ===== خشتەی نمرەکان: شوشەیی (Glass) ===== */
         .table-responsive { border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.22)); backdrop-filter: blur(14px) saturate(165%); -webkit-backdrop-filter: blur(14px) saturate(165%); border: 1px solid rgba(255,255,255,0.75); box-shadow: 0 8px 24px rgba(2,132,199,0.13), inset 0 1px 0 rgba(255,255,255,0.85); }
         .table-responsive table { background: transparent; border: none; border-radius: 0; }
         .table-responsive th { background-color: rgba(2,132,199,0.13); }
@@ -378,7 +373,6 @@
         html[data-theme="dark"] .table-responsive th, html[data-theme="dark"] .table-responsive td { border-color: rgba(255,255,255,0.10); }
         html[data-theme="dark"] body.dash-mode .card { background: transparent; border: none; }
 
-        /* ===== شوشەیی: چوونەژوورەوە + تۆمارکردن ===== */
         body:not(.dash-mode)::before, body:not(.dash-mode)::after { content: ""; position: fixed; z-index: -1; pointer-events: none; border-radius: 50%; }
         body:not(.dash-mode)::before { width: 70vmax; height: 70vmax; left: -22vmax; top: -22vmax; background: radial-gradient(circle, rgba(34,211,238,0.55), transparent 65%); }
         body:not(.dash-mode)::after { width: 65vmax; height: 65vmax; right: -20vmax; bottom: -20vmax; background: radial-gradient(circle, rgba(52,211,153,0.45), transparent 65%); }
@@ -417,7 +411,6 @@
         #status-msg:not(:empty), #reg-msg:not(:empty) { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 8px 12px; }
         html[data-theme="dark"] #status-msg:not(:empty), html[data-theme="dark"] #reg-msg:not(:empty) { background: rgba(15,23,42,0.85); }
 
-        /* ===== شوشەیی: سکرینی نمرەکان و بابەتەکان ===== */
         body.dash-mode .profile-header, body.dash-mode .material-item, body.dash-mode .profile-details p {
             background: linear-gradient(135deg, rgba(255,255,255,0.58), rgba(255,255,255,0.24));
             backdrop-filter: blur(14px) saturate(165%); -webkit-backdrop-filter: blur(14px) saturate(165%);
@@ -429,6 +422,10 @@
             backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%);
             border: 1px solid rgba(255,255,255,0.7); border-right: 5px solid var(--danger);
             box-shadow: 0 6px 18px rgba(239,68,68,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
+        }
+        body.dash-mode .notification.pending-review {
+            background: linear-gradient(135deg, rgba(254,243,199,0.85), rgba(253,230,138,0.38));
+            border-right-color: var(--warning);
         }
         body.dash-mode .notification.pass {
             background: linear-gradient(135deg, rgba(220,252,231,0.82), rgba(187,247,208,0.35));
@@ -451,6 +448,10 @@
             border-color: rgba(255,255,255,0.12); border-right-color: var(--danger);
             box-shadow: 0 6px 18px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
         }
+        html[data-theme="dark"] body.dash-mode .notification.pending-review {
+            background: linear-gradient(135deg, rgba(146,64,14,0.6), rgba(146,64,14,0.25));
+            border-right-color: var(--warning);
+        }
         html[data-theme="dark"] body.dash-mode .notification.pass {
             background: linear-gradient(135deg, rgba(20,83,45,0.65), rgba(20,83,45,0.25));
             border-right-color: var(--success);
@@ -461,7 +462,6 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
-        /* ===== هەڵبژاردنی وێنە: دوگمە و نووسینی کوردی ===== */
         .file-hidden { position: absolute !important; width: 1px !important; height: 1px !important; opacity: 0; overflow: hidden; pointer-events: none; margin: 0 !important; padding: 0 !important; border: 0 !important; }
         .file-picker { display: flex; align-items: center; gap: 10px; margin: 8px 0; padding: 6px; border: 1px solid #cbd5e1; border-radius: 14px; background: rgba(255,255,255,0.8); }
         .file-picker.disabled { opacity: 0.6; pointer-events: none; }
@@ -470,7 +470,6 @@
         html[data-theme="dark"] .file-picker { background: rgba(30,41,59,0.85); border-color: #475569; }
         #register-section .file-picker { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.45); }
 
-        /* ===== دۆخی ڕۆژ ===== */
         html[data-theme="light"] #login-section,
         html[data-theme="light"] #register-section {
             --text-main: #0f172a; --text-muted: #334155;
@@ -537,12 +536,11 @@ html[data-theme="dark"] #aiOut,html[data-theme="dark"] .ai-q,html[data-theme="da
 #aiBar #aiShot{width:72px;height:72px;padding:0;border-radius:50%;border:5px solid #fff;background:#22c55e}
 #aiBar #aiOk{background:#16a34a}
 
-/* ===== چاککردنی سایز و شوێنی تابەکان (مۆبایل) ===== */
 .tab-btn { min-width: 0; line-height: 1.5; }
 @media (max-width: 699px) {
     .tabs-nav {
         display: grid;
-        grid-template-columns: 1fr 1fr;   /* دوو تاب لە هەر ڕیزێک */
+        grid-template-columns: 1fr 1fr;
         gap: 6px;
         padding: 6px;
     }
@@ -557,14 +555,12 @@ html[data-theme="dark"] #aiOut,html[data-theme="dark"] .ai-q,html[data-theme="da
     }
 }
 
-/* گرێید تاب + تاسکبار + میوان */
 .grade-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 4px;padding:5px;border-radius:16px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.5)}
 .grade-tabs .gt{margin:0;padding:11px 2px;font-size:14px;background:transparent;color:var(--text-main);box-shadow:none;border-radius:12px}
 .grade-tabs .gt:hover{transform:none;box-shadow:none}
 .grade-tabs .gt.active{background:linear-gradient(to right,#0284c7,#0f766e);color:#fff;box-shadow:0 4px 12px rgba(2,132,199,.3)}
 body.dash-mode{padding-bottom:104px}
 
-/* تاسکباری کێرڤی */
 :root{--nav-bg:#ffffff;--nav-line:rgba(15,23,42,.12);--ring:#e8f0f7}
 html[data-theme="dark"]{--nav-bg:#111c2b;--nav-line:rgba(255,255,255,.14);--ring:#0b1220}
 #taskbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:850;padding:24px 6px calc(8px + env(safe-area-inset-bottom,0px))}
@@ -579,7 +575,6 @@ body.dash-mode #taskbar{display:flex}
 .tb-btn.active .ico{position:relative;top:-18px;margin:-13px 0;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#0284c7,#0f766e);color:#fff;box-shadow:0 0 0 6px var(--ring),0 6px 14px rgba(0,0,0,.28)}
 .tb-btn.active svg.i{width:25px;height:25px}
 
-/* ڕێکخستن: کارد، دۆخی شاشە، چارتی کێرڤ */
 body.dash-mode #theme-toggle{display:none}
 .set-card{margin:0 0 16px;padding:14px;border-radius:16px;border:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.5)}
 html[data-theme="dark"] .set-card{background:rgba(30,41,59,.55)}
@@ -599,11 +594,9 @@ html[data-theme="dark"] .set-card{background:rgba(30,41,59,.55)}
 .stat-chips div{padding:8px;border-radius:12px;background:rgba(148,163,184,.18);text-align:center;font-size:13px;color:var(--text-muted)}
 .stat-chips b{display:block;margin-top:2px;font-size:17px;color:var(--text-main)}
 
-/* تابەکان لەگەڵ شتەکانی تر سکرۆڵ دەبن */
 .tabs-nav{position:static!important}
 @media (min-width:900px){#dashboard-section:not(.hidden){display:block!important;max-height:none!important}#dashboard-section>.tab-content.active{overflow:visible!important}}
 body:not(.guest-mode) [data-only="guest"]{display:none!important}
-/* چارتی ئاستی خوێندکار */
 .stat-card{margin:0 0 16px;padding:14px;border-radius:18px;border:1px solid rgba(148,163,184,.35);background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(224,242,254,.35));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 html[data-theme="dark"] .stat-card{background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(56,189,248,.08))}
 .stat-top{display:flex;align-items:center;gap:16px}
@@ -632,12 +625,8 @@ body.guest-mode .tb-btn[data-tab="tab-grades"] .ico{position:relative}
 body.guest-mode .tb-btn[data-tab="tab-grades"]:not(.active) .ico::after{content:"🔒";position:absolute;top:-5px;right:-7px;font-size:11px;line-height:1}
 @media (min-width:900px){#dashboard-section:not(.hidden){max-height:calc(100vh - 190px)!important}}
 
-/* ===== چاکسازییەکانی نوێ ===== */
-/* تاسکبار: بێ نووسین، بچووکتر */
 body.dash-mode{padding-bottom:84px}
-/* کۆمپیوتەر: دوگمەی نوێکردنەوە (کۆتایی تابی نمرەکان) نەچێتە ژێر تاسکبارەوە. مۆبایل وەک خۆی */
 @media (min-width:900px){#tab-grades.active{padding-bottom:70px}}
-/* مۆبایل: تەنها بەقەد بەرزی تاسکبار بۆشایی لە خوارەوە بمێنێتەوە */
 @media (max-width:899px){body.dash-mode{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))!important}}
 #taskbar{padding:20px 6px calc(6px + env(safe-area-inset-bottom,0px))}
 .tb-btn{min-height:40px;gap:0;padding:4px 0;-webkit-tap-highlight-color:transparent;outline:none;user-select:none;-webkit-user-select:none}
@@ -645,22 +634,19 @@ body.dash-mode{padding-bottom:84px}
 .tb-btn:active:not(.active) .ico{background:rgba(2,132,199,.2);border-radius:50%}
 .tb-btn.active .ico{top:-16px;margin:-12px 0}
 .tab-btn,.theme-opt,.gt,#theme-toggle{-webkit-tap-highlight-color:transparent}
-/* بەجی ڤێریفاید: بازنەی ڕێک */
 .vbadge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;vertical-align:middle;line-height:1}
 .vbadge svg{display:block;width:22px;height:22px;vertical-align:baseline}
 #reg-preview-photo{cursor:pointer}
-/* نامەی دەرچوون */
 #exit-toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:10px 18px;border-radius:14px;background:rgba(15,23,42,.9);color:#fff;font-size:13px;z-index:2000;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
 #exit-toast.show{opacity:1}
 #aiPage{margin-top:8px}
-/* دوگمەکانی وێنە: کامێرا + گەلەری */
 .file-picker{flex-wrap:wrap}
 button.file-btn{width:auto;margin:0;border:0;font-family:inherit}
 button.file-btn:hover{transform:none}
 .file-btn.gal{background:linear-gradient(to right,#64748b,#475569)}
 .file-picker .file-name{flex:1 1 120px}
 
-/* کامێرای ڕاستەوخۆ بۆ وێنەی فەیس (چاککراو بۆ مۆبایل) */
+/* کامێرای ڕاستەوخۆ بۆ وێنەی فەیس */
 #face-cam{
     position:fixed;
     inset:0;
@@ -756,6 +742,14 @@ button.file-btn:hover{transform:none}
 <div id="theme-toast"></div>
 <div id="exit-toast"></div>
 
+<!-- پەنجەرەی ئاگاداری ناوخۆیی بێ ناونیشانی لینک -->
+<div id="app-alert" class="hidden" onclick="if(event.target===this)closeAppAlert()">
+    <div class="app-alert-box">
+        <p id="app-alert-text" class="app-alert-txt"></p>
+        <button type="button" class="btn-save" onclick="closeAppAlert()">باشە</button>
+    </div>
+</div>
+
 <div class="container" id="login-section">
     <div class="header-logo">
         <img src="logo.png" alt="لۆگۆی ئامادەیی هەڵکەوتی کوڕان">
@@ -781,7 +775,6 @@ button.file-btn:hover{transform:none}
     
     <button onclick="login()">چوونەژوورەوە</button>
 
-    <!-- دوگمەی گووگڵ لە لاپەڕەی چوونەژوورەوە (لەناو ئەپی مۆبایل دەشاردرێتەوە) -->
     <button class="btn-google" id="google-login-btn" type="button">
         <svg viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -826,8 +819,8 @@ button.file-btn:hover{transform:none}
         <option value="Group G">Group G</option>
     </select>
 
-    <label class="field-label">ژمارەی مۆبایل:</label>
-    <input type="tel" id="reg-phone" placeholder="ژمارەی مۆبایل">
+    <label class="field-label">ژمارەی مۆبایل (١١ ژمارە):</label>
+    <input type="tel" id="reg-phone" maxlength="11" inputmode="numeric" placeholder="07XXXXXXXXX (١١ ژمارە)" style="direction:ltr; text-align:right;">
 
     <label class="field-label">قوتابخانەی پۆلی ٩:</label>
     <input type="text" id="reg-oldschool" placeholder="ناوی قوتابخانەی پۆلی ٩ی بنەڕەتی">
@@ -857,9 +850,8 @@ button.file-btn:hover{transform:none}
         </div>
     </div>
 
-    <div id="notification-area" class="hidden">
-        <div class="notification" id="notification-text"></div>
-    </div>
+    <!-- بەشی نۆت و ئاگادارییە تایبەتەکان (بەپێی کات ڕیز دەکرێن و دەمێننەوە) -->
+    <div id="notification-area" class="hidden"></div>
 
     <div id="second-round-area"></div>
 
@@ -1032,8 +1024,8 @@ button.file-btn:hover{transform:none}
             </div>
 
             <div class="settings-field">
-            <label class="field-label">ژمارەی مۆبایل:</label>
-            <input type="tel" id="input-phone" placeholder="ژمارەی مۆبایل">
+            <label class="field-label">ژمارەی مۆبایل (١١ ژمارە):</label>
+            <input type="tel" id="input-phone" maxlength="11" inputmode="numeric" placeholder="07XXXXXXXXX (١١ ژمارە)" style="direction:ltr; text-align:right;">
             </div>
             
             <div class="settings-field">
@@ -1059,7 +1051,6 @@ button.file-btn:hover{transform:none}
             <button class="btn-save" onclick="updateProfile()" id="btn-update">پاشەکەوتکردن</button>
             <p id="update-msg" style="text-align:center; font-size:14px; font-weight:bold; margin-bottom:0; margin-top:8px;"></p>
 
-            <!-- بەشی بەستنەوە بە گووگڵ لەناو داشبۆرد (لەناو ئەپی مۆبایل دەشاردرێتەوە) -->
             <div id="google-link-block">
             <hr style="margin: 25px 0 15px; border: 0; border-top: 1px solid #cbd5e1;">
             <div style="text-align: center;">
@@ -1160,7 +1151,6 @@ button.file-btn:hover{transform:none}
 
 <div id="ptr-indicator"><span>↻</span></div>
 
-<!-- فایەربەیس و گووگڵ: تەنها لە براوزەری ئاسایی (Chrome/کۆمپیوتەر) بار دەکرێت، نەک لەناو ئەپی مۆبایل -->
 <script type="module">
 (async function () {
     if (document.documentElement.classList.contains("no-google")) return;
@@ -1243,13 +1233,11 @@ button.file-btn:hover{transform:none}
                     statusMsg.innerText = "بە سەرکەوتوویی ناسرایەوە! چوونەژوورەوە...";
                     setTimeout(() => {
                         try {
-                            if (typeof window.login !== "function") throw new Error("login() نەدۆزرایەوە، پەڕەکە دووبارە بکەرەوە (Ctrl+F5)");
+                            if (typeof window.login !== "function") throw new Error("login() نەدۆزرایەوە");
                             window.login();
                         } catch (e) {
-                            console.error(e);
                             statusMsg.style.color = "var(--danger)";
                             statusMsg.innerText = "هەڵە: " + (e && e.message ? e.message : e);
-                            if (typeof showDebug === "function") showDebug();
                         }
                     }, 500);
                     return;
@@ -1262,7 +1250,6 @@ button.file-btn:hover{transform:none}
                 return;
 
             } catch (error) {
-                console.error("Google Auth Error:", error);
                 statusMsg.style.color = "var(--danger)";
                 statusMsg.innerText = "کێشەیەک ڕوویدا: " + window.friendlyErr(error);
             }
@@ -1274,7 +1261,7 @@ button.file-btn:hover{transform:none}
             const emailDisplay = document.getElementById("linked-email-display");
 
             if (!savedData.username || !savedPass) {
-                alert("تکایە دڵنیابەرەوە لە چوونەژوورەوەی ئەکاونتەکەت");
+                showAppAlert("تکایە دڵنیابەرەوە لە چوونەژوورەوەی ئەکاونتەکەت");
                 return;
             }
 
@@ -1298,18 +1285,16 @@ button.file-btn:hover{transform:none}
                 emailDisplay.style.fontWeight = "bold";
                 localStorage.setItem("g_linked", user.email);
                 if (window.refreshLinkBanner) window.refreshLinkBanner();
-                alert("بە سەرکەوتوویی ئەکاونتەکەت بەستراوە بە جیمەیڵی: " + user.email);
+                showAppAlert("بە سەرکەوتوویی ئەکاونتەکەت بەستراوە بە جیمەیڵی: " + user.email);
 
             } catch (error) {
-                console.error("Linking Error:", error);
-                alert("هەڵە ڕوویدا لە بەستنەوە: " + window.friendlyErr(error));
+                showAppAlert("هەڵە ڕوویدا لە بەستنەوە: " + window.friendlyErr(error));
             }
         }
 
         document.getElementById("google-login-btn").addEventListener("click", handleLoginWithGoogle);
         document.getElementById("google-link-inside-btn").addEventListener("click", handleLinkInsideDashboard);
     } catch (e) {
-        console.error("Firebase unavailable:", e);
         document.documentElement.classList.add("no-google");
     }
 })();
@@ -1321,6 +1306,50 @@ button.file-btn:hover{transform:none}
     function toKu(v) {
         return String(v).replace(/[0-9]/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
     }
+    function toEnDigits(v) {
+        return String(v || "")
+            .replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)])
+            .replace(/[۰-۹]/g, d => "0123456789"["۰۱۲۳۴۵۶۷۸۹".indexOf(d)]);
+    }
+
+    // پەنجەرەی ئاگاداری ناوخۆیی بێ لینکی گیتهەب
+    function showAppAlert(txt) {
+        const box = document.getElementById("app-alert");
+        const el = document.getElementById("app-alert-text");
+        if (!box || !el) return;
+        el.innerText = txt;
+        box.classList.remove("hidden");
+    }
+    function closeAppAlert() {
+        const box = document.getElementById("app-alert");
+        if (box) box.classList.add("hidden");
+    }
+
+    // پشکنینی ژمارەی مۆبایل (دەبێت ڕێک ١١ ژمارە بێت)
+    function cleanPhone11(raw) {
+        return toEnDigits(raw).replace(/\D/g, "");
+    }
+    function validatePhone11(raw) {
+        const digits = cleanPhone11(raw);
+        if (digits.length !== 11) {
+            return { ok: false, err: "ژمارەی مۆبایل دەبێت ڕێک ١١ ژمارە بێت (نموونە: 07701234567)" };
+        }
+        if (!digits.startsWith("07")) {
+            return { ok: false, err: "ژمارەی مۆبایل دەبێت بە 07 دەست پێبکات و ١١ ژمارە بێت" };
+        }
+        return { ok: true, val: digits };
+    }
+
+    ["reg-phone", "input-phone"].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", function() {
+            const cleaned = cleanPhone11(this.value).slice(0, 11);
+            if (this.value !== cleaned) this.value = cleaned;
+            if (cleaned.length === 11) this.classList.remove("input-error");
+        });
+    });
+
     const DEFAULT_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%2394a3b8'/%3E%3Cpath d='M14 100c0-22 16-36 36-36s36 14 36 36z' fill='%2394a3b8'/%3E%3C/svg%3E";
     
     let currentUsername = "";
@@ -1336,6 +1365,208 @@ button.file-btn:hover{transform:none}
     function setFileLabel(id, txt) {
         const el = document.getElementById(id);
         if (el) el.innerText = txt;
+    }
+
+    // ===== سیستەمی نۆت و ئاگادارییە تایبەتەکان (مانەوە و ڕیزبەندی بەپێی کات) =====
+    function notesStorageKey() {
+        return "student_notes_" + (currentGrade || "0") + "_" + (currentUsername || "user");
+    }
+    function formatNoteTime(ts) {
+        try {
+            const d = new Date(ts);
+            if (isNaN(d.getTime())) return "";
+            const pad = n => String(n).padStart(2, "0");
+            const dateStr = d.getFullYear() + "/" + pad(d.getMonth() + 1) + "/" + pad(d.getDate());
+            const timeStr = pad(d.getHours()) + ":" + pad(d.getMinutes());
+            return toKu(dateStr + " · " + timeStr);
+        } catch (e) { return ""; }
+    }
+    function loadSavedNotes() {
+        try {
+            const arr = JSON.parse(localStorage.getItem(notesStorageKey()) || "[]");
+            return Array.isArray(arr) ? arr : [];
+        } catch (e) { return []; }
+    }
+    function saveNotesList(list) {
+        try {
+            localStorage.setItem(notesStorageKey(), JSON.stringify(list));
+        } catch (e) {}
+    }
+
+    // وەرگرتنی نۆتیفیکەیشن لە کاتی کردنەوەی ئەپ یان لینک (URL parameters / Android bridge)
+    function captureIncomingPushNote() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const pushText = params.get("note") || params.get("notification") || params.get("msg") || params.get("body") || "";
+            const pushTime = parseInt(params.get("ts") || params.get("time") || "0", 10) || Date.now();
+            if (pushText.trim()) {
+                sessionStorage.setItem("incoming_push_note", JSON.stringify({
+                    text: pushText.trim(),
+                    ts: pushTime
+                }));
+                if (window.history && window.history.replaceState) {
+                    const cleanUrl = window.location.pathname + window.location.hash;
+                    window.history.replaceState(history.state, "", cleanUrl);
+                }
+            }
+        } catch (e) {}
+    }
+    captureIncomingPushNote();
+
+    // بانگکردن لە لایەن Android WebView کاتێک کلیک لە نۆتیفیکەیشن دەکرێت
+    window.onPushNotificationOpened = function(title, body, ts) {
+        const full = [title, body].filter(Boolean).join(" - ").trim();
+        if (!full) return;
+        sessionStorage.setItem("incoming_push_note", JSON.stringify({
+            text: full,
+            ts: Number(ts) || Date.now()
+        }));
+        if (currentUsername) {
+            const saved = JSON.parse(localStorage.getItem("student_session") || "{}");
+            syncAndRenderNotes(saved);
+        }
+    };
+
+    function syncAndRenderNotes(data) {
+        const area = document.getElementById("notification-area");
+        if (!area) return;
+
+        let list = loadSavedNotes();
+        const now = Date.now();
+
+        // کۆکردنەوەی نۆتیفیکەیشنە هاتووەکان لە سێرڤەر
+        const serverItems = [];
+        if (Array.isArray(data && data.notifications)) {
+            data.notifications.forEach(function(item, idx) {
+                if (!item) return;
+                if (typeof item === "string" && item.trim()) {
+                    serverItems.push({ id: "srv_" + item.trim(), text: item.trim(), ts: now - idx * 1000, status: "active" });
+                } else if (typeof item === "object" && (item.text || item.message)) {
+                    const txt = String(item.text || item.message).trim();
+                    if (txt) {
+                        serverItems.push({
+                            id: String(item.id || ("srv_" + txt)),
+                            text: txt,
+                            ts: Number(item.ts || item.time || (now - idx * 1000)),
+                            status: item.status === "pending" ? "pending" : "active"
+                        });
+                    }
+                }
+            });
+        } else if (data && typeof data.notification === "string" && data.notification.trim() !== "") {
+            const txt = data.notification.trim();
+            serverItems.push({
+                id: "srv_" + txt,
+                text: txt,
+                ts: Number(data.notificationTime || now),
+                status: data.notificationStatus === "pending" ? "pending" : "active"
+            });
+        }
+
+        // نۆتیفیکەیشنی هاتوو لە سکرینی مۆبایل (Push / URL)
+        try {
+            const inc = JSON.parse(sessionStorage.getItem("incoming_push_note") || "null");
+            if (inc && inc.text) {
+                serverItems.push({
+                    id: "push_" + inc.text,
+                    text: inc.text,
+                    ts: inc.ts || now,
+                    status: "active"
+                });
+                sessionStorage.removeItem("incoming_push_note");
+            }
+        } catch (e) {}
+
+        // ئەگەر سێرڤەر بە ڕوونی نۆتەکانی لابردبێت (پەسەند کرابێت لە لایەن ئەدمینەوە)
+        const serverHasExplicitEmpty = data && (
+            (Array.isArray(data.notifications) && data.notifications.length === 0) ||
+            (data.notification === "" && data.notificationCleared === true)
+        );
+        if (serverHasExplicitEmpty) {
+            list = list.filter(n => !String(n.id).startsWith("srv_"));
+        }
+
+        // زیادکردن یان نوێکردنەوەی نۆتەکان بەبێ سڕینەوەیان
+        serverItems.forEach(function(sItem) {
+            const existing = list.find(x => x.text === sItem.text);
+            if (!existing) {
+                list.push(sItem);
+            } else {
+                if (sItem.status === "pending") existing.status = "pending";
+            }
+        });
+
+        // ڕیزبەندی بەپێی کات (نوێترین لە سەرەوە)
+        list.sort(function(a, b) { return (b.ts || 0) - (a.ts || 0); });
+        saveNotesList(list);
+
+        if (!list.length) {
+            area.classList.add("hidden");
+            area.innerHTML = "";
+            return;
+        }
+
+        area.classList.remove("hidden");
+        area.innerHTML = list.map(function(n, i) {
+            const isPending = n.status === "pending";
+            const timeLabel = formatNoteTime(n.ts);
+            const statusBadge = isPending
+                ? '<span>⏳ نێردراوە بۆ ئەدمین · چاوەڕێی پەسەندکردن</span>'
+                : '<span>🔔 نۆتی تایبەت</span>';
+            const actionBtn = isPending
+                ? ''
+                : '<button type="button" class="note-fix-btn" onclick="goFixNote(' + i + ')">چاکم کرد · ناردن بۆ ئەدمین</button>';
+            return '<div class="notification ' + (isPending ? 'pending-review' : '') + '">' +
+                '<div>' + statusBadge + ' — ' + n.text + '</div>' +
+                '<div class="note-meta">' +
+                    '<span>🕒 ' + (timeLabel || 'ئێستا') + '</span>' +
+                    actionBtn +
+                '</div>' +
+            '</div>';
+        }).join("");
+    }
+
+    function goFixNote(index) {
+        const list = loadSavedNotes();
+        const item = list[index];
+        if (!item) return;
+
+        const saved = JSON.parse(localStorage.getItem("student_session") || "{}");
+        // ئەگەر پرۆفایل قفڵ نەکرابێت دەچێتە بەشی ڕێکخستن بۆ چاککردن، ئەگەر چاککرابێت ڕاستەوخۆ دەنێردرێت بۆ ئەدمین
+        if (!saved.profileLocked) {
+            sessionStorage.setItem("pending_note_idx", String(index));
+            switchTab("tab-settings");
+            showAppAlert("تکایە زانیارییەکان چاک بکە و دوگمەی (پاشەکەوتکردن) دابگرە، خۆکارانە دەنێردرێت بۆ ئەدمین.");
+            return;
+        }
+        submitNoteForAdminReview(index);
+    }
+
+    function submitNoteForAdminReview(index) {
+        const list = loadSavedNotes();
+        const item = list[index];
+        if (!item) return;
+
+        item.status = "pending";
+        item.updatedAt = Date.now();
+        saveNotesList(list);
+
+        const saved = JSON.parse(localStorage.getItem("student_session") || "{}");
+        syncAndRenderNotes(saved);
+
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({
+                action: "resolveNotification",
+                grade: currentGrade,
+                group: correctGroup,
+                username: currentUsername,
+                password: currentPassword,
+                noteId: item.id,
+                noteText: item.text
+            })
+        }).catch(function() {});
     }
 
     window.lastDebug = "";
@@ -1373,7 +1604,6 @@ button.file-btn:hover{transform:none}
 
     function applyTheme() {
         const mode = localStorage.getItem("theme_mode") || "dark";
-        const h = new Date().getHours();
         const dark = mode === "dark" || (mode !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
         document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
         const meta = document.querySelector('meta[name="theme-color"]');
@@ -1498,7 +1728,6 @@ button.file-btn:hover{transform:none}
             }
         })
         .catch(err => {
-            console.error("Login error:", err);
             statusMsg.style.color = "var(--danger)";
             statusMsg.innerText = netErrMsg(err);
             showDebug();
@@ -1530,7 +1759,6 @@ button.file-btn:hover{transform:none}
         .catch(err => {
             msg.style.color = "var(--danger)";
             msg.innerText = netErrMsg(err);
-            console.error("Refresh error:", err, window.lastDebug);
         });
     }
 
@@ -1656,7 +1884,7 @@ button.file-btn:hover{transform:none}
         
         const phoneEl = document.getElementById("input-phone");
         const schoolEl = document.getElementById("input-oldschool");
-        if (document.activeElement !== phoneEl) phoneEl.value = data.phone || "";
+        if (document.activeElement !== phoneEl) phoneEl.value = cleanPhone11(data.phone || "");
         if (document.activeElement !== schoolEl) schoolEl.value = data.oldSchool || "";
 
         applyProfileLockState(data.profileLocked === true);
@@ -1709,10 +1937,8 @@ button.file-btn:hover{transform:none}
         refreshLinkBanner();
         updateScrollHint();
         
-        if(data.notification && data.notification !== "") {
-            document.getElementById("notification-area").classList.remove("hidden");
-            document.getElementById("notification-text").innerHTML = "<span>🔔</span> " + data.notification;
-        }
+        // ڕیزکردن و هێشتنەوەی نۆتیفیکەیشنە تایبەتەکان بەپێی کات
+        syncAndRenderNotes(data);
         
         const materialsDiv = document.getElementById("materials-list");
         materialsDiv.innerHTML = "";
@@ -1854,10 +2080,12 @@ button.file-btn:hover{transform:none}
     });
 
     document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape" && !document.getElementById("viewer-modal").classList.contains("hidden")) closeViewer();
+        if (e.key === "Escape") {
+            if (!document.getElementById("app-alert").classList.contains("hidden")) { closeAppAlert(); return; }
+            if (!document.getElementById("viewer-modal").classList.contains("hidden")) closeViewer();
+        }
     });
 
-    // ڕیفریش بە کێشانی شاشە بەرەو خوارەوە (مۆبایل)
     (function() {
         const ind = document.getElementById("ptr-indicator");
         const icon = ind.firstElementChild;
@@ -1984,7 +2212,6 @@ button.file-btn:hover{transform:none}
         }
     }
 
-    // ===== بڕینی وێنە =====
     const CROP = { x: 0, y: 0, base: 1, z: 1, nw: 0, nh: 0, sw: 0, sh: 0, url: "" };
 
     function cropRender() {
@@ -2055,12 +2282,12 @@ button.file-btn:hover{transform:none}
         });
     })();
 
-    // ===== کامێرای ڕاستەوخۆ (فەیس) - چاککراو =====
+    // ===== کامێرای ڕاستەوخۆ (فەیس) =====
     let faceStream = null;
     async function openFaceCam(which) {
         isRegisterPhoto = (which === "reg");
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            alert("ئەم براوزەر/ئەپە کامێرای ڕاستەوخۆ پشتگیری ناکات. لە Chrome بیکەرەوە، یان ئەپەکە نوێ بکەرەوە.");
+            showAppAlert("تکایە وێنەی ڕووخسارت بگرە");
             return;
         }
         try {
@@ -2074,7 +2301,7 @@ button.file-btn:hover{transform:none}
             });
         } catch (err) {
             faceStream = null;
-            alert("ڕێگەی کامێرا نەدرا یان کامێرا نەدۆزرایەوە. لە ڕێکخستنی مۆبایل ڕێگە بە کامێرا بدە بۆ ئەم ئەپە/براوزەرە و دووبارە هەوڵ بدەرەوە.");
+            showAppAlert("تکایە ڕێگە بە کامێرا بدە و وێنەی ڕووخسارت بگرە");
             return;
         }
         const v = document.getElementById("face-vid");
@@ -2160,7 +2387,7 @@ button.file-btn:hover{transform:none}
         img.onerror = function() {
             img.onload = null; img.onerror = null;
             closeCropModal();
-            alert("نەتوانرا وێنەکە بکرێتەوە، تکایە وێنەیەکی تر هەڵبژێرە");
+            showAppAlert("تکایە وێنەی ڕووخسارت بگرە");
         };
         img.src = CROP.url;
     }
@@ -2215,16 +2442,19 @@ button.file-btn:hover{transform:none}
         let problem = "";
         try {
             const faces = await detectFaces(mk(300, 400));
-            if (faces.length === 0) problem = "فەیس لە وێنەکەدا نەدۆزرایەوە. وێنەی ڕوخساری خۆت بگرە، ڕووبەڕووی کامێرا و بە ڕووناکی باش.";
-            else if (faces.length > 1) problem = "لە وێنەکەدا زیاتر لە یەک کەس دیارە. تەنها وێنەی خۆت بگرە.";
-            else if (faces[0].w / 300 < 0.25) problem = "فەیسەکە زۆر بچووکە. نزیکتر بەرەوە یان وێنەکە زووم بکە.";
+            if (faces.length === 0 || faces.length > 1 || faces[0].w / 300 < 0.25) {
+                problem = "تکایە وێنەی ڕووخسارت بگرە";
+            }
         } catch (e) {
-            problem = "پشکنینی فەیس ئامادە نەبوو، ئینتەرنێت بپشکنە و دووبارە هەوڵ بدەرەوە.";
+            problem = "تکایە وێنەی ڕووخسارت بگرە";
         }
 
         hint.innerText = oldTxt;
         btns.forEach(function (b) { b.disabled = false; });
-        if (problem) { alert(problem); return; }
+        if (problem) {
+            showAppAlert(problem);
+            return;
+        }
 
         setCroppedResult(mk(150, 200).toDataURL("image/jpeg", 0.6));
         setFileLabel(isRegisterPhoto ? "reg-file-name" : "file-name", FILE_OK_TXT);
@@ -2298,7 +2528,7 @@ button.file-btn:hover{transform:none}
         if (d.n1) document.getElementById("reg-n1").value = d.n1;
         if (d.n2) document.getElementById("reg-n2").value = d.n2;
         if (d.n3) document.getElementById("reg-n3").value = d.n3;
-        if (d.phone) document.getElementById("reg-phone").value = d.phone;
+        if (d.phone) document.getElementById("reg-phone").value = cleanPhone11(d.phone);
         if (d.oldSchool) document.getElementById("reg-oldschool").value = d.oldSchool;
         if (d.photo) {
             finalCroppedImage = d.photo;
@@ -2331,13 +2561,13 @@ button.file-btn:hover{transform:none}
         oldSchoolInput.classList.remove("input-error");
 
         const selectedGroup = groupSelect.options[groupSelect.selectedIndex].text.trim();
-        const phone = phoneInput.value.trim();
+        const phoneCheck = validatePhone11(phoneInput.value);
         const oldSchool = oldSchoolInput.value.trim();
 
         if(!finalCroppedImage) {
             photoImg.classList.add("input-error");
             msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە وێنەی ڕوخساری خۆت هەڵبژێرە";
+            msg.innerText = "تکایە وێنەی ڕووخسارت بگرە";
             return;
         }
 
@@ -2355,12 +2585,15 @@ button.file-btn:hover{transform:none}
             msg.innerText = "تکایە گروپی خۆت هەڵبژێرە";
             return;
         }
-        if(!phone) {
+        if(!phoneCheck.ok) {
             phoneInput.classList.add("input-error");
             msg.style.color = "var(--danger)";
-            msg.innerText = "تکایە ژمارەی مۆبایل بنووسە";
+            msg.innerText = phoneCheck.err;
             return;
         }
+        const phone = phoneCheck.val;
+        phoneInput.value = phone;
+
         if(!oldSchool) {
             oldSchoolInput.classList.add("input-error");
             msg.style.color = "var(--danger)";
@@ -2468,7 +2701,7 @@ button.file-btn:hover{transform:none}
         const phoneEl = document.getElementById("input-phone");
         const schoolEl = document.getElementById("input-oldschool");
         const passEl = document.getElementById("input-confirm-pass");
-        const phone = phoneEl.value.trim();
+        const phoneCheck = validatePhone11(phoneEl.value);
         const oldSchool = schoolEl.value.trim();
         const confirmPass = passEl.value.trim();
         const btn = document.getElementById("btn-update");
@@ -2476,11 +2709,21 @@ button.file-btn:hover{transform:none}
         const saved = JSON.parse(localStorage.getItem("student_session") || "{}");
 
         passEl.classList.remove("input-error");
+        phoneEl.classList.remove("input-error");
 
         if (saved.profileLocked) {
             applyProfileLockState(true);
             return;
         }
+
+        if (!phoneCheck.ok) {
+            phoneEl.classList.add("input-error");
+            msg.style.color = "var(--danger)";
+            msg.innerText = phoneCheck.err;
+            return;
+        }
+        const phone = phoneCheck.val;
+        phoneEl.value = phone;
 
         let newName = "";
         if (saved.canEditName) {
@@ -2494,7 +2737,7 @@ button.file-btn:hover{transform:none}
         }
 
         if ((!phone && saved.phone) || (!oldSchool && saved.oldSchool)) {
-            if (!phone) phoneEl.value = saved.phone || "";
+            if (!phone) phoneEl.value = cleanPhone11(saved.phone || "");
             if (!oldSchool) schoolEl.value = saved.oldSchool || "";
             msg.style.color = "var(--danger)";
             msg.innerText = "ناتوانیت زانیارییەکان بسڕیتەوە، تەنها دەتوانیت نوێیان بکەیتەوە";
@@ -2502,7 +2745,7 @@ button.file-btn:hover{transform:none}
             return;
         }
 
-        if (phone === (saved.phone || "") && oldSchool === (saved.oldSchool || "") && !finalCroppedImage && (!newName || newName === String(saved.studentName || "").trim())) {
+        if (phone === cleanPhone11(saved.phone || "") && oldSchool === (saved.oldSchool || "") && !finalCroppedImage && (!newName || newName === String(saved.studentName || "").trim())) {
             msg.style.color = "var(--danger)";
             msg.innerText = "هیچ گۆڕانکارییەکت لە زانیارییەکاندا نەکردووە!";
             setTimeout(() => { msg.innerText = ""; }, 3500);
@@ -2589,6 +2832,18 @@ button.file-btn:hover{transform:none}
             savedData.canEditName = false;
             savedData.profileLocked = true;
             localStorage.setItem("student_session", JSON.stringify(savedData));
+
+            // ئەگەر خوێندکار هاتووە بۆ چاککردنی تێبینی نۆتی تایبەت، خۆکارانە دەنێردرێت بۆ ئەدمین
+            const pendIdx = sessionStorage.getItem("pending_note_idx");
+            if (pendIdx !== null) {
+                sessionStorage.removeItem("pending_note_idx");
+                submitNoteForAdminReview(parseInt(pendIdx, 10));
+            } else {
+                const activeNotes = loadSavedNotes();
+                activeNotes.forEach(function(n, idx) {
+                    if (n.status !== "pending") submitNoteForAdminReview(idx);
+                });
+            }
 
             const nameWrapDone = document.getElementById("name-edit-wrap");
             if (nameWrapDone) { nameWrapDone.classList.add("hidden"); delete nameWrapDone.dataset.filled; }
@@ -3101,7 +3356,7 @@ window.restoreGuest=function(){
   window.guestToStudent=function(){
     var g=function(i){return document.getElementById(i);};
     var u=g("gu-user").value.trim(),p=g("gu-pass").value.trim();
-    if(!u||!p){alert("تکایە یوزەرنەیم و پاسۆرد بنووسە");return;}
+    if(!u||!p){showAppAlert("تکایە یوزەرنەیم و پاسۆرد بنووسە");return;}
     var gr=currentGrade||g("grade-level").value;
     localStorage.removeItem("guest_session");localStorage.removeItem("guest_materials");
     document.body.classList.remove("guest-mode","dash-mode");
@@ -3172,7 +3427,7 @@ window.restoreGuest=function(){
       localStorage.setItem("push_token",tok);
       await fetch(SCRIPT_URL+"?action=registerPush&token="+encodeURIComponent(tok)+"&user="+encodeURIComponent(u)+"&grade="+encodeURIComponent(g));
       msg("✅ ئاگادارکردنەوە چالاک کرا.");
-    }catch(e){console.error(e);msg("هەڵەیەک ڕوویدا: "+(e&&e.message||e));}
+    }catch(e){msg("هەڵەیەک ڕوویدا: "+(e&&e.message||e));}
     b.disabled=false;refresh();
   };
   addEventListener("load",function(){refresh();setTimeout(function(){
